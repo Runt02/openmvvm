@@ -1,0 +1,9 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="small_radios">3dp</dimen>
+    <dimen name="circle">1000dp</dimen>
+    <dimen name="radios">10dp</dimen>
+    <dimen name="frame_margin_lr">10dp</dimen>
+</resources>

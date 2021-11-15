@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="teal_700">#FF018786</color>
+    <color name="black">#FF000000</color>
+    <color name="black_4">#373737</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="white_2">#F3F3F3</color>
+    <color name="red">#FF1414</color>
+    <color name="trans_red">#4DFF1414</color>
+    <color name="light_gray">#E3E3E3</color>
+    <color name="gray">#CDCDCD</color>
+    <color name="deep_gray">#808080</color>
+    <color name="trans_gray">#4DFFFFFF</color>
+    <color name="enable">#ECECEC</color>
+    <color name="enable_sky">#889DB6</color>
+    <color name="deep_sky">#4184D6</color>
+    <color name="sky">#509CFA</color>
+    <color name="gold">#FAD550</color>
+</resources>
