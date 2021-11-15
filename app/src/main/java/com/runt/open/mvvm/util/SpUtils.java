@@ -27,8 +27,8 @@ public class SpUtils {
     }
 
     
-    public final String PROJECT = "project";
-    public final String USER = "user";
+    public final static String PROJECT = "project";
+    public final static String USER = "user";
 
 
     public boolean clearData(Context context, String keyShared){

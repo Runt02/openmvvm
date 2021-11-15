@@ -1,9 +1,48 @@
 <resources>
     <!-- Default screen margins, per the Android Design guidelines. -->
-    <dimen name="activity_horizontal_margin">16dp</dimen>
-    <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="small_radios">3dp</dimen>
-    <dimen name="circle">1000dp</dimen>
     <dimen name="radios">10dp</dimen>
     <dimen name="frame_margin_lr">10dp</dimen>
+
+    <!-- 间距 -->
+    <dimen name="activity_title_bar_height">45dp</dimen>
+    <dimen name="btn_top_buttom_padding">10dp</dimen>
+    <dimen name="edit_text_padding">12dp</dimen>
+    <!-- titleBar或底部栏分割线高度 -->
+    <dimen name="bar_divider_height">4dp</dimen>
+
+    <!-- 字体 -->
+    <dimen name="top_bar_title_size">18sp</dimen>
+    <dimen name="normal_text_size">16sp</dimen>
+    <dimen name="small_text_size">14sp</dimen>
+    <dimen name="smaller_text_size">12sp</dimen>
+    <dimen name="activity_horizontal_margin">10dp</dimen>
+    <dimen name="activity_vertical_margin">10dp</dimen>
+    <dimen name="normal_margin">5dp</dimen>
+    <dimen name="large_margin">15dp</dimen>
+    <dimen name="normal_padding">10dp</dimen>
+    <dimen name="radius">10dp</dimen>
+
+
+    <dimen name="title_height">47dp</dimen>
+    <dimen name="pt_title_height">27pt</dimen>
+    <dimen name="title_size">16sp</dimen>
+    <dimen name="txt_small_size">12sp</dimen>
+    <dimen name="txt_size">12sp</dimen>
+    <dimen name="tab_icon_width">22dp</dimen>
+    <dimen name="tab_icon_height">22dp</dimen>
+    <dimen name="edit_height">40dp</dimen>
+    <dimen name="circle">1000dp</dimen>
+    <dimen name="corner">10dp</dimen>
+    <dimen name="edit_corner">3dp</dimen>
+    <dimen name="pageLeftPadding">20dp</dimen>
+    <dimen name="pic_size">150dp</dimen>
+    <dimen name="sign_text_size">12sp</dimen>
+    <dimen name="sign_text_margin">12dp</dimen>
+    <dimen name="text_padding_left">15dp</dimen>
+
+    <!-- 间距 -->
+    <dimen name="default_margin_lr">27dp</dimen>
+    <dimen name="default_margin_td">12dp</dimen>
+
 </resources>

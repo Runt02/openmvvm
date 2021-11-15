@@ -1,5 +1,105 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="colorPrimary">@color/theme_color</color>
+    <color name="colorPrimaryDark">#17B4A0</color>
+    <color name="colorAccent">#D81B60</color>
+
+    <color name="theme_color">#3475F8</color>
+    <color name="theme_tint_color">#A7C3FA</color>
+    <color name="press_color">#8B8C8D</color>
+    <color name="enable_color">#646161</color>
+    <color name="enable_txt_color">#D5D2D2</color>
+    <color name="txt_color">#2C2C2C</color>
+    <color name="txt_cusor_color">#FFFFFF</color>
+    <color name="shade_color">#F0F0F0</color>
+
+
+
+    <color name="btn_login_normal">@color/theme</color>
+    <color name="btn_logout_normal">#d33f3f</color>
+    <color name="btn_logout_pressed">#DA5A4D</color>
+    <color name="btn_register_normal">#ffffff</color>
+    <color name="btn_register_pressed">@color/theme</color>
+    <color name="common_bottom_bar_normal_bg">#2d2f31</color>
+    <color name="common_bottom_bar_selected_bg">#161718</color>
+    <color name="common_botton_bar_blue">#2ea7e0</color>
+    <color name="common_bg">#fcfcfc</color>
+    <color name="btn_pressed_green_solid">#B6DA53</color>
+    <color name="divider_list">#d4d4d4</color>
+    <color name="top_bar_normal_bg">@color/theme</color>
+    <color name="error_item_color">#F6EBE6</color>
+    <color name="bottom_bar_normal_bg">#2D2F31</color>
+    <color name="bottom_text_color_normal">#ffffff</color>
+    <color name="btn_white_normal">#f7f8f8</color>
+    <color name="btn_white_pressed">#b5b5b6</color>
+    <color name="btn_green_noraml">#68C270</color>
+    <color name="btn_green_pressed">#6FCD78</color>
+    <color name="btn_gray_normal">#c0c0c0</color>
+    <color name="btn_gray_pressed_status">#b5b5b6</color>
+    <color name="btn_gray_pressed">#666667</color>
+    <color name="btn_blue_normal">#1e90ff</color>
+    <color name="btn_blue_pressed">#0066FF</color>
+    <color name="blue_sky">#34a2ff</color>
+    <color name="color_blue">#5070b2</color>
+    <color name="orange">#FFA500</color>
+    <color name="gray_pressed">#b5b5b6</color>
+    <color name="gray_normal">#666667</color>
+    <color name="grid_state_pressed">#1Affffff</color>
+    <color name="grid_state_focused">#80000000</color>
+    <color name="voip_interface_text_color">#bababa</color>
+    <color name="black_deep">#FF000000</color>
+    <color name="btn_answer_pressed">#4ebcd3</color>
+    <color name="btn_answer_normal">#2dafa3</color>
+    <color name="list_item_secondary_color">#888888</color>
+    <color name="list_item_primary_color">#000</color>
+    <color name="holo_blue_bright">#ff00ddff</color>
+    <color name="holo_green_light">#ff99cc00</color>
+    <color name="holo_orange_light">#ffffbb33</color>
+    <color name="holo_red_light">#ffff4444</color>
+    <color name="holo_black">#ff111111</color>
+
+    <color name="bg_tools_panel">#2F2F2F</color>
+    <color name="color_transparent">#00000000</color>
+
+    <color name="em_blue">#1E88E5</color>
+    <color name="em_blue_pressed">#0000aF</color>
+
+    <color name="em_indicator_select">#9E9E9E</color>
+    <color name="em_indicator_normal">#1AFFFFFF</color>
+
+    <color name="btn_normal">@color/theme</color>
+    <color name="btn_press">#03a687</color>
+
+    <color name="anv_normal">#FFBDBEC0</color>
+
+    <color name="transparent">#00000000</color>
+    <color name="err">#f90c10</color>
+    <color name="green">#06ae3b</color>
+    <color name="theme">#3D71E5</color>
+    <color name="link">@color/theme</color>
+    <color name="deep_blue">#0864ce</color>
+    <color name="txt_enable">#9D9D9D</color>
+    <color name="cut_off_line">#DDDDDD</color>
+    <color name="cut_off_circle">#A4A4A4</color>
+    <color name="txt_normal">#333333</color>
+    <color name="txt_hint">#F9FAFC</color>
+    <color name="input_bg">#F9FAFC</color>
+    <color name="background_color">#f7f7f7</color>
+    <color name="color_gray">#e6ebee</color>
+    <color name="color_gray8">#e6e6e6</color>
+    <color name="ske_blue">#34a7ff</color>
+    <color name="gold">#ffba02</color>
+    <color name="sign_today">#ff6b6a</color>
+
+    <color name="black_10">#1A000000</color>
+    <color name="black_20">#43000000</color>
+    <color name="bottom_menu_btn_bg_common_color">#FFFFFF</color>
+    <color name="bottom_menu_btn_bg_press_color">#EEEEEE</color>
+    <color name="bottom_menu_btn_text_commom_color">#5B729A</color>
+    <color name="bottom_menu_btn_text_press_colot">#3F51B5</color>
+    <color name="bottom_menu_btn_text_stress_color">#FF0000</color>
+    <color name="bottom_menu_layout_color">#00000000</color>
+
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="black_4">#373737</color>
@@ -15,5 +115,11 @@
     <color name="enable_sky">#889DB6</color>
     <color name="deep_sky">#4184D6</color>
     <color name="sky">#509CFA</color>
-    <color name="gold">#FAD550</color>
+    <color name="main_bg">#1C2250</color>
+    <color name="color_pink">#E45CB0</color>
+    <color name="color_prog">#52E5C7</color>
+    <color name="trans_blue">#62B8F6</color>
+    <color name="ui_content">#fff8f8f8</color>
+    <color name="cameralist_gray">#e3e3e3</color>
+    <color name="corsor_color">#adadad</color>
 </resources>

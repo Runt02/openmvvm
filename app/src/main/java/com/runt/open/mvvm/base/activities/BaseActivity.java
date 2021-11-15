@@ -2,17 +2,11 @@ package com.runt.open.mvvm.base.activities;
 
 import android.Manifest;
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.provider.Settings;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -25,7 +19,6 @@ import androidx.annotation.ColorRes;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.FileProvider;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.viewbinding.ViewBinding;
 
@@ -33,32 +26,12 @@ import com.runt.open.mvvm.MyApplication;
 import com.runt.open.mvvm.R;
 import com.runt.open.mvvm.base.model.BaseViewModel;
 import com.runt.open.mvvm.base.model.ViewModelFactory;
-import com.runt.open.mvvm.data.ApkUpGradeResult;
-import com.runt.open.mvvm.util.MyLog;
-import com.runt.open.mvvm.util.SpUtils;
-import com.permissionx.guolindev.PermissionX;
-import com.permissionx.guolindev.callback.ExplainReasonCallbackWithBeforeParam;
-import com.permissionx.guolindev.callback.ForwardToSettingsCallback;
-import com.permissionx.guolindev.callback.RequestCallback;
-import com.permissionx.guolindev.request.ExplainScope;
-import com.permissionx.guolindev.request.ForwardScope;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
-import java.util.Date;
-import java.util.List;
 
 import dmax.dialog.SpotsDialog;
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
-import okhttp3.ResponseBody;
 
 /**
  * activity 封装
@@ -133,6 +106,12 @@ public abstract class BaseActivity<B extends ViewBinding,VM extends BaseViewMode
     }
 
     public abstract void initViews();
+
+
+    public boolean isNull(Object object){
+        return object == null || object.toString().trim().equals("") || object.equals("null");
+    }
+
 
     AlertDialog loadingDialog;
     /**

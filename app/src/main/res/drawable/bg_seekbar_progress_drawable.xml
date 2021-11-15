@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- 背景图 -->
+    <item android:id="@android:id/background" android:height="3dp">
+        <shape>
+            <corners android:radius="10dp"/>
+            <size android:height="5dp" />
+            <solid android:color="#eeeff3"/>
+        </shape>
+    </item>
+
+    <!-- 进和能量图 -->
+    <item android:id="@android:id/progress" android:height="3dp">
+        <clip>
+            <shape>
+                <corners android:radius="10dp"/>
+                <size android:height="5dp" />
+                <gradient
+                    android:endColor="#10A2F1"
+                    android:startColor="#0079FF" />
+            </shape>
+        </clip>
+    </item>
+
+</layer-list>

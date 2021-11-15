@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_enabled="false">
+        <shape>
+            <stroke android:width="0.5dp" android:color="@color/corsor_color" />
+            <solid android:color="@color/cameralist_gray" />
+        </shape>
+    </item>
+    <item android:state_pressed="true">
+        <shape>
+            <solid android:color="@color/ui_content" />
+         </shape>
+    </item>
+    <item android:state_focused="true">
+        <shape>
+            <solid android:color="@color/trans_blue" />
+        </shape>
+    </item>
+    <item>
+        <shape>
+            <stroke android:color="@color/cut_off_line" />
+            <solid android:color="@color/white" />
+        </shape>
+    </item>
+</selector>
