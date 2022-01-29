@@ -99,6 +99,7 @@ public abstract class BaseLoadPageFragment<B extends ViewBinding,VM extends Base
             smartRefresh.finishLoadMore();
         }
     }
+
     public A getAdapter() {
         return adapter;
     }

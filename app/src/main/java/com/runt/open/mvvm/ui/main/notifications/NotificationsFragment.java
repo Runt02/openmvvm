@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -16,15 +17,15 @@ import com.runt.open.mvvm.databinding.FragmentNotificationsBinding;
 public class NotificationsFragment extends Fragment {
 
     private NotificationsViewModel notificationsViewModel;
-private FragmentNotificationsBinding binding;
+    private FragmentNotificationsBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
-            ViewGroup container, Bundle savedInstanceState) {
+                             ViewGroup container, Bundle savedInstanceState) {
         notificationsViewModel =
                 new ViewModelProvider(this).get(NotificationsViewModel.class);
 
-    binding = FragmentNotificationsBinding.inflate(inflater, container, false);
-    View root = binding.getRoot();
+        binding = FragmentNotificationsBinding.inflate(inflater, container, false);
+        View root = binding.getRoot();
 
         final TextView textView = binding.textNotifications;
         notificationsViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
@@ -36,7 +37,7 @@ private FragmentNotificationsBinding binding;
         return root;
     }
 
-@Override
+    @Override
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;

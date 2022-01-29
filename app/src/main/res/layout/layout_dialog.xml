@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_white_corner_8"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/txt_title"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="20dp"
+        android:text="标题"
+        android:textSize="18sp"
+        android:textColor="@color/black" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/black_20" />
+
+    <EditText
+        android:id="@+id/msg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:layout_margin="30dp"
+        android:background="@drawable/edit_dialog_bg_white_border"
+        android:enabled="false"
+        android:textColor="@color/txt_normal"
+        android:text="" />
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/black_20" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/txt_cancel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="20dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="取消"
+            android:textSize="14sp"
+            android:focusable="true"
+            android:textColor="@color/text_normal"
+            android:background="@drawable/btn_white_lb_corner" />
+
+        <View
+            android:layout_width="0.5dp"
+            android:layout_height="match_parent"
+            android:background="@color/black_20" />
+        <TextView
+            android:id="@+id/txt_confirm"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="20dp"
+            android:focusable="true"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textSize="14sp"
+            android:text="确认"
+            android:textColor="@color/text_normal"
+            android:background="@drawable/btn_white_rb_corner" />
+
+
+    </LinearLayout>
+
+
+</LinearLayout>

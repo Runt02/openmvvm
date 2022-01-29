@@ -74,7 +74,7 @@ dependencies {
     implementation 'com.squareup.okhttp3:okhttp:4.9.0'
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:adapter-rxjava2:2.9.0'    //RXjava和retrofit结合
-    implementation 'com.permissionx.guolindev:permissionx:1.2.2'    //权限依赖让你推广你就发群里？没有别的群了？
+    implementation 'com.guolindev.permissionx:permissionx:1.6.0'    //权限依赖
     implementation 'com.github.bumptech.glide:glide:4.12.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'
     implementation 'com.pangle.cn:ads-sdk-pro:4.0.2.2'//字节跳动  穿山甲广告

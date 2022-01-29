@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.ColorRes;
@@ -26,6 +27,7 @@ import com.runt.open.mvvm.MyApplication;
 import com.runt.open.mvvm.R;
 import com.runt.open.mvvm.base.model.BaseViewModel;
 import com.runt.open.mvvm.base.model.ViewModelFactory;
+import com.runt.open.mvvm.listener.ResPonse;
 
 import java.io.File;
 import java.lang.reflect.Method;
@@ -113,6 +115,66 @@ public abstract class BaseActivity<B extends ViewBinding,VM extends BaseViewMode
     }
 
 
+    AlertDialog dialog;
+    /**
+     * 显示弹框
+     * @param title
+     * @param msg
+     * @param btnOk
+     * @param btnCancel
+     * @param resPonse
+     */
+    public void showDialog(String title, String msg, String btnOk,String btnCancel,final ResPonse resPonse){
+        showDialog(title,msg,null,btnOk,btnCancel,resPonse,false);
+    }
+
+    private void showDialog(String title, String msg, String hint,String btnOk,String btnCancel,final  ResPonse resPonse,boolean isEdit){
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this,R.style.TransparentDialog);
+        builder.setCancelable(false);
+        final View view = LayoutInflater.from(this).inflate(R.layout.layout_dialog,null);
+        TextView titleView = view.findViewById(R.id.txt_title);
+        TextView cancelView = view.findViewById(R.id.txt_cancel);
+        final TextView textView = view.findViewById(R.id.msg);
+        if(isEdit){
+            textView.setEnabled(true);
+        }else{
+            textView.setBackground(null);
+        }
+        cancelView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                if(resPonse !=null){
+                    resPonse.doError(null);
+                }
+            }
+        });
+        cancelView.setText(btnCancel);
+        TextView confirmView = view.findViewById(R.id.txt_confirm);
+        confirmView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                if(resPonse !=null){
+                    resPonse.doSuccess(textView.getText().toString());
+                }
+            }
+        });
+        confirmView.setText(btnOk);
+        confirmView.requestFocus();
+        if(hint != null){
+            textView.setHint(hint);
+        }
+        if(msg != null){
+            textView.setText(msg);
+        }
+        titleView.setText(title);
+        builder.setView(view);
+        dialog = builder.create();
+        dialog.show();
+    }
+
     AlertDialog loadingDialog;
     /**
      * 显示加载弹框
@@ -146,6 +208,8 @@ public abstract class BaseActivity<B extends ViewBinding,VM extends BaseViewMode
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         //透明导航栏
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+
+        setStatusBarTextColor(isBlack);
     }
 
     /**
