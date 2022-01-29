@@ -51,7 +51,7 @@ public class HttpLoggingInterceptor extends EncryptInterceptor {
         int position = logArrays.size() +2;
         Response response;
         try {
-            //request = encryptRequest(request);//加密
+            request = encryptRequest(request);//加密
             response = chain.proceed(request);
             logArrays.addAll(getResponseLog(response));
             Log.d(TAG,"hashcode:"+hashCode);

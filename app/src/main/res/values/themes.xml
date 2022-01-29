@@ -3,7 +3,7 @@
     <style name="Theme.OpemMvvm" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/sky</item>
-        <item name="colorPrimaryVariant">@color/red</item>
+        <item name="colorPrimaryVariant">@color/blue_sky</item>
         <item name="colorOnPrimary">@color/black</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/black_4</item>
@@ -12,6 +12,9 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
+        <!--全局设置文本颜色和大小-->
+        <item name="android:textColor">@color/txt_normal</item>
+        <item name="android:textSize">@dimen/txt_size</item>
     </style>
 
 

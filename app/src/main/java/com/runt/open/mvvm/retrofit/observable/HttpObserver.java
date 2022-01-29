@@ -1,5 +1,6 @@
 package com.runt.open.mvvm.retrofit.observable;
 
+import android.accounts.NetworkErrorException;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -41,14 +42,16 @@ public abstract class HttpObserver<M extends BaseApiResult> extends DisposableOb
         Log.i("subscribe","onError");
 
         try {
-            Log.e(TAG,this.getClass().getSimpleName()+" "+throwable.getMessage());
+            Log.e(TAG,this.getClass().getSimpleName()+" mes:"+throwable.getMessage());
             Class<M> entityClass = (Class<M>) ((ParameterizedType) this.getClass().getGenericSuperclass()).getActualTypeArguments()[0];
             M t = entityClass.newInstance();//实例化一个泛型
             t.code = 410;
             if( throwable instanceof SocketTimeoutException){
                 t.msg = "服务请求超时，请稍候再试";//设置错误信息
-            }else{
+            }else  if( throwable instanceof NetworkErrorException){
                 t.msg = "网络连接不畅，请检查您的网络设置";//设置错误信息
+            }else{
+                t.msg = throwable.getMessage();//设置错误信息
             }
             resultLive.setValue(t);
         } catch (ClassCastException e) {

@@ -11,6 +11,7 @@ import androidx.annotation.Nullable;
 import com.bytedance.sdk.openadsdk.TTAdConfig;
 import com.bytedance.sdk.openadsdk.TTAdConstant;
 import com.bytedance.sdk.openadsdk.TTAdSdk;
+import com.runt.open.mvvm.listener.CrashHandler;
 import com.runt.open.mvvm.util.MyLog;
 import com.scwang.smart.refresh.footer.ClassicsFooter;
 import com.scwang.smart.refresh.header.ClassicsHeader;
@@ -135,6 +136,16 @@ public class MyApplication extends Application {
             @Override
             public void fail(int i, String s) {
                 MyLog.e(TAG,"TTAdSdk fail");
+            }
+        });
+        CrashHandler crashHandler = CrashHandler.getInstance();
+        crashHandler.init(getApplicationContext(), new CrashHandler.CrashListener() {
+            @Override
+            public void onCrash() {
+                for(Activity activity : activities){
+                    activity.finish();
+                }
+                System.exit(0);
             }
         });
     }

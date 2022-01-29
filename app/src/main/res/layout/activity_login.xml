@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.runt.open.mvvm.widgets.TitleBarView
+        android:id="@+id/title_bar"
+        style="@style/titlebar"
+        app:leftDrawable="@mipmap/ic_arrow_back_black_24dp"
+        app:titleText="登录"
+        tools:ignore="MissingConstraints" />
+
+
+    <ImageView
+        android:id="@+id/img_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="50dp"
+        android:src="@mipmap/app_icon"
+        android:adjustViewBounds="true"
+        app:layout_constraintTop_toBottomOf="@id/title_bar"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        />
+
+    <com.runt.open.mvvm.widgets.ClearEditText
+        android:id="@+id/edit_phone"
+        style="@style/login_edit"
+        android:hint="@string/input_phone"
+        android:inputType="phone"
+        app:layout_constraintTop_toBottomOf="@id/img_icon"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        />
+
+
+    <com.runt.open.mvvm.widgets.ClearEditText
+        android:id="@+id/edit_verify_code"
+        style="@style/login_edit"
+        android:hint="@string/input_verify_code"
+        android:inputType="number"
+        app:layout_constraintTop_toBottomOf="@id/edit_phone"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
+
+
+    <TextView
+        android:id="@+id/txt_get_verify"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/link"
+        android:layout_marginRight="@dimen/default_margin_lr"
+        android:text="@string/get_verify_code"
+        android:gravity="center"
+        app:layout_constraintTop_toTopOf="@id/edit_verify_code"
+        app:layout_constraintRight_toRightOf="@id/edit_verify_code"
+        app:layout_constraintBottom_toBottomOf="@id/edit_verify_code"/>
+
+
+    <com.runt.open.mvvm.widgets.ClearEditText
+        android:id="@+id/edit_pass"
+        style="@style/login_edit"
+        android:inputType="textPassword"
+        android:hint="@string/input_pass"
+        app:layout_constraintTop_toBottomOf="@id/edit_verify_code"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
+
+    <com.runt.open.mvvm.widgets.ClearEditText
+        android:id="@+id/edit_pass_repeat"
+        style="@style/login_edit"
+        android:hint="@string/str_input_repeat"
+        android:inputType="textPassword"
+        app:layout_constraintTop_toBottomOf="@id/edit_pass"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
+
+
+    <TextView
+        android:id="@+id/txt_forgot"
+        style="@style/login_link"
+        android:text="@string/forgot_pass"
+        app:layout_constraintTop_toBottomOf="@id/edit_pass_repeat"
+        app:layout_constraintLeft_toLeftOf="parent" />
+    <TextView
+        android:id="@+id/txt_register"
+        style="@style/login_link"
+        android:text="@string/register"
+        app:layout_constraintTop_toBottomOf="@id/edit_pass_repeat"
+        app:layout_constraintLeft_toRightOf="@id/txt_forgot"
+        app:layout_constraintRight_toLeftOf="@id/txt_login" />
+    <TextView
+        android:id="@+id/txt_login"
+        style="@style/login_link"
+        android:text="@string/login"
+        app:layout_constraintTop_toBottomOf="@id/edit_pass_repeat"
+        app:layout_constraintRight_toRightOf="parent"  />
+
+    <androidx.appcompat.widget.AppCompatCheckBox
+        android:id="@+id/checkbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/default_margin_lr"
+        android:layout_marginBottom="@dimen/default_margin_lr"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/button"/>
+    <TextView
+        android:id="@+id/txt_privacy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/default_margin_td"
+        android:paddingBottom="@dimen/default_margin_td"
+        android:paddingRight="@dimen/default_margin_lr"
+        android:background="@color/white"
+        android:textColor="@color/link"
+        android:text=" 我已阅读并同意《隐私条款》"
+        app:layout_constraintLeft_toRightOf="@id/checkbox"
+        app:layout_constraintTop_toTopOf="@id/checkbox"
+        app:layout_constraintBottom_toBottomOf="@id/checkbox"/>
+    <Button
+        android:id="@+id/button"
+        style="@style/btn_normal"
+        android:layout_marginBottom="@dimen/default_margin_lr"
+        android:text="@string/login"
+        android:layout_marginLeft="@dimen/default_margin_lr"
+        android:layout_marginRight="@dimen/default_margin_lr"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+
+

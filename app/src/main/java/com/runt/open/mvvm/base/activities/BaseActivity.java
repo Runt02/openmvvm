@@ -28,10 +28,12 @@ import com.runt.open.mvvm.R;
 import com.runt.open.mvvm.base.model.BaseViewModel;
 import com.runt.open.mvvm.base.model.ViewModelFactory;
 import com.runt.open.mvvm.listener.ResPonse;
+import com.runt.open.mvvm.util.PreferencesUtils;
 
 import java.io.File;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
+import java.util.Set;
 
 import dmax.dialog.SpotsDialog;
 
@@ -48,6 +50,9 @@ public abstract class BaseActivity<B extends ViewBinding,VM extends BaseViewMode
     public final String[] LOCATION_PERMISSIONS = new String []{Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION};
     public final String[] CAMERA_PERMISSIONS = new String[]{ FILE_PERMISSIONS[0],FILE_PERMISSIONS[1], Manifest.permission.CAMERA};
     public final String[] CAMERA_RECORD_PERMISSIONS = new String[]{ FILE_PERMISSIONS[0],FILE_PERMISSIONS[1], Manifest.permission.CAMERA,Manifest.permission.RECORD_AUDIO};
+
+    public static final String PARAMS_TITLE = "title";
+    public static  final String PARAMS_URL = "url";
 
     public static final int RESULT_LOGIN = 100,RESULT_LOGIN_RECREATE = 103,RESULT_BIND = 101,RESULT_SENDEDFILES = 105,RESULT_DISSCONNECT = 104,
             RESULT_UPDATEUSER =  115,RESULT_LOGOUT = 113, REQUEST_CODE_ACTIVITY = 333;
@@ -365,5 +370,129 @@ public abstract class BaseActivity<B extends ViewBinding,VM extends BaseViewMode
         onBackPressed();
         return false;
     }
+
+
+    public boolean getBooleanUserPrefrence(String key){
+        return PreferencesUtils.getBoolean(this,key,false,PreferencesUtils.USER);
+    }
+
+    public boolean getBooleanProjectPrefrence(String key){
+        return PreferencesUtils.getBoolean(this,key,false,PreferencesUtils.PROJECT);
+    }
+
+    public String getStringUserPrefrence(String key){
+        return PreferencesUtils.getString(this,key,"",PreferencesUtils.USER);
+    }
+
+    public String getStringProjectPrefrence(String key){
+        return PreferencesUtils.getString(this,key,"",PreferencesUtils.PROJECT);
+    }
+
+    public Integer getIntProjectPrefrence(String key){
+        return PreferencesUtils.getInt(this,key,0,PreferencesUtils.PROJECT);
+    }
+
+    public Long getLongProjectPrefrence(String key){
+        return PreferencesUtils.getLong(this,key,0,PreferencesUtils.PROJECT);
+    }
+
+    public float getFloatProjectPrefrence(String key){
+        return PreferencesUtils.getFloat(this,key,0,PreferencesUtils.PROJECT);
+    }
+
+    public Set getStringSetProjectPrefrence(String key){
+        return PreferencesUtils.getStringSet(this,key,PreferencesUtils.PROJECT);
+    }
+
+    public Integer getIntUserPrefrence(String key){
+        return PreferencesUtils.getInt(this,key,0,PreferencesUtils.USER);
+    }
+
+    public Long getLongUserPrefrence(String key){
+        return PreferencesUtils.getLong(this,key,0,PreferencesUtils.USER);
+    }
+
+    public float getFloatUserPrefrence(String key){
+        return PreferencesUtils.getFloat(this,key,0,PreferencesUtils.USER);
+    }
+
+    public Set getStringSetUserPrefrence(String key){
+        return PreferencesUtils.getStringSet(this,key,PreferencesUtils.USER);
+    }
+
+
+    public void putBooleanUserPrefrence(String key ,Boolean value){
+        PreferencesUtils.putBoolean(this,key,value,PreferencesUtils.USER);
+    }
+
+    public void putBooleanProjectPrefrence(String key,Boolean value){
+        PreferencesUtils.putBoolean(this,key,value,PreferencesUtils.PROJECT);
+    }
+
+    public void putStringUserPrefrence(String key,String value){
+        PreferencesUtils.putString(this,key,value,PreferencesUtils.USER);
+    }
+
+    public void putStringProjectPrefrence(String key,String value){
+        PreferencesUtils.putString(this,key,value,PreferencesUtils.PROJECT);
+    }
+
+    public void putIntProjectPrefrence(String key,int value){
+        PreferencesUtils.putInt(this,key,value,PreferencesUtils.PROJECT);
+    }
+
+    public void putLongProjectPrefrence(String key,long value){
+        PreferencesUtils.putLong(this,key,value,PreferencesUtils.PROJECT);
+    }
+
+    public void putFloatProjectPrefrence(String key,float value){
+        PreferencesUtils.putFloat(this,key,value,PreferencesUtils.PROJECT);
+    }
+
+    public void putStringSetProjectPrefrence(String key, Set value){
+        PreferencesUtils.putStringSet(this,key,value,PreferencesUtils.PROJECT);
+    }
+
+    public void putIntUserPrefrence(String key,int value){
+        PreferencesUtils.putInt(this,key,value,PreferencesUtils.USER);
+    }
+
+    public void putLongUserPrefrence(String key,long value){
+        PreferencesUtils.putLong(this,key,value,PreferencesUtils.USER);
+    }
+
+    public void putFloatUserPrefrence(String key,float value){
+        PreferencesUtils.putFloat(this,key,value,PreferencesUtils.USER);
+    }
+
+    public void putStringSetUserPrefrence(String key, Set value){
+        PreferencesUtils.putStringSet(this,key,value,PreferencesUtils.USER);
+    }
+
+
+    public void removeUserKey(String key){
+        PreferencesUtils.removeKey(this,key,PreferencesUtils.USER);
+    }
+
+    public void removeProjectKey(String key){
+        PreferencesUtils.removeKey(this,key,PreferencesUtils.PROJECT);
+    }
+
+    public void removeUserValue(String Value){
+        PreferencesUtils.removeValue(this,Value,PreferencesUtils.USER);
+    }
+
+    public void removeProjectValue(String Value){
+        PreferencesUtils.removeValue(this,Value,PreferencesUtils.PROJECT);
+    }
+
+
+    public void clearProjectData(){
+        PreferencesUtils.clearData(this,PreferencesUtils.PROJECT);
+    }
+    public void clearUserData(){
+        PreferencesUtils.clearData(this,PreferencesUtils.USER);
+    }
+
 
 }
