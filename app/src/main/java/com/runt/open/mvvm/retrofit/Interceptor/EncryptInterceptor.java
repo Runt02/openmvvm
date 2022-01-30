@@ -1,6 +1,7 @@
 package com.runt.open.mvvm.retrofit.Interceptor;
 
 
+import com.google.gson.Gson;
 import com.runt.open.mvvm.retrofit.utils.RSAUtils;
 
 import org.json.JSONObject;
@@ -26,11 +27,10 @@ import okio.Buffer;
  *
  * @purpose Created by Runt (qingingrunt2010@qq.com) on 2021-10-8.
  */
-
 public class EncryptInterceptor implements Interceptor {
 
     protected static final Charset UTF8 = Charset.forName("UTF-8");
-    private final String ENCRYPT = "encrypt";
+    private final String ENCRYPT = "paramsString";
 
     @Override
     public Response intercept(Chain chain) throws IOException {
@@ -95,7 +95,14 @@ public class EncryptInterceptor implements Interceptor {
     }
     public static String encryptJson(String json){
         try {
-            return RSAUtils.encrypt(json,RSAUtils.getPublicKey(RSAUtils.PUBLIC_KEY));
+            //System.out.println("object:"+object);
+            Map signMap = new HashMap();
+            //用客户端私钥加签
+            signMap.put("sign",RSAUtils.sign(json,RSAUtils.getPrivateKey(RSAUtils.PRIVATE_KEY)));
+            signMap.put("body",json);
+            //System.out.println("signMap:"+signMap);
+            //用服务端公钥加密
+            return RSAUtils.encrypt(new Gson().toJson(signMap),RSAUtils.getPublicKey(RSAUtils.PUBLIC_KEY));
         }catch (Exception e){
             e.printStackTrace();
             return e.getMessage();
