@@ -29,30 +29,23 @@ public class RegisterLoginActivity extends BaseActivity<ActivityLoginBinding,Log
 
     @Override
     public void initViews() {
-        binding.txtGetVerify.setOnClickListener(onclick);
-        binding.txtForgot.setOnClickListener(onclick);
-        binding.txtLogin.setOnClickListener(onclick);
-        binding.txtRegister.setOnClickListener(onclick);
-        binding.txtPrivacy.setOnClickListener(onclick);
-        long getTime = getLongProjectPrefrence(VERIFY_CODE);
-        long cha = new Date().getTime() - getTime;
-        if(cha <1000*60){
-            CodeTimer codeTimer = new CodeTimer(cha, 1000, binding.txtGetVerify);
-            codeTimer.startUp();
-        }
-        changeView();
-        binding.editPhone.setText(getStringProjectPrefrence(Configuration.KEY_USERNAME));
-        viewModel.getVerifyResult().observe(this, stringApiResult -> {
+        mBinding.txtGetVerify.setOnClickListener(onclick);
+        mBinding.txtForgot.setOnClickListener(onclick);
+        mBinding.txtLogin.setOnClickListener(onclick);
+        mBinding.txtRegister.setOnClickListener(onclick);
+        mBinding.txtPrivacy.setOnClickListener(onclick);
+        mBinding.editPhone.setText(getStringProjectPrefrence(Configuration.KEY_USERNAME));
+        mViewModel.getVerifyResult().observe(this, stringApiResult -> {
            if(stringApiResult.code == 200){
 
            }else{
                showToast(stringApiResult.msg);
            }
         });
-        viewModel.getLoginResult().observe(this,loggedInUser -> {
+        mViewModel.getLoginResult().observe(this, loggedInUser -> {
             if(loggedInUser.code == 200){
                 putBooleanProjectPrefrence(Configuration.IS_LOGIN,true);
-                putStringProjectPrefrence(Configuration.KEY_USERNAME,binding.editPhone.getText().toString());
+                putStringProjectPrefrence(Configuration.KEY_USERNAME, mBinding.editPhone.getText().toString());
 
                 UserBean user = new Gson().fromJson(new Gson().toJson(loggedInUser.data) ,UserBean.class);
                 UserBean.setUser(user);
@@ -67,6 +60,17 @@ public class RegisterLoginActivity extends BaseActivity<ActivityLoginBinding,Log
         });
     }
 
+    @Override
+    public void loadData() {
+        long getTime = getLongProjectPrefrence(VERIFY_CODE);
+        long cha = new Date().getTime() - getTime;
+        if(cha <1000*60){
+            CodeTimer codeTimer = new CodeTimer(cha, 1000, mBinding.txtGetVerify);
+            codeTimer.startUp();
+        }
+        changeView();
+    }
+
     CustomClickListener onclick = new CustomClickListener() {
         @Override
         protected void onSingleClick(View view) {
@@ -76,16 +80,16 @@ public class RegisterLoginActivity extends BaseActivity<ActivityLoginBinding,Log
                     break;
                 case R.id.txt_get_verify:
 
-                    String phone = binding.editPhone.getText().toString();
+                    String phone = mBinding.editPhone.getText().toString();
                     if(!verifyPhone(phone)){//验证手机
                         return;
                     }
                     if(type==2){//获取注册验证码
-                        viewModel.getRegisterSMS(phone);
+                        mViewModel.getRegisterSMS(phone);
                     }else if(type ==1){
-                        viewModel.getForgetSMS( phone);
+                        mViewModel.getForgetSMS( phone);
                     }else if(type == -1){
-                        viewModel.getLoginSMS( phone);
+                        mViewModel.getLoginSMS( phone);
                     }
                     break;
                 case R.id.txt_privacy:
@@ -116,53 +120,53 @@ public class RegisterLoginActivity extends BaseActivity<ActivityLoginBinding,Log
      * 修改页面布局
      */
     private void changeView(){
-        binding.button.setEnabled(true);
-        binding.txtRegister.setVisibility(View.VISIBLE);
-        binding.checkbox.setVisibility(View.GONE);
-        binding.txtPrivacy.setVisibility(View.GONE);
+        mBinding.button.setEnabled(true);
+        mBinding.txtRegister.setVisibility(View.VISIBLE);
+        mBinding.checkbox.setVisibility(View.GONE);
+        mBinding.txtPrivacy.setVisibility(View.GONE);
         switch (type){
             case -1://短信登录
-                binding.editVerifyCode.setVisibility(View.VISIBLE);
-                binding.txtGetVerify.setVisibility(View.VISIBLE);
-                binding.editPass.setVisibility(View.GONE);
-                binding.editPassRepeat.setVisibility(View.GONE);
-                binding.txtForgot.setVisibility(View.VISIBLE);
-                binding.txtLogin.setText(getResources().getString(R.string.login));
-                binding.button.setText(getResources().getString(R.string.login));
-                binding.checkbox.setVisibility(View.VISIBLE);
-                binding.txtPrivacy.setVisibility(View.VISIBLE);
+                mBinding.editVerifyCode.setVisibility(View.VISIBLE);
+                mBinding.txtGetVerify.setVisibility(View.VISIBLE);
+                mBinding.editPass.setVisibility(View.GONE);
+                mBinding.editPassRepeat.setVisibility(View.GONE);
+                mBinding.txtForgot.setVisibility(View.VISIBLE);
+                mBinding.txtLogin.setText(getResources().getString(R.string.login));
+                mBinding.button.setText(getResources().getString(R.string.login));
+                mBinding.checkbox.setVisibility(View.VISIBLE);
+                mBinding.txtPrivacy.setVisibility(View.VISIBLE);
                 break;
             case 0://登录
-                binding.editVerifyCode.setVisibility(View.GONE);
-                binding.txtGetVerify.setVisibility(View.GONE);
-                binding.editPass.setVisibility(View.VISIBLE);
-                binding.editPassRepeat.setVisibility(View.GONE);
-                binding.txtForgot.setVisibility(View.VISIBLE);
-                binding.txtLogin.setText(getResources().getString(R.string.msg_login));
-                binding.button.setText(getResources().getString(R.string.login));
+                mBinding.editVerifyCode.setVisibility(View.GONE);
+                mBinding.txtGetVerify.setVisibility(View.GONE);
+                mBinding.editPass.setVisibility(View.VISIBLE);
+                mBinding.editPassRepeat.setVisibility(View.GONE);
+                mBinding.txtForgot.setVisibility(View.VISIBLE);
+                mBinding.txtLogin.setText(getResources().getString(R.string.msg_login));
+                mBinding.button.setText(getResources().getString(R.string.login));
                 break;
             case 1://忘记密码
-                binding.txtForgot.setVisibility(View.INVISIBLE);
-                binding.editVerifyCode.setVisibility(View.VISIBLE);
-                binding.txtGetVerify.setVisibility(View.VISIBLE);
-                binding.editPass.setVisibility(View.VISIBLE);
-                binding.editPassRepeat.setVisibility(View.VISIBLE);
-                binding.txtLogin.setText(getResources().getString(R.string.login));
-                binding.button.setText(getResources().getString(R.string.str_confirm));
+                mBinding.txtForgot.setVisibility(View.INVISIBLE);
+                mBinding.editVerifyCode.setVisibility(View.VISIBLE);
+                mBinding.txtGetVerify.setVisibility(View.VISIBLE);
+                mBinding.editPass.setVisibility(View.VISIBLE);
+                mBinding.editPassRepeat.setVisibility(View.VISIBLE);
+                mBinding.txtLogin.setText(getResources().getString(R.string.login));
+                mBinding.button.setText(getResources().getString(R.string.str_confirm));
                 break;
             case 2://注册
-                binding.checkbox.setVisibility(View.VISIBLE);
-                binding.txtPrivacy.setVisibility(View.VISIBLE);
-                binding.txtRegister.setVisibility(View.INVISIBLE);
-                binding.editVerifyCode.setVisibility(View.VISIBLE);
-                binding.txtGetVerify.setVisibility(View.VISIBLE);
-                binding.editPass.setVisibility(View.VISIBLE);
-                binding.editPassRepeat.setVisibility(View.VISIBLE);
-                binding.txtLogin.setText(getResources().getString(R.string.login));
-                binding.button.setText(getResources().getString(R.string.register));
+                mBinding.checkbox.setVisibility(View.VISIBLE);
+                mBinding.txtPrivacy.setVisibility(View.VISIBLE);
+                mBinding.txtRegister.setVisibility(View.INVISIBLE);
+                mBinding.editVerifyCode.setVisibility(View.VISIBLE);
+                mBinding.txtGetVerify.setVisibility(View.VISIBLE);
+                mBinding.editPass.setVisibility(View.VISIBLE);
+                mBinding.editPassRepeat.setVisibility(View.VISIBLE);
+                mBinding.txtLogin.setText(getResources().getString(R.string.login));
+                mBinding.button.setText(getResources().getString(R.string.register));
                 break;
         }
-        clearText(binding.editPassRepeat,binding.editPass,binding.editPhone,binding.editVerifyCode);
+        clearText(mBinding.editPassRepeat, mBinding.editPass, mBinding.editPhone, mBinding.editVerifyCode);
     }
 
     private void clearText(EditText... editTextes){
@@ -178,10 +182,10 @@ public class RegisterLoginActivity extends BaseActivity<ActivityLoginBinding,Log
      * 提交数据
      */
     public void submit(){
-        String phone = binding.editPhone.getText().toString();
-        String pass = binding.editPass .getText().toString();
-        String veriCode = binding.editVerifyCode.getText().toString();
-        String invite = binding.editPassRepeat.getText().toString();
+        String phone = mBinding.editPhone.getText().toString();
+        String pass = mBinding.editPass .getText().toString();
+        String veriCode = mBinding.editVerifyCode.getText().toString();
+        String invite = mBinding.editPassRepeat.getText().toString();
         if(!verifyPhone(phone)){//验证手机
             return;
         }
@@ -191,17 +195,17 @@ public class RegisterLoginActivity extends BaseActivity<ActivityLoginBinding,Log
                     showToast(R.string.input_verify_code);
                     return;
                 }
-                if(!binding.checkbox.isChecked()){
+                if(!mBinding.checkbox.isChecked()){
                     showToast("请阅读并勾选《隐私条款》");
                     return;
                 }
-                viewModel.loginByCode(phone,veriCode);
+                mViewModel.loginByCode(phone,veriCode);
                 break;
             case 0:
                 if(!verifyPassWord(pass)){//验证密码
                     return;
                 }
-                viewModel.login(phone,pass);
+                mViewModel.login(phone,pass);
                 break;
             case 1:
                 if(!verifyPassWord(pass)){//验证密码
@@ -220,7 +224,7 @@ public class RegisterLoginActivity extends BaseActivity<ActivityLoginBinding,Log
                     showToast(R.string.str_new_verify_failed);
                     return;
                 }
-                viewModel.resetPwd(phone,veriCode,pass);
+                mViewModel.resetPwd(phone,veriCode,pass);
                 break;
             case 2://注册
                 if(!verifyPassWord(pass)){//验证密码
@@ -230,11 +234,11 @@ public class RegisterLoginActivity extends BaseActivity<ActivityLoginBinding,Log
                     showToast(R.string.input_verify_code);
                     return;
                 }
-                if(!binding.checkbox.isChecked()){
+                if(!mBinding.checkbox.isChecked()){
                     showToast("请阅读并勾选《隐私条款》");
                     return;
                 }
-                viewModel.register(phone,veriCode,pass);
+                mViewModel.register(phone,veriCode,pass);
                 break;
         }
     }

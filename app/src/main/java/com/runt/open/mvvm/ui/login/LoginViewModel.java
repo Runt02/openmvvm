@@ -29,7 +29,12 @@ public class LoginViewModel extends BaseViewModel {
     MutableLiveData<Results.StringApiResult> verifyResult = new MutableLiveData<>();
     MutableLiveData<Results.StringApiResult> resetResult = new MutableLiveData<>();
     MutableLiveData<Results.StringApiResult> registerResult = new MutableLiveData<>();
-
+    HttpObserver<Results.LoggedInUser> logginObserver = new HttpObserver<Results.LoggedInUser>(){
+        @Override
+        protected void onSuccess(Results.LoggedInUser data) {
+            loginResult.setValue(data);
+        }
+    };
     public MutableLiveData<Results.LoggedInUser> getLoginResult() {
         return loginResult;
     }
@@ -46,7 +51,7 @@ public class LoginViewModel extends BaseViewModel {
     public void login(String username, String password) {
         // can be launched in a separate asynchronous job
         final Observable<Results.LoggedInUser> userObservable = loginApi.login(username, password);
-        httpObserverOnLoading(userObservable,new HttpObserver<Results.LoggedInUser>(loginResult){});
+        httpObserverOnLoading(userObservable,logginObserver);
     }
 
     /**
@@ -55,8 +60,7 @@ public class LoginViewModel extends BaseViewModel {
      * @param code
      */
     public void loginByCode(String phone,String code){
-        httpObserverOnLoading(loginApi.loginByCode(phone,code),
-                new HttpObserver<Results.LoggedInUser>(loginResult){});
+        httpObserverOnLoading(loginApi.loginByCode(phone,code),logginObserver);
     }
 
     /**
@@ -66,7 +70,7 @@ public class LoginViewModel extends BaseViewModel {
      * @param pass
      */
     public void resetPwd(String phone,String sms,String pass){
-        httpObserverOnLoading(loginApi.resetLoginPwd(phone, sms, pass), new HttpObserver<Results.StringApiResult>(resetResult) {});
+        httpObserverOnLoading(loginApi.resetLoginPwd(phone, sms, pass),logginObserver);
     }
 
     /**
@@ -76,7 +80,12 @@ public class LoginViewModel extends BaseViewModel {
      * @param pass
      */
     public void register(String phone,String sms,String pass){
-        httpObserverOnLoading(loginApi.register(phone, sms, pass), new HttpObserver<Results.StringApiResult>(resetResult) {});
+        httpObserverOnLoading(loginApi.register(phone, sms, pass), new HttpObserver<Results.StringApiResult>(){
+            @Override
+            protected void onSuccess(Results.StringApiResult data) {
+                resetResult.setValue(data);
+            }
+        });
     }
 
     /**
@@ -110,7 +119,12 @@ public class LoginViewModel extends BaseViewModel {
      */
     public void getVerifyCode(String url,String phone){
         String time = new Date().getTime()+"";
-        httpObserverOnLoading(loginApi.getVerifyCode(url, phone, randomString(phone, time), time), new HttpObserver<Results.StringApiResult>(verifyResult){});
+        httpObserverOnLoading(loginApi.getVerifyCode(url, phone, randomString(phone, time), time), new HttpObserver<Results.StringApiResult>(){
+            @Override
+            protected void onSuccess(Results.StringApiResult data) {
+                verifyResult.setValue(data);
+            }
+        });
     }
 
     /**

@@ -3,7 +3,7 @@ package com.runt.open.mvvm.data;
 /**
  * Created by Administrator on 2021/11/15 0015.
  */
-public class ApkUpGradeResult extends BaseApiResult<ApkUpGradeResult.AppInfo>{
+public class ApkUpGradeResult extends HttpApiResult<ApkUpGradeResult.AppInfo> {
 
     public class AppInfo {
         //以下为声明的参数

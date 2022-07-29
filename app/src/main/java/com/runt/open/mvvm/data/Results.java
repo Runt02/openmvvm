@@ -1,6 +1,7 @@
 package com.runt.open.mvvm.data;
 
 import com.runt.open.mvvm.ui.login.UserBean;
+import com.runt.open.mvvm.ui.main.home.Message;
 
 /**
  * My father is Object, ites purpose of
@@ -9,8 +10,9 @@ import com.runt.open.mvvm.ui.login.UserBean;
  */
 public class Results {
 
-    public static class LoggedInUser extends BaseApiResult<UserBean> { }
+    public static class LoggedInUser extends HttpApiResult<UserBean> { }
 
-    public static class StringApiResult extends BaseApiResult<String>{ }
+    public static class StringApiResult extends HttpApiResult<String> { }
 
+    public class MessageResult extends PageResult<Message>{}
 }

@@ -27,13 +27,14 @@ import okhttp3.Response;
  * @purpose Created by Runt (qingingrunt2010@qq.com) on 2021-7-9.
  */
 
+
 public class NetWorkListenear extends EventListener {
 
     private static final String TAG = "NetworkEventListener";
     final Charset UTF8 = Charset.forName("UTF-8");
     public static Map<Integer, NetWorkCost> workCostMap = new HashMap<>();
 
-    public static Factory get(){
+    public static Factory get() {
         Factory factory = new Factory() {
             @NotNull
             @Override
@@ -47,11 +48,11 @@ public class NetWorkListenear extends EventListener {
     @Override
     public void callStart(@NotNull Call call) {
         super.callStart(call);
-        //mRequestId = mNextRequestId.getAndIncrement() + "";
         //getAndAdd，在多线程下使用cas保证原子性
+        //Log.d(TAG, "callStart hashcode:"+call.request().hashCode());
         NetWorkCost netWorkCost = new NetWorkCost();
         netWorkCost.total = new Date().getTime();
-        workCostMap.put(call.request().hashCode(),netWorkCost);
+        workCostMap.put(call.request().hashCode(), netWorkCost);
     }
 
     @Override
@@ -65,7 +66,7 @@ public class NetWorkListenear extends EventListener {
     public void dnsEnd(@NotNull Call call, @NotNull String domainName, @NotNull List<InetAddress> inetAddressList) {
         super.dnsEnd(call, domainName, inetAddressList);
         //Log.d(TAG, "dnsEnd");
-        workCostMap.get(call.request().hashCode()).dns = new Date().getTime()  - workCostMap.get(call.request().hashCode()).dns;
+        workCostMap.get(call.request().hashCode()).dns = new Date().getTime() - workCostMap.get(call.request().hashCode()).dns;
     }
 
     @Override
@@ -100,9 +101,10 @@ public class NetWorkListenear extends EventListener {
     @Override
     public void connectFailed(@NotNull Call call, @NotNull InetSocketAddress inetSocketAddress, @NotNull Proxy proxy, @Nullable Protocol protocol, @NotNull IOException ioe) {
         super.connectFailed(call, inetSocketAddress, proxy, protocol, ioe);
-        workCostMap.get(call.request().hashCode()).connect = new Date().getTime() - workCostMap.get(call.request().hashCode()).connect;
-        workCostMap.get(call.request().hashCode()).total = new Date().getTime() - workCostMap.get(call.request().hashCode()).total;
-        //Log.d(TAG, "connectFailed");
+        NetWorkCost workCost = workCostMap.get(call.request().hashCode());
+        workCost.connect = new Date().getTime() - workCost.connect;
+        workCost.total = new Date().getTime() - workCost.total;
+        //Log.d(TAG, "connectFailed hashcode:"+call.request().hashCode() +" "+workCost);
     }
 
     @Override
@@ -158,16 +160,20 @@ public class NetWorkListenear extends EventListener {
     public void responseBodyEnd(@NotNull Call call, long byteCount) {
         super.responseBodyEnd(call, byteCount);
         //Log.d(TAG, "responseBodyEnd");
-        workCostMap.get(call.request().hashCode()).resposeBody = new Date().getTime() - workCostMap.get(call.request().hashCode()).resposeBody;
-        workCostMap.get(call.request().hashCode()).total = new Date().getTime() - workCostMap.get(call.request().hashCode()).total;
+        NetWorkCost workCost = workCostMap.get(call.request().hashCode());
+        workCost.resposeBody = new Date().getTime() - workCost.resposeBody;
+        workCost.total = new Date().getTime() - workCost.total;
     }
 
 
     @Override
     public void callFailed(@NotNull Call call, @NotNull IOException ioe) {
         super.callFailed(call, ioe);
-        workCostMap.get(call.request().hashCode()).total = new Date().getTime() - workCostMap.get(call.request().hashCode()).total;
-        //Log.d(TAG, "callFailed");
+        NetWorkCost workCost = workCostMap.get(call.request().hashCode());
+        if (workCost != null) {
+            workCost.total = new Date().getTime() - workCost.total;
+        }
+        //Log.d(TAG, "callFailed hashcode:"+call.request().hashCode() +" "+workCost);
     }
 
 }

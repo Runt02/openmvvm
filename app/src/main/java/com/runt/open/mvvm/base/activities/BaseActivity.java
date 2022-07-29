@@ -3,13 +3,17 @@ package com.runt.open.mvvm.base.activities;
 import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -23,12 +27,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.viewbinding.ViewBinding;
 
+import com.permissionx.guolindev.PermissionX;
 import com.runt.open.mvvm.MyApplication;
 import com.runt.open.mvvm.R;
 import com.runt.open.mvvm.base.model.BaseViewModel;
 import com.runt.open.mvvm.base.model.ViewModelFactory;
 import com.runt.open.mvvm.listener.ResPonse;
 import com.runt.open.mvvm.util.PreferencesUtils;
+import com.runt.open.mvvm.widgets.TitleBarView;
 
 import java.io.File;
 import java.lang.reflect.Method;
@@ -41,13 +47,12 @@ import dmax.dialog.SpotsDialog;
  * activity 封装
  * Created by Administrator on 2021/10/27 0027.
  */
-public abstract class BaseActivity<B extends ViewBinding,VM extends BaseViewModel> extends AppCompatActivity {
+public abstract class BaseActivity<VB extends ViewBinding,VM extends BaseViewModel> extends AppCompatActivity {
 
-    protected  B binding;
-    protected  VM viewModel;
+    protected  VB mBinding;
+    protected  VM mViewModel;
     protected String TAG ;
     public final String[] FILE_PERMISSIONS = new String []{Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE};
-    public final String[] LOCATION_PERMISSIONS = new String []{Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION};
     public final String[] CAMERA_PERMISSIONS = new String[]{ FILE_PERMISSIONS[0],FILE_PERMISSIONS[1], Manifest.permission.CAMERA};
     public final String[] CAMERA_RECORD_PERMISSIONS = new String[]{ FILE_PERMISSIONS[0],FILE_PERMISSIONS[1], Manifest.permission.CAMERA,Manifest.permission.RECORD_AUDIO};
 
@@ -83,6 +88,7 @@ public abstract class BaseActivity<B extends ViewBinding,VM extends BaseViewMode
             RESULT_CODE_SUCESS = 4046/*成功*/,
             RESULT_CODE_CANCEL = 4043/*取消*/;
     protected Context mContext;
+    TitleBarView titleBarView;
 
 
     @Override
@@ -93,15 +99,17 @@ public abstract class BaseActivity<B extends ViewBinding,VM extends BaseViewMode
         setStatusBarTextColor(true);
         final ParameterizedType type = (ParameterizedType) this.getClass().getGenericSuperclass();
         try {
-            Class<B> entityClass = (Class<B>) type.getActualTypeArguments()[0];
+            Class<VB> entityClass = (Class<VB>) type.getActualTypeArguments()[0];
             Method method = entityClass.getMethod("inflate", LayoutInflater.class);//get method from name "inflate";
-            binding = (B) method.invoke(entityClass,getLayoutInflater());//execute method to create a objct of viewbind;
+            mBinding = (VB) method.invoke(entityClass,getLayoutInflater());//execute method to create a objct of viewbind;
+            titleBarView = (TitleBarView) mBinding.getClass().getDeclaredField("titleBar").get(mBinding);
+            titleBarView.setLeftClick(v -> onBackPressed());
         } catch (Exception e) {
             e.printStackTrace();
         }
         Class<VM> vmClass = (Class<VM>) type.getActualTypeArguments()[1];
-        viewModel = new ViewModelProvider(this,getViewModelFactory()).get(vmClass);
-        setContentView(binding.getRoot());
+        mViewModel = new ViewModelProvider(this,getViewModelFactory()).get(vmClass);
+        setContentView(mBinding.getRoot());
         mContext = this;
         try {
             //设置坚屏 一定要放到try catch里面，否则会崩溃
@@ -110,13 +118,34 @@ public abstract class BaseActivity<B extends ViewBinding,VM extends BaseViewMode
         }
         TAG = this.getClass().getSimpleName();
         initViews();
+        mViewModel.onCreate(this);
+        loadData();
     }
 
     public abstract void initViews();
 
+    public abstract void loadData();
 
     public boolean isNull(Object object){
         return object == null || object.toString().trim().equals("") || object.equals("null");
+    }
+
+    protected void setTitle(String text){
+        titleBarView.setTitleText(text);
+    }
+
+    protected void onTitleLeftClick(){
+        onBackKeyDown();
+    }
+
+    protected void setTitleRight(String text){
+        titleBarView.setRightText(text);
+        titleBarView.setRightDra(null);
+    }
+
+    protected void setTitleRight(Drawable drawable){
+        titleBarView.setRightText(null);
+        titleBarView.setRightDra(drawable);
     }
 
 
@@ -125,11 +154,29 @@ public abstract class BaseActivity<B extends ViewBinding,VM extends BaseViewMode
      * 显示弹框
      * @param title
      * @param msg
+     * @param resPonse
+     */
+    public void showDialog(String title,String msg,ResPonse resPonse){
+        showDialog(title,msg,"确认","取消",resPonse);
+    }
+
+    public void showInputDialog(String title,String msg,String hint,ResPonse resPonse){
+        showInputDialog(title,msg,hint,"确认","取消",resPonse);
+    }
+
+    public void showInputDialog(String title, String msg, String hint,String btnOk,String btnCancel,final  ResPonse resPonse){
+        showDialog(title,msg,hint,btnOk,btnCancel,resPonse,true);
+    }
+
+    /**
+     * 显示弹框
+     * @param title
+     * @param msg
      * @param btnOk
      * @param btnCancel
      * @param resPonse
      */
-    public void showDialog(String title, String msg, String btnOk,String btnCancel,final ResPonse resPonse){
+    public void showDialog(String title, String msg, String btnOk,String btnCancel,final  ResPonse resPonse){
         showDialog(title,msg,null,btnOk,btnCancel,resPonse,false);
     }
 
@@ -215,6 +262,9 @@ public abstract class BaseActivity<B extends ViewBinding,VM extends BaseViewMode
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
 
         setStatusBarTextColor(isBlack);
+        final ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) titleBarView.getLayoutParams();
+        layoutParams.topMargin = layoutParams.topMargin+getStatusBarHeight();
+        titleBarView.setLayoutParams(layoutParams);
     }
 
     /**
@@ -343,7 +393,7 @@ public abstract class BaseActivity<B extends ViewBinding,VM extends BaseViewMode
         }
     }
     public void showToast(String message){
-        Toast.makeText(this,message,Toast.LENGTH_SHORT).show();
+        runOnUiThread(() -> Toast.makeText(mContext,message,Toast.LENGTH_SHORT).show());
     }
 
     public void showToast(@StringRes int msg){
@@ -369,6 +419,25 @@ public abstract class BaseActivity<B extends ViewBinding,VM extends BaseViewMode
     protected boolean onBackKeyDown() {
         onBackPressed();
         return false;
+    }
+
+    /**
+     * 拨打电话（直接拨打电话）
+     * @param phoneNum 电话号码
+     */
+    public void callPhone(String phoneNum){
+        PermissionX.init(this)
+                .permissions(Manifest.permission.CALL_PHONE)
+                .request((allGranted, grantedList, deniedList) -> {
+                    if(allGranted){
+                        Intent intent = new Intent(Intent.ACTION_CALL);
+                        Uri data = Uri.parse("tel:" + phoneNum);
+                        intent.setData(data);
+                        startActivity(intent);
+                    }else{
+                        showToast("权限被拒绝");
+                    }
+                });
     }
 
 

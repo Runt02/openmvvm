@@ -35,8 +35,8 @@ public abstract class BaseTabActivity<B extends ViewBinding,VM extends BaseViewM
         //设置当前可见Item左右可见page数，次范围内不会被销毁
         //禁用预加载
         try {
-            viewPager2 = (ViewPager2) binding.getClass().getDeclaredField("viewPager2").get(binding);
-            tabLayout = (TabLayout) binding.getClass().getDeclaredField("tabLayout").get(binding);
+            viewPager2 = (ViewPager2) mBinding.getClass().getDeclaredField("viewPager2").get(mBinding);
+            tabLayout = (TabLayout) mBinding.getClass().getDeclaredField("tabLayout").get(mBinding);
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         } catch (NoSuchFieldException e) {

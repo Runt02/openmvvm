@@ -2,7 +2,7 @@ package com.runt.open.mvvm.retrofit.converter;
 
 import android.util.Log;
 
-import com.runt.open.mvvm.data.BaseApiResult;
+import com.runt.open.mvvm.data.HttpApiResult;
 import com.runt.open.mvvm.util.GsonUtils;
 import com.google.gson.Gson;
 import com.google.gson.JsonIOException;
@@ -51,13 +51,13 @@ public class DecryptGsonResponseBodyConverter<T> implements Converter<ResponseBo
             response = decryptJsonStr(val);//解密
         } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
             e.printStackTrace();
-            BaseApiResult apiResult = new BaseApiResult<>();
+            HttpApiResult apiResult = new HttpApiResult<>();
             apiResult.code = 412;
             apiResult.msg = "解密数据出错"+e.getMessage();
             response = new Gson().toJson(apiResult);
         } catch (JSONException e) {
             e.printStackTrace();
-            BaseApiResult apiResult = new BaseApiResult<>();
+            HttpApiResult apiResult = new HttpApiResult<>();
             apiResult.code = 414;
             apiResult.msg = "非标准json";
             response = new Gson().toJson(apiResult);

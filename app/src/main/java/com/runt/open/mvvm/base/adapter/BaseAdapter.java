@@ -1,6 +1,6 @@
 package com.runt.open.mvvm.base.adapter;
 
-import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -8,7 +8,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewbinding.ViewBinding;
 
-import com.runt.open.mvvm.base.activities.BaseActivity;
 import com.runt.open.mvvm.databinding.LayoutNullBinding;
 import com.runt.open.mvvm.util.DeviceUtil;
 
@@ -23,47 +22,73 @@ import java.util.List;
  *  T  数据类型
  *  V 适配器视图
  */
-public abstract class BaseAdapter<B extends ViewBinding,T> extends RecyclerView.Adapter {
+public abstract class BaseAdapter<DATA, VB extends ViewBinding> extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    protected List<T> mData = new ArrayList<>();
+    protected List<DATA> dataList = new ArrayList<>();
+    protected OnItemClickListener<DATA> onItemClickListener;
+    public boolean showNull;
+    public float defaultMarginBottom,lastMarginBottom;
 
-    protected Drawable nullDrawable;
-    protected String nullTxt="暂无数据";
-    protected String TAG = "BaseAdapter";
-    protected BaseActivity activity;
-
-    public BaseAdapter(){
+    public interface  OnItemClickListener<DATA>{
+        void onItemClick(int position,DATA data);
     }
 
-    public BaseAdapter(@NonNull List<T> data){
-        mData = data;
+    public class ViewBindHolder extends RecyclerView.ViewHolder  {
+        ViewBinding binding;
+        public ViewBindHolder(ViewBinding binding) {
+            super(binding.getRoot());
+            this.binding = binding;
+        }
     }
 
-    public List<T> getData() {
-        return mData;
+    public void setOnItemClickListener(OnItemClickListener<DATA> onItemClickListener) {
+        this.onItemClickListener = onItemClickListener;
     }
 
-    public void setData(@NonNull List<T> data){
-        mData = data;
+    public void setData(List<DATA> list){
+        if(dataList != list) {
+            dataList.clear();
+            if (list != null) {
+                dataList.addAll(list);
+            }
+        }
         notifyDataSetChanged();
+    }
+
+    public void addData(DATA data){
+        if(data != null){
+            dataList.add(data);
+        }
+        notifyDataSetChanged();
+    }
+
+    public void addData(List<DATA> list){
+        if (list != null && list.size() > 0) {
+            this.dataList.addAll(list);
+        }
+        notifyDataSetChanged();
+    }
+
+    public List<DATA> getData() {
+        return dataList;
     }
 
     @NonNull
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ViewBindHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         if(viewType == 1 ){
             // get genericity "B"
-            Class<B> entityClass = (Class<B>) ((ParameterizedType) this.getClass().getGenericSuperclass()).getActualTypeArguments()[0];
             try {
-               /* for(Method method: entityClass.getMethods()){
+                Class<VB> entityClass = (Class<VB>) ((ParameterizedType) this.getClass().getGenericSuperclass()).getActualTypeArguments()[1];
+                /*for(Method method: entityClass.getMethods()){
                     StringBuilder sb = new StringBuilder();
                     for(Class type : method.getParameterTypes()){
                         sb.append(type.getSimpleName()+",");
                     }
-                    Log.e(TAG,String.format("method:%s,return:%s,param:%s",method.getName(),method.getReturnType().getSimpleName(),sb.toString()));
+                    Log.e("BaseAdapter",String.format("method:%s,return:%s,param:%s",method.getName(),method.getReturnType().getSimpleName(),sb.toString()));
                 }*/
                 Method method = entityClass.getMethod("inflate", LayoutInflater.class,ViewGroup.class,boolean.class);//get method from name "inflate";
-                B vBind = (B) method.invoke(entityClass,LayoutInflater.from(parent.getContext()),parent,false);//execute method to create a objct of viewbind;
+                VB vBind = (VB) method.invoke(entityClass,LayoutInflater.from(parent.getContext()),parent,false);//execute method to create a objct of viewbind;
                 return new ViewBindHolder(vBind);
             } catch (SecurityException e) {
                 e.printStackTrace();
@@ -80,19 +105,24 @@ public abstract class BaseAdapter<B extends ViewBinding,T> extends RecyclerView.
                 e.printStackTrace();
             }
         }
-        return new NullViewHolder( LayoutNullBinding.inflate(LayoutInflater.from(parent.getContext()),parent,false));
+        return new ViewBindHolder( LayoutNullBinding.inflate( LayoutInflater.from(parent.getContext()), parent, false ) );
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        //MyLog.i(TAG,"onBindViewHolder position:"+position+" "+mData.size()+" "+getItemViewType(position));
-        if(activity == null){
-            activity = (BaseActivity) holder.itemView.getContext();
-        }
-        if(getItemViewType(position)==0){
-            bindView((NullViewHolder) holder);
-        }else {
-            bindView((ViewBindHolder) holder, mData.size() == 0 ? null : mData.get(position), position);
+        ViewBindHolder bindHolder = (ViewBindHolder) holder;
+        if(getItemViewType(position) == 0 || bindHolder.binding instanceof LayoutNullBinding){
+            onBindEmptyView((LayoutNullBinding) bindHolder.binding);
+        }else{
+            if (onItemClickListener != null) {
+                bindHolder.binding.getRoot().setOnClickListener(view -> {
+                    if(onItemClickListener != null){
+                        onItemClickListener.onItemClick(position,getItem(position));
+                    }
+                });
+            }
+            onBindView((VB) bindHolder.binding, position, getItem(position));
+            setBottomMargin(bindHolder,position);
         }
     }
 
@@ -102,7 +132,7 @@ public abstract class BaseAdapter<B extends ViewBinding,T> extends RecyclerView.
      * @param position
      */
     protected void setBottomMargin(ViewBindHolder holder, int position){
-        setBottomMargin(holder,position,23);
+        setBottomMargin(holder,position,lastMarginBottom);
     }
 
     /**
@@ -111,56 +141,54 @@ public abstract class BaseAdapter<B extends ViewBinding,T> extends RecyclerView.
      * @param position  位置
      * @param dp        间距
      */
-    protected void setBottomMargin(RecyclerView.ViewHolder holder, int position,int dp){
-        setBottomMargin(holder,position,dp,0);
+    protected void setBottomMargin(RecyclerView.ViewHolder holder, int position,float dp){
+        setBottomMargin(holder,position,dp,defaultMarginBottom);
     }
-    protected void setBottomMargin(RecyclerView.ViewHolder holder, int position, int dp, int defaultDp){
+
+    protected void setBottomMargin(RecyclerView.ViewHolder holder, int position, float dp, float defaultDp){
         ViewGroup.MarginLayoutParams params1 = (ViewGroup.MarginLayoutParams) holder.itemView.getLayoutParams();
-        if(position == mData.size() -1){
+        if(position == dataList.size() -1){
             params1.setMargins(params1.leftMargin, params1.topMargin, params1.rightMargin, DeviceUtil.convertDpToPixel(dp,holder.itemView.getContext()));
         }else{
             params1.setMargins(params1.leftMargin, params1.topMargin, params1.rightMargin, DeviceUtil.convertDpToPixel(defaultDp,holder.itemView.getContext()));
         }
     }
-    protected abstract void bindView(ViewBindHolder holder,T data,int position);
 
 
-    protected void bindView(NullViewHolder holder){
-
-    }
-
+    /**
+     * 空数据支持
+     * @return
+     */
     @Override
     public int getItemCount() {
-        //默认显示空视图，若不显示空视图则重写该方法，返回mData.size()
-        return mData == null || mData.size() == 0 ?1:mData.size();
+        return (showNull && dataList.size() == 0 )? 1 : dataList.size();
     }
 
-
+    /**
+     * 当下标为0，数据集合为0 返回0（意味当前应显示空数据视图））
+     * @param position
+     * @return
+     */
     @Override
     public int getItemViewType(int position) {
-        //当下标为0，数据集合为0 返回0（意味当前应显示空数据视图））
-        //MyLog.i(TAG,"getItemViewType position:"+position+" mdata:"+mData.size()+" "+(position ==0 && mData.size()==0));
-        return position == 0 && mData.size()==0?0:1;
+        return  (showNull && position == 0 && dataList.size() == 0)? 0 : 1;
     }
 
-    public class ViewBindHolder extends RecyclerView.ViewHolder{
-        public B binding;
-        public ViewBindHolder( B binding) {
-            super(binding.getRoot());
-            this.binding = binding;
+    public DATA getItem(int position){
+        if(position >= dataList.size()){
+            return null;
+        }else {
+            return dataList.get(position);
         }
     }
+
+    protected abstract void onBindView(VB binding, int position, DATA data);
+
     /**
      * 空数据显示
-     * Created by Administrator on 2021/10/28 0028.
      */
-    public class NullViewHolder extends RecyclerView.ViewHolder {
-        LayoutNullBinding binding;
+    protected void onBindEmptyView(LayoutNullBinding emptyBinding){
+        Log.e("baseAdapter"," emptyBinding:"+emptyBinding);
 
-        public NullViewHolder(LayoutNullBinding binding) {
-            super(binding.getRoot());
-            this.binding = binding;
-        }
     }
-
 }

@@ -1,13 +1,15 @@
 package com.runt.open.mvvm.base.model;
 
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.runt.open.mvvm.data.LoadingCmd;
+import com.runt.open.mvvm.base.activities.BaseActivity;
 import com.runt.open.mvvm.retrofit.AndroidScheduler;
+import com.runt.open.mvvm.retrofit.api.CommonApiCenter;
 import com.runt.open.mvvm.retrofit.observable.HttpObserver;
+import com.runt.open.mvvm.retrofit.utils.RetrofitUtils;
 
 import io.reactivex.Observable;
+import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -15,10 +17,11 @@ import io.reactivex.schedulers.Schedulers;
  */
 public class BaseViewModel extends ViewModel {
 
-    MutableLiveData<LoadingCmd> loadLive = new MutableLiveData<>();
+    protected BaseActivity mActivity;
+    protected CommonApiCenter commonApi = RetrofitUtils.getInstance().getCommonApi();
 
-    public MutableLiveData<LoadingCmd> getLoadLive() {
-        return loadLive;
+    public void onCreate(BaseActivity activity) {
+        this.mActivity = activity;
     }
 
     /**
@@ -43,11 +46,17 @@ public class BaseViewModel extends ViewModel {
     public <T> void httpObserverOnLoading(Observable<T> observable, HttpObserver observer){
         observable.subscribeOn(Schedulers.io())//指定网络请求在io后台线程中进行
                 .doOnSubscribe(disposable -> {
-                             loadLive.setValue(new LoadingCmd(LoadingCmd.CMD.LOADING,"请求数据中..."));
+                    mActivity.showLoadingDialog("");
                 })
                 .observeOn(AndroidScheduler.mainThread())
+                .doOnError(new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Exception {
+
+                    }
+                })
                 .doOnComplete(() -> {
-                    loadLive.postValue(new LoadingCmd(LoadingCmd.CMD.DISSMISS));
+                    mActivity.dissmissLoadingDialog();
                 })
                 .subscribe(observer);
     }

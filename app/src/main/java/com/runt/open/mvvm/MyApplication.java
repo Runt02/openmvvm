@@ -8,9 +8,6 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.bytedance.sdk.openadsdk.TTAdConfig;
-import com.bytedance.sdk.openadsdk.TTAdConstant;
-import com.bytedance.sdk.openadsdk.TTAdSdk;
 import com.runt.open.mvvm.listener.CrashHandler;
 import com.runt.open.mvvm.util.MyLog;
 import com.scwang.smart.refresh.footer.ClassicsFooter;
@@ -21,7 +18,6 @@ import com.scwang.smart.refresh.layout.api.RefreshHeader;
 import com.scwang.smart.refresh.layout.api.RefreshLayout;
 import com.scwang.smart.refresh.layout.listener.DefaultRefreshFooterCreator;
 import com.scwang.smart.refresh.layout.listener.DefaultRefreshHeaderCreator;
-import com.tencent.bugly.crashreport.CrashReport;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -115,29 +111,7 @@ public class MyApplication extends Application {
                 }
             }
         });
-        CrashReport.initCrashReport(getApplicationContext(), "8d88679ae9", false);//注册bugly
-        TTAdConfig.Builder builder = new TTAdConfig.Builder()
-                .appId("5106813")
-                .useTextureView(true) //使用TextureView控件播放视频,默认为SurfaceView,当有SurfaceView冲突的场景，可以使用TextureView
-                .appName(getString(R.string.app_name))
-                .titleBarTheme(TTAdConstant.TITLE_BAR_THEME_DARK)
-                .allowShowNotify(true) //是否允许sdk展示通知栏提示
-                .allowShowPageWhenScreenLock(true) //是否在锁屏场景支持展示广告落地页
-                .directDownloadNetworkType(TTAdConstant.NETWORK_STATE_WIFI) //允许直接下载的网络状态集合
-                .supportMultiProcess(true) //是否支持多进程，true支持
-                .asyncInit(true) ;//异步初始化sdk，开启可减少初始化耗时
-        //.httpStack(new MyOkStack3())//自定义网络库，demo中给出了okhttp3版本的样例，其余请自行开发或者咨询工作人员。
-        TTAdSdk.init(this, builder.build(), new TTAdSdk.InitCallback() {
-            @Override
-            public void success() {
-                MyLog.i(TAG,"TTAdSdk success");
-            }
 
-            @Override
-            public void fail(int i, String s) {
-                MyLog.e(TAG,"TTAdSdk fail");
-            }
-        });
         CrashHandler crashHandler = CrashHandler.getInstance();
         crashHandler.init(getApplicationContext(), new CrashHandler.CrashListener() {
             @Override

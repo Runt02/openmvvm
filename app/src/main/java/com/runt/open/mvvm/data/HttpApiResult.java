@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * Created by Administrator on 2021/10/28 0028.
  */
-public class BaseApiResult<D extends Object> implements Serializable {
+public class HttpApiResult<D extends Object> implements Serializable {
 
     public String msg;
     public int code = 200;

@@ -371,4 +371,61 @@ public class DeviceUtil {
         }
         return "";
     }
+
+    /**
+     * check the system is harmony os
+     *
+     * @return true if it is harmony os
+     */
+    public static boolean isHarmonyOS() {
+        try {
+            Class clz = Class.forName("com.huawei.system.BuildEx");
+            Method method = clz.getMethod("getOsBrand");
+            return "harmony".equals(method.invoke(clz));
+        } catch (ClassNotFoundException e) {
+            Log.e(TAG, "occured ClassNotFoundException");
+        } catch (NoSuchMethodException e) {
+            Log.e(TAG, "occured NoSuchMethodException");
+        } catch (Exception e) {
+            Log.e(TAG, "occur other problem");
+        }
+        return false;
+    }
+
+    /**
+     * 获取鸿蒙系统版本号
+     */
+    public static String getHarmonyOsVersion() {
+        if (isHarmonyOS()) {
+            try {
+                Class cls = Class.forName("android.os.SystemProperties");
+                Method method = cls.getMethod("get", String.class);
+                return method.invoke(cls, "ro.huawei.build.display.id").toString();
+                //android.os.Build.DISPLAY
+            } catch ( Exception e) {
+            }
+        }
+        return "-1";
+    }
+
+    /**
+     * 获取属性
+     * @param property
+     * @param defaultValue
+     * @return
+     */
+    private static String getProp(String property, String defaultValue) {
+        try {
+            Class spClz = Class.forName("android.os.SystemProperties");
+            Method method = spClz.getDeclaredMethod("get", String.class);
+            String value = (String) method.invoke(spClz, property);
+            if (TextUtils.isEmpty(value)) {
+                return defaultValue;
+            }
+            return value;
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+        return defaultValue;
+    }
 }

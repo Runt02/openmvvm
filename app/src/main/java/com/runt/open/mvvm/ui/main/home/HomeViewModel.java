@@ -1,19 +1,12 @@
 package com.runt.open.mvvm.ui.main.home;
 
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
+import com.runt.open.mvvm.base.model.LoadPageViewModel;
+import com.runt.open.mvvm.data.Results;
 
-public class HomeViewModel extends ViewModel {
+public class HomeViewModel extends LoadPageViewModel<Results.MessageResult> {
 
-    private MutableLiveData<String> mText;
-
-    public HomeViewModel() {
-        mText = new MutableLiveData<>();
-        mText.setValue("This is home fragment");
-    }
-
-    public LiveData<String> getText() {
-        return mText;
+    @Override
+    protected String requestUrl() {
+        return "getMsgList";
     }
 }

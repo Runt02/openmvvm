@@ -1,33 +1,17 @@
 package com.runt.open.mvvm.ui.main.home;
 
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
+import com.runt.open.mvvm.base.fragments.LoadPageFragment;
+import com.runt.open.mvvm.databinding.RefreshRecyclerBinding;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
+import java.util.HashMap;
+import java.util.Map;
 
-import com.runt.open.mvvm.base.fragments.BaseFragment;
-import com.runt.open.mvvm.databinding.FragmentHomeBinding;
-
-public class HomeFragment extends BaseFragment<FragmentHomeBinding,HomeViewModel> {
-
+public class HomeFragment extends LoadPageFragment<RefreshRecyclerBinding,HomeViewModel,MsgAdapter,Message> {
 
 
     @Override
-    public void initViews() {
-        final TextView textView = binding.textHome;
-        viewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });
+    protected Map requestParams() {
+        return new HashMap();
     }
 
 }

@@ -2,11 +2,14 @@ package com.runt.open.mvvm.retrofit.Interceptor;
 
 import android.util.Log;
 
+import com.runt.open.mvvm.MyApplication;
 import com.runt.open.mvvm.retrofit.net.NetWorkCost;
 import com.runt.open.mvvm.retrofit.net.NetWorkListenear;
 import com.runt.open.mvvm.retrofit.utils.HttpPrintUtils;
-import com.runt.open.mvvm.util.GsonUtils;
+import com.runt.open.mvvm.util.DeviceUtil;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.EOFException;
@@ -14,6 +17,7 @@ import java.io.IOException;
 import java.net.URLDecoder;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 
 import okhttp3.FormBody;
@@ -38,47 +42,69 @@ public class HttpLoggingInterceptor extends EncryptInterceptor {
 
     final String TAG = "HttpLogging";
 
-    public HttpLoggingInterceptor() {
-    }
+    private boolean printLog ;
 
+    public HttpLoggingInterceptor(){
+        this(true);
+    }
+    public HttpLoggingInterceptor(boolean printLog) {
+        this.printLog = printLog;
+    }
 
     @Override
     public Response intercept(Chain chain) throws IOException {
 
-        Request request = chain.request();
-        int hashCode = request.hashCode();
-        ArrayList<String> logArrays = getRequestLog(request);
-        int position = logArrays.size() +2;
-        Response response;
+        Request requestTemp = chain.request();
+        int hashCode = requestTemp.hashCode();
+        if(printLog) {
+            Log.d(TAG, "hashcode:" + hashCode);
+        }
+        Request.Builder requestBuild = requestTemp.newBuilder()
+                .addHeader("appVersion", DeviceUtil.getAppVersionName(MyApplication.getApplication()))
+                .addHeader("os", DeviceUtil.isHarmonyOS()? "harmony" : "android");
+        Request request = requestBuild.build().newBuilder().build();
+        ArrayList<String> logArrays = new ArrayList<>();
+        Response response = null;
         try {
-            request = encryptRequest(request);//加密
+            logArrays.addAll(getRequestLog(request));
+            int position = logArrays.size() +2;
+            //request = encryptRequest(request);//加密
             response = chain.proceed(request);
             logArrays.addAll(getResponseLog(response));
-            Log.d(TAG,"hashcode:"+hashCode);
             NetWorkCost netWorkCost = NetWorkListenear.workCostMap.get(hashCode);
             if(netWorkCost != null) {
-                String cost = String.format("dns:%s,secure:%s,connect:%s,requestH:%s,requestB:%s,responseH:%s,responseB:%s", convertTimes(netWorkCost.dns), convertTimes(netWorkCost.secure), convertTimes(netWorkCost.connect), convertTimes(netWorkCost.requestHeader), convertTimes(netWorkCost.requestBody), convertTimes(netWorkCost.resposeHeader), convertTimes(netWorkCost.resposeBody));
-                logArrays.add(position, "<-- costtimes : " + convertTimes(netWorkCost.total) + " (" + cost + ')');
+                logArrays.add(position, "<-- costtimes : " + netWorkCost);
             }
             NetWorkListenear.workCostMap.remove(hashCode);
             new Thread(){
                 @Override
                 public void run() {
-                    HttpPrintUtils.getInstance().printLog(logArrays, true);//线程安全方法，需在新线程执行，避免阻塞当前线程，导致程序无响应
+                    if(printLog) {
+                        HttpPrintUtils.getInstance().printLog(logArrays, true);//线程安全方法，需在新线程执行，避免阻塞当前线程，导致程序无响应
+                    }
                 }
             }.start();
+        } catch (JSONException e) {
+            if(response == null){
+                response = chain.proceed(request);
+            }
+            e.printStackTrace();
         } catch (Exception e) {
             logArrays.add("<-- response url:" + URLDecoder.decode(request.url().toString(), "UTF-8"));
             NetWorkCost netWorkCost = NetWorkListenear.workCostMap.get(hashCode);
-            String cost = String.format("dns:%s,secure:%s,connect:%s,requestH:%s,requestB:%s,responseH:%s,responseB:%s",  convertTimes(netWorkCost.dns) ,convertTimes(netWorkCost.secure) , convertTimes(netWorkCost.connect),convertTimes(netWorkCost.requestHeader),convertTimes(netWorkCost.requestBody) ,convertTimes(netWorkCost.resposeHeader),convertTimes(netWorkCost.resposeBody)    );
-            logArrays.add("<-- costtimes : "+convertTimes(netWorkCost.total)+" (" +cost + ')');
+            if (netWorkCost != null) {
+                netWorkCost.total = new Date().getTime() - netWorkCost.total;
+                logArrays.add("<-- costtimes : " + netWorkCost);
+            }
             NetWorkListenear.workCostMap.remove(hashCode);
             logArrays.add("<-- response failed " + e.getLocalizedMessage());
             logArrays.add("<--                 " + e.toString());
             new Thread(){
                 @Override
                 public void run() {
-                    HttpPrintUtils.getInstance().printLog(logArrays, false);//线程安全方法，需在新线程执行，避免阻塞当前线程，导致程序无响应
+                    if(printLog) {
+                        HttpPrintUtils.getInstance().printLog(logArrays, false);//线程安全方法，需在新线程执行，避免阻塞当前线程，导致程序无响应
+                    }
                 }
             }.start();
             throw e;//抛出异常，用于请求接收信息
@@ -86,7 +112,7 @@ public class HttpLoggingInterceptor extends EncryptInterceptor {
         return response;
     }
 
-    private ArrayList<String> getRequestLog(Request request) throws IOException {
+    private ArrayList<String> getRequestLog(Request request) throws IOException, JSONException {
         RequestBody requestBody = request.body();
         ArrayList<String> logArrays = new ArrayList<>();
         String requestStartMessage = "--> " + request.method() + ' ' + URLDecoder.decode(request.url().toString() ,"UTF-8")+ ' ' ;
@@ -120,22 +146,28 @@ public class HttpLoggingInterceptor extends EncryptInterceptor {
                     String str=buffer1.readString(charset).replaceAll("%(?![0-9a-fA-F]{2})","%25");
                     param.put(part.headers().get(part.headers().name(0)),URLDecoder.decode(str, "UTF-8"));
                 }
-                logArrays.add(GsonUtils.retractJson(new JSONObject(param).toString()));
+                logArrays.add(new JSONObject(param).toString(4));
             }else if(requestBody instanceof FormBody){
                 logArrays.add("---------->REQUEST BODY[FormBody]<----------");
                 FormBody body = (FormBody) requestBody;
                 for(int i = 0 ; i < body.size() ; i ++ ){
                     param.put(body.name(i),body.value(i));
                 }
-                logArrays.add(GsonUtils.retractJson(new JSONObject(param).toString()));
+                logArrays.add(new JSONObject(param).toString(4));
             }else{
                 Buffer buffer = new Buffer();
                 requestBody.writeTo(buffer);
                 logArrays.add("---------->REQUEST BODY<----------");
                 String str = buffer.readString(charset);
                 try{
-                    logArrays.add(GsonUtils.retractJson(URLDecoder.decode(str, "UTF-8")));
-                }catch (Exception e){
+                    str = URLDecoder.decode(str, "UTF-8");
+                }catch (Exception e){}
+
+                if(str.indexOf("[") == 0){
+                    logArrays.add(new JSONArray(str).toString(4));
+                }else if(str.indexOf("{") == 0){
+                    logArrays.add(new JSONObject(str).toString(4));
+                }else{
                     logArrays.add(str);
                 }
             }
@@ -147,7 +179,7 @@ public class HttpLoggingInterceptor extends EncryptInterceptor {
     }
 
 
-    private ArrayList<String> getResponseLog(Response response) throws IOException {
+    private ArrayList<String> getResponseLog(Response response) throws IOException, JSONException {
         ArrayList<String> logArrays = new ArrayList<>();
         ResponseBody responseBody = response.body();
         long contentLength = responseBody.contentLength();
@@ -173,7 +205,7 @@ public class HttpLoggingInterceptor extends EncryptInterceptor {
             if (isPlaintext(buffer)) {
                 logArrays.add("---------->RESPONSE BODY<----------");
                 if (contentLength != 0) {
-                    logArrays.add(retractJson(buffer.clone().readString(charset)));
+                    logArrays.add(new JSONObject(buffer.clone().readString((charset))).toString(4));
                 }
 
                 logArrays.add("<-- END HTTP (" + buffer.size() + "-byte body)");
@@ -183,57 +215,6 @@ public class HttpLoggingInterceptor extends EncryptInterceptor {
         return logArrays;
     }
 
-    /**
-     * 字符串缩进
-     * @param json
-     * @return
-     */
-    private String retractJson(String json){
-        int level = 0 ;
-        StringBuffer jsonForMatStr = new StringBuffer();
-        for(int index=0;index<json.length();index++)//将字符串中的字符逐个按行输出
-        {
-            //获取s中的每个字符
-            char c = json.charAt(index);
-            //          System.out.println(s.charAt(index));
-
-            //level大于0并且jsonForMatStr中的最后一个字符为\n,jsonForMatStr加入\t
-            if (level > 0 && '\n' == jsonForMatStr.charAt(jsonForMatStr.length() - 1)) {
-                jsonForMatStr.append(getLevelStr(level));
-                //                System.out.println("123"+jsonForMatStr);
-            }
-            //遇到"{"和"["要增加空格和换行，遇到"}"和"]"要减少空格，以对应，遇到","要换行
-            switch (c) {
-                case '{':
-                case '[':
-                    jsonForMatStr.append(c + "\n");
-                    level++;
-                    break;
-                case ',':
-                    jsonForMatStr.append(c + "\n");
-                    break;
-                case '}':
-                case ']':
-                    jsonForMatStr.append("\n");
-                    level--;
-                    jsonForMatStr.append(getLevelStr(level));
-                    jsonForMatStr.append(c);
-                    break;
-                default:
-                    jsonForMatStr.append(c);
-                    break;
-            }
-        }
-        return jsonForMatStr.toString();
-    }
-
-    private  String getLevelStr(int level) {
-        StringBuffer levelStr = new StringBuffer();
-        for (int levelI = 0; levelI < level; levelI++) {
-            levelStr.append("\t");//\t或空格
-        }
-        return levelStr.toString();
-    }
 
     /**
      * Returns true if the body in question probably contains human readable text. Uses a small sample
@@ -263,18 +244,4 @@ public class HttpLoggingInterceptor extends EncryptInterceptor {
         String contentEncoding = headers.get("Content-Encoding");
         return contentEncoding != null && !contentEncoding.equalsIgnoreCase("identity");
     }
-
-    private String convertTimes(long ms){
-        String m = null,s=null;
-        final int utilS = 1000;
-        final int utilM = utilS*60;
-        if(ms/utilM>0){
-            m = ms/utilM+"m";
-        }
-        if(ms%utilM/utilS>0){
-            s = ms%utilM/utilS+"s";
-        }
-        return (m!=null?m:"")+(s!=null?s:"")+ms%utilS+"ms";
-    }
-
 }

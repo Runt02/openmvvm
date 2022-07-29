@@ -67,6 +67,14 @@ public class TitleBarView extends View {
         rightTextSize = array.getDimension(R.styleable.TitleBarView_rightTextSize, DimensionUtils.convertSpToPixel(getContext(),14));
         rightPadding = array.getDimension(R.styleable.TitleBarView_rightDrawablePadding,10);
 
+        int leftTint = array.getColor(R.styleable.TitleBarView_leftTint,-1);
+        if(leftTint != -1) {
+            setTint(leftDra,leftTint);
+        }
+        int rightTint = array.getColor(R.styleable.TitleBarView_rightTint,-1);
+        if(rightTint != -1) {
+            setTint(rightDra,rightTint);
+        }
         textPaint = new Paint();
         textPaint.setAntiAlias(true); // 是否抗锯齿
         //mTextPaint.setAlpha(50); // 设置alpha不透明度，范围为0~255
@@ -252,5 +260,11 @@ public class TitleBarView extends View {
         float height1 = fm.descent - fm.ascent;//文字的高度
         float height2 = fm.bottom - fm.top + fm.leading;//行高
         return (int) height2;
+    }
+
+    private void setTint(Drawable drawable, @ColorInt int color){
+        if(drawable!= null){
+            drawable.setTint(color);
+        }
     }
 }

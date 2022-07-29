@@ -13,9 +13,5 @@
         android:scaleType="centerCrop"
         />
 
-    <FrameLayout
-        android:id="@+id/splash_ad_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"   />
 
 </RelativeLayout>

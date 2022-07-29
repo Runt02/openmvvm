@@ -11,6 +11,8 @@
         <attr name="rightText" format="string" />
         <attr name="rightTextSize" format="dimension" />
         <attr name="rightTextColor" format="color" />
+        <attr name="leftTint" format="color" />
+        <attr name="rightTint" format="color" />
     </declare-styleable>
 
 
@@ -74,6 +76,31 @@
         <item name="layout_constraintRight_toRightOf">parent</item>
         <item name="android:paddingLeft">@dimen/default_margin_lr</item>
         <item name="android:paddingRight">@dimen/default_margin_lr</item>
+    </style>
+
+
+    <style name="user_txt_left">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/txt_enable</item>
+        <item name="android:drawablePadding">10dp</item>
+        <item name="android:layout_marginRight">10dp</item>
+    </style>
+    <style name="tip_txt_style">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/title_height</item>
+        <item name="android:onClick">onTypeClick</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/txt_normal</item>
+        <item name="android:drawableRight">@drawable/check_selector</item>
+        <item name="android:gravity">center_vertical</item>
+    </style>
+    <style name="user_txt_value">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/txt_normal</item>
     </style>
 
 

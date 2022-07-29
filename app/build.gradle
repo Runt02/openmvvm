@@ -18,16 +18,14 @@ android {
     buildTypes {
         debug{
             minifyEnabled false
-            buildConfigField 'String','HOST_IP_ADDR','"http://192.168.100.82:8080/"'
-            buildConfigField 'String','ENVIRONMENT','"release"'
-            resValue "string", "app_name", "MVVM开源项目测试"
+            buildConfigField 'String','HOST_IP_ADDR','"http://192.168.110.116:8080/"'
+            resValue "string", "app_name", "MVVM OPEN TEST"
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
         release {
             minifyEnabled false
-            buildConfigField 'String','HOST_IP_ADDR','"http://192.168.100.82:8080/"'
-            buildConfigField 'String','ENVIRONMENT','"release"'
-            resValue "string", "app_name", "MVVM开源项目"
+            buildConfigField 'String','HOST_IP_ADDR','"http://192.168.100.82:8080/'
+            resValue "string", "app_name", "MVVM OPEN"
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -77,9 +75,8 @@ dependencies {
     implementation 'com.guolindev.permissionx:permissionx:1.6.0'    //权限依赖
     implementation 'com.github.bumptech.glide:glide:4.12.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'
-    implementation 'com.pangle.cn:ads-sdk-pro:4.0.2.2'//字节跳动  穿山甲广告
-    implementation 'com.tencent.bugly:crashreport:latest.release' //其中latest.release指代最新Bugly SDK版本号，也可以指定明确的版本号，例如2.1.9
-    implementation 'com.tencent.bugly:nativecrashreport:latest.release' //其中latest.release指代最新Bugly NDK版本号，也可以指定明确的版本号，例如3.0
     implementation 'com.facebook.rebound:rebound:0.3.6'//Rebound  “弹簧”动画效果的第三方工具包，由FaceBook
     implementation 'com.github.zhaolei9527:BottomMenu:v1.0.1'//底部菜单弹框
+    implementation 'com.github.LuckSiege.PictureSelector:picture_library:v2.2.3'//图片选择
+    implementation 'com.github.wildma:PictureSelector:1.1.1'//图片选择裁切工具
 }

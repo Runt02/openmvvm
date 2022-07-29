@@ -1,26 +1,20 @@
 package com.runt.open.mvvm.retrofit.utils;
 
-import com.runt.open.mvvm.BuildConfig;
-import com.runt.open.mvvm.util.GsonUtils;
-import com.runt.open.mvvm.util.MyLog;
+import android.util.Log;
 
-import java.io.EOFException;
 import java.util.ArrayList;
-
-import okio.Buffer;
 
 /**
  * My father is Object, ites purpose of 单例模式  保证synchronized方法的线程安全性
  *
  * @purpose Created by Runt (qingingrunt2010@qq.com) on 2021-5-13.
  */
-
 public class HttpPrintUtils {
     String TAG = "HttpPrintUtils";
     static HttpPrintUtils instance;
     public static  HttpPrintUtils getInstance(){
         if(instance == null){
-           instance = new HttpPrintUtils();
+            instance = new HttpPrintUtils();
         }
         return instance;
     }
@@ -76,14 +70,12 @@ public class HttpPrintUtils {
         logArrays.add("┗"+getEmptyStr((length-end.length())/2,"━")+end+getEmptyStr((length-end.length())/2,"━")+"┛\n");
         logArrays.add(" \n\n\n");
         //Logger.DEFAULT.log(sb.toString());//打印log，避免多个log语句，导致log输出时其他线程的log输出切入此输出阵列内
-        if(BuildConfig.DEBUG) {
-            for(int i = 0 ; i < logArrays.size() ; i ++ ){
-                String str = logArrays.get(i);
-                if (info) {
-                    MyLog.i(TAG , str.replace("\n","")+" "+logArrays.size()+" "+i);
-                } else {
-                    MyLog.e(TAG , str.replace("\n","")+" "+logArrays.size()+" "+i);
-                }
+        for(int i = 0 ; i < logArrays.size() ; i ++ ){
+            String str = logArrays.get(i);
+            if (info) {
+                Log.i(TAG , str.replace("\n","")+" "+logArrays.size()+" "+i);
+            } else {
+                Log.e(TAG , str.replace("\n","")+" "+logArrays.size()+" "+i);
             }
         }
     }
@@ -102,16 +94,12 @@ public class HttpPrintUtils {
                 s = s.substring(0,totalLength*3)+"...";
             }
             s = s.replace("\t","    ");//缩进替换空格
-            if(s.indexOf("\":{\"")>-1 || s.indexOf("\":[{\"")>-1 || s.indexOf("\":[[")>-1){//内容非校正缩进，且为json字符规范
-                splitStr(s.substring(0,s.indexOf("\":")+2)+ GsonUtils.retractJson(s.substring(s.indexOf("\":")+2)),totalLength,list);
+            if(s.length()> totalLength){
+                outOflength(s,totalLength,list);
             }else {
-                if(s.length()> totalLength){
-                    outOflength(s,totalLength,list);
-                }else {
-                    logStr = "┃      " + s + getEmptyStr((totalLength - 16 - s.length()), " ");
-                    //处理中文间距，保证打印无偏差
-                    list.add(logStr + getEmptyStr((totalLength - logStr.length() - 1 - hasCNchar(logStr)), " ") + "┃ "/*+logStr.length()+" "+logStr.getBytes().length+" "+(" ").getBytes().length +" "+hasCNchar(s)*/ + "\n");
-                }
+                logStr = "┃      " + s + getEmptyStr((totalLength - 16 - s.length()), " ");
+                //处理中文间距，保证打印无偏差
+                list.add(logStr + getEmptyStr((totalLength - logStr.length() - 1 - hasCNchar(logStr)), " ") + "┃ "/*+logStr.length()+" "+logStr.getBytes().length+" "+(" ").getBytes().length +" "+hasCNchar(s)*/ + "\n");
             }
         }
     }
@@ -182,29 +170,6 @@ public class HttpPrintUtils {
             sb.append(space);
         }
         return sb.toString();
-    }
-    /**
-     * Returns true if the body in question probably contains human readable text. Uses a small sample
-     * of code points to detect unicode control characters commonly used in binary file signatures.
-     */
-    static boolean isPlaintext(Buffer buffer) {
-        try {
-            Buffer prefix = new Buffer();
-            long byteCount = buffer.size() < 64 ? buffer.size() : 64;
-            buffer.copyTo(prefix, 0, byteCount);
-            for (int i = 0; i < 16; i++) {
-                if (prefix.exhausted()) {
-                    break;
-                }
-                int codePoint = prefix.readUtf8CodePoint();
-                if (Character.isISOControl(codePoint) && !Character.isWhitespace(codePoint)) {
-                    return false;
-                }
-            }
-            return true;
-        } catch (EOFException e) {
-            return false; // Truncated UTF-8 sequence.
-        }
     }
 
 }

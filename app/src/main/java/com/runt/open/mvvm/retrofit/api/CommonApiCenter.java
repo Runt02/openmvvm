@@ -1,17 +1,21 @@
 package com.runt.open.mvvm.retrofit.api;
 
 
-
 import com.runt.open.mvvm.data.ApkUpGradeResult;
 
 import java.util.Map;
 
 import io.reactivex.Observable;
+import okhttp3.MultipartBody;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
 import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
 import retrofit2.http.Url;
@@ -62,5 +66,10 @@ public interface CommonApiCenter {
     @GET("system/appupgrade/tourist/get/2")
     Observable<ApkUpGradeResult> getAppUpdate();
 
+    @POST("updateName")
+    Observable<ApkUpGradeResult> updateName(@Field("username") String name);
 
+    @Multipart
+    @POST("updatehead")
+    Call<ResponseBody> updateHead(@Part MultipartBody.Part file);
 }

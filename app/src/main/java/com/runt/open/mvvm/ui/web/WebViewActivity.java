@@ -33,59 +33,64 @@ public class WebViewActivity extends BaseActivity<ActivityWebBinding, BaseViewMo
         initCompent();
     }
 
+    @Override
+    public void loadData() {
+
+    }
+
 
     int count = 100;
     int index = 100;
     private void initCompent(){
-        binding.browser.getSettings().setJavaScriptEnabled(true);
-        binding.browser.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
+        mBinding.browser.getSettings().setJavaScriptEnabled(true);
+        mBinding.browser.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
         //跳转至拼接好的地址
         //mBaseHandler.sendMessage(msg);//http://192.168.5.156:8080/MyFinance/gd16/1.html
-        binding.browser.loadUrl(url);
-        binding.browser.setWebViewClient(new myWebViewClient());
-        binding.browser.setWebChromeClient(new WebChromeClient(){
+        mBinding.browser.loadUrl(url);
+        mBinding.browser.setWebViewClient(new myWebViewClient());
+        mBinding.browser.setWebChromeClient(new WebChromeClient(){
 
             @Override
             public void onProgressChanged(WebView view,final int newProgress) {
                 MyLog.i("onProgressChanged","--newProgress:--"+newProgress);
-                MyLog.i("onProgressChanged","--binding.viewProgressbar:--"+binding.viewProgressbar.getWidth());
+                MyLog.i("onProgressChanged","--binding.viewProgressbar:--"+ mBinding.viewProgressbar.getWidth());
                 final LayoutAnimationController.AnimationParameters animation= new LayoutAnimationController.AnimationParameters();   //得到一个LayoutAnimationController对象；
                 animation.index =index++ ;
                 animation.count = count++ ;
                 if (newProgress == 100) {
-                    MyAnimations.hideAnimaInSitu(binding.linProgressbar);
-                    MyAnimations.makeViewMove(binding.viewProgressbar.getTranslationX(),0,0,0,binding.viewProgressbar);
+                    MyAnimations.hideAnimaInSitu(mBinding.linProgressbar);
+                    MyAnimations.makeViewMove(mBinding.viewProgressbar.getTranslationX(),0,0,0, mBinding.viewProgressbar);
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            binding.linProgressbar.setVisibility(View.GONE);
+                            mBinding.linProgressbar.setVisibility(View.GONE);
                         }
                     },MyAnimations.ANIMA_TIME);
                 } else {
 
-                    if (View.VISIBLE != binding.linProgressbar.getVisibility()) {
-                        MyAnimations.showAnimaInSitu(binding.linProgressbar);
+                    if (View.VISIBLE != mBinding.linProgressbar.getVisibility()) {
+                        MyAnimations.showAnimaInSitu(mBinding.linProgressbar);
                         if(linProgressWidth==0){
-                            final ViewTreeObserver vto = binding.linProgressbar.getViewTreeObserver();
+                            final ViewTreeObserver vto = mBinding.linProgressbar.getViewTreeObserver();
                             vto.addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
                                 public boolean onPreDraw() {
-                                    linProgressWidth = binding.linProgressbar.getMeasuredWidth();
-                                    binding.viewProgressbar.setTranslationX(0-linProgressWidth);
-                                    binding.linProgressbar.getViewTreeObserver().removeOnPreDrawListener(this);
+                                    linProgressWidth = mBinding.linProgressbar.getMeasuredWidth();
+                                    mBinding.viewProgressbar.setTranslationX(0-linProgressWidth);
+                                    mBinding.linProgressbar.getViewTreeObserver().removeOnPreDrawListener(this);
                                     return true;
                                 }
                             });
                         }else{
-                            binding.viewProgressbar.setTranslationX(0-linProgressWidth);
+                            mBinding.viewProgressbar.setTranslationX(0-linProgressWidth);
                         }
 
                     }
                     if(linProgressWidth!=0){
-                        MyAnimations.makeViewMove(binding.viewProgressbar.getTranslationX(),0-linProgressWidth+linProgressWidth/100*newProgress,0,0,binding.viewProgressbar,MyAnimations.ANIMA_TIME*3);
+                        MyAnimations.makeViewMove(mBinding.viewProgressbar.getTranslationX(),0-linProgressWidth+linProgressWidth/100*newProgress,0,0, mBinding.viewProgressbar,MyAnimations.ANIMA_TIME*3);
                         new Handler().postDelayed(new Runnable() {
                             @Override
                             public void run() {
-                                MyAnimations.makeViewMove(binding.viewProgressbar.getTranslationX(),binding.viewProgressbar.getTranslationX()+300,0,0,binding.viewProgressbar,MyAnimations.ANIMA_TIME*10);
+                                MyAnimations.makeViewMove(mBinding.viewProgressbar.getTranslationX(), mBinding.viewProgressbar.getTranslationX()+300,0,0, mBinding.viewProgressbar,MyAnimations.ANIMA_TIME*10);
                             }
                         },MyAnimations.ANIMA_TIME*3);
                     }
@@ -96,9 +101,9 @@ public class WebViewActivity extends BaseActivity<ActivityWebBinding, BaseViewMo
 
         });
 
-        binding.browser.getSettings().setSavePassword(false);
+        mBinding.browser.getSettings().setSavePassword(false);
         //Toast.makeText(mContext,"进入浏览器",Toast.LENGTH_SHORT).show();
-        String Scale = String.valueOf(binding.browser.getScale());
+        String Scale = String.valueOf(mBinding.browser.getScale());
         MyLog.i("Runt","--Scale:--"+Scale);
         int screenDensity=getResources().getDisplayMetrics().densityDpi;
         MyLog.i("Runt", "--screenDensity:--"+String.valueOf(screenDensity));  //60-160-240
@@ -147,12 +152,12 @@ public class WebViewActivity extends BaseActivity<ActivityWebBinding, BaseViewMo
     }
 
     private void hideProgressBar(){
-        MyAnimations.hideAnimaInSitu(binding.linProgressbar);
-        MyAnimations.makeViewMove(binding.viewProgressbar.getTranslationX(),0,0,0,binding.viewProgressbar);
+        MyAnimations.hideAnimaInSitu(mBinding.linProgressbar);
+        MyAnimations.makeViewMove(mBinding.viewProgressbar.getTranslationX(),0,0,0, mBinding.viewProgressbar);
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                binding.linProgressbar.setVisibility(View.GONE);
+                mBinding.linProgressbar.setVisibility(View.GONE);
             }
         },MyAnimations.ANIMA_TIME*2);
     }

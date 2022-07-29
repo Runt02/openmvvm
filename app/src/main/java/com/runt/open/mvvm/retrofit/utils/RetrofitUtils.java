@@ -23,7 +23,6 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
  */
 
 public class RetrofitUtils {
-    public static String HOST_IP_ADDR;
     static RetrofitUtils instance;
     Retrofit retrofit/*log输出，驼峰转换*/,unHumpRetrofit/*log输出，不强制驼峰转换*/,
             unLogRetrofit/*log不输出，驼峰转换*/,unLogHumpRetorfit/*log不输出，不强制驼峰转换*/;
@@ -108,7 +107,7 @@ public class RetrofitUtils {
                 //设置OKHttpClient
                 .client(client)
                 //设置baseUrl,注意，baseUrl必须后缀"/"
-                .baseUrl(BuildConfig.ENVIRONMENT.equals("develop")?HOST_IP_ADDR:BuildConfig.HOST_IP_ADDR)
+                .baseUrl(BuildConfig.HOST_IP_ADDR+"api/v1/")
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build();
     }
