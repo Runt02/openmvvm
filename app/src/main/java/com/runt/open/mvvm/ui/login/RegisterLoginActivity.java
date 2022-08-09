@@ -34,6 +34,7 @@ public class RegisterLoginActivity extends BaseActivity<ActivityLoginBinding,Log
         mBinding.txtLogin.setOnClickListener(onclick);
         mBinding.txtRegister.setOnClickListener(onclick);
         mBinding.txtPrivacy.setOnClickListener(onclick);
+        mBinding.button.setOnClickListener(onclick);
         mBinding.editPhone.setText(getStringProjectPrefrence(Configuration.KEY_USERNAME));
         mViewModel.getVerifyResult().observe(this, result -> {
            if(result == 0){
@@ -45,20 +46,16 @@ public class RegisterLoginActivity extends BaseActivity<ActivityLoginBinding,Log
            }
         });
         mViewModel.getLoginResult().observe(this, loggedInUser -> {
-            if(loggedInUser.code == 200){
-                putBooleanProjectPrefrence(Configuration.IS_LOGIN,true);
-                putStringProjectPrefrence(Configuration.KEY_USERNAME, mBinding.editPhone.getText().toString());
+            putBooleanProjectPrefrence(Configuration.IS_LOGIN,true);
+            putStringProjectPrefrence(Configuration.KEY_USERNAME, mBinding.editPhone.getText().toString());
 
-                UserBean user = new Gson().fromJson(new Gson().toJson(loggedInUser.data) ,UserBean.class);
-                UserBean.setUser(user);
-                putStringProjectPrefrence(Configuration.KEY_TOKEN, user.getToken());
-                MyLog.i("registerlogin",user.toString());
-                showToast(R.string.login_success);
-                setResult(RESULT_CODE_SUCESS);
-                finish();
-            }else{
-                showToast(loggedInUser.msg);
-            }
+            UserBean user = new Gson().fromJson(new Gson().toJson(loggedInUser) ,UserBean.class);
+            UserBean.setUser(user);
+            putStringProjectPrefrence(Configuration.KEY_TOKEN, user.getToken());
+            MyLog.i("registerlogin",user.toString());
+            showToast(R.string.login_success);
+            setResult(RESULT_CODE_SUCESS);
+            finish();
         });
     }
 

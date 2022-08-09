@@ -6,12 +6,16 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <ImageView
+
+    <TextView
+        android:text="MVVM\nOPEN"
+        android:textStyle="bold"
+        android:textSize="80dp"
+        android:letterSpacing="0.1"
+        android:textColor="@color/white"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:src="@mipmap/welcom"
-        android:scaleType="centerCrop"
-        />
-
+        android:gravity="center"
+        android:background="@drawable/ic_launcher_background" />
 
 </RelativeLayout>

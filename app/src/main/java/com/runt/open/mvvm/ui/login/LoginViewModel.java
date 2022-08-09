@@ -1,19 +1,18 @@
 package com.runt.open.mvvm.ui.login;
 
 import androidx.lifecycle.MutableLiveData;
-
+import com.runt.open.mvvm.base.activities.BaseActivity;
 import com.runt.open.mvvm.base.model.BaseViewModel;
 import com.runt.open.mvvm.data.HttpApiResult;
 import com.runt.open.mvvm.data.Results;
 import com.runt.open.mvvm.retrofit.api.LoginApiCenter;
 import com.runt.open.mvvm.retrofit.observable.HttpObserver;
 import com.runt.open.mvvm.retrofit.utils.RetrofitUtils;
+import io.reactivex.Observable;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-import io.reactivex.Observable;
 
 /**
  * Created by Administrator on 2021/11/15 0015.
@@ -26,17 +25,24 @@ public class LoginViewModel extends BaseViewModel {
         loginApi = RetrofitUtils.getInstance().getRetrofit(LoginApiCenter.class);
     }
 
-    MutableLiveData<Results.LoggedInUser> loginResult = new MutableLiveData<>();
+    MutableLiveData<UserBean> loginResult = new MutableLiveData<>();
     MutableLiveData<Integer> verifyResult = new MutableLiveData<>();
     MutableLiveData<Results.StringApiResult> resetResult = new MutableLiveData<>();
     MutableLiveData<Results.StringApiResult> registerResult = new MutableLiveData<>();
-    HttpObserver<Results.LoggedInUser> logginObserver = new HttpObserver<Results.LoggedInUser>(){
-        @Override
-        protected void onSuccess(Results.LoggedInUser data) {
-            loginResult.setValue(data);
-        }
-    };
-    public MutableLiveData<Results.LoggedInUser> getLoginResult() {
+    HttpObserver<UserBean> logginObserver;
+
+    @Override
+    public void onCreate(BaseActivity activity) {
+        super.onCreate(activity);
+        logginObserver = new HttpObserver<UserBean>(mActivity){
+            @Override
+            protected void onSuccess(UserBean data) {
+                loginResult.setValue(data);
+            }
+        };
+    }
+
+    public MutableLiveData<UserBean> getLoginResult() {
         return loginResult;
     }
 
@@ -51,7 +57,7 @@ public class LoginViewModel extends BaseViewModel {
      */
     public void login(String username, String password) {
         // can be launched in a separate asynchronous job
-        final Observable<Results.LoggedInUser> userObservable = loginApi.login(username, password);
+        final Observable<HttpApiResult<UserBean>> userObservable = loginApi.login(username, password);
         httpObserverOnLoading(userObservable,logginObserver);
     }
 

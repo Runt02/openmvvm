@@ -18,7 +18,7 @@ android {
     buildTypes {
         debug{
             minifyEnabled false
-            buildConfigField 'String','HOST_IP_ADDR','"http://192.168.110.116:8080/"'
+            buildConfigField 'String','HOST_IP_ADDR','"http://192.168.110.134:8080/"'
             resValue "string", "app_name", "MVVM OPEN TEST"
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
@@ -38,14 +38,8 @@ android {
     }
     android.applicationVariants.all { variant ->
         variant.outputs.all {
-            def viron
-
-            if (buildType.name.equals('release')) {
-                viron = "正式版";
-            }else if (buildType.name.equals('debug')) {
-                viron = "开发版";
-            }
-            outputFileName =  "MVVM开源项目-" + viron + "-v" +
+            def viron = name
+            outputFileName =   "MVVM-OPEN-" + viron + "-v" +
                     defaultConfig.versionName +"-" + defaultConfig.versionCode +"-" + new Date().format("MMddHHmm", TimeZone.getTimeZone("UTC"))+
                     ".apk"
         }

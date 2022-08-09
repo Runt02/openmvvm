@@ -10,23 +10,18 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.view.LayoutInflater;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.WindowManager;
+import android.util.Log;
+import android.view.*;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.ColorRes;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.viewbinding.ViewBinding;
-
 import com.permissionx.guolindev.PermissionX;
 import com.runt.open.mvvm.MyApplication;
 import com.runt.open.mvvm.R;
@@ -35,13 +30,12 @@ import com.runt.open.mvvm.base.model.ViewModelFactory;
 import com.runt.open.mvvm.listener.ResPonse;
 import com.runt.open.mvvm.util.PreferencesUtils;
 import com.runt.open.mvvm.widgets.TitleBarView;
+import dmax.dialog.SpotsDialog;
 
 import java.io.File;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.util.Set;
-
-import dmax.dialog.SpotsDialog;
 
 /**
  * activity 封装
@@ -393,6 +387,7 @@ public abstract class BaseActivity<VB extends ViewBinding,VM extends BaseViewMod
         }
     }
     public void showToast(String message){
+        Log.i(TAG,"showToast "+message);
         runOnUiThread(() -> Toast.makeText(mContext,message,Toast.LENGTH_SHORT).show());
     }
 
