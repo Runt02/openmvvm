@@ -4,6 +4,7 @@ package com.runt.open.mvvm.retrofit.api;
 import com.runt.open.mvvm.data.ApkUpGradeResult;
 import com.runt.open.mvvm.data.HttpApiResult;
 import com.runt.open.mvvm.data.PageResult;
+import com.runt.open.mvvm.ui.main.home.Message;
 
 import java.util.Map;
 
@@ -76,4 +77,12 @@ public interface CommonApiCenter {
     Call<ResponseBody> updateHead(@Part MultipartBody.Part file);
 
 
+    /**
+     * 获取咨询列表
+     * @param pageNum   页数
+     * @param pageSize  每页数量
+     * @return
+     */
+    @GET("getMsgList")
+    Observable<HttpApiResult<PageResult<Message>>> getMsgList(@Query("page") int pageNum, @Query("size") int pageSize);
 }
