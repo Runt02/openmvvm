@@ -16,6 +16,7 @@ import com.scwang.smart.refresh.layout.api.RefreshLayout;
 import com.scwang.smart.refresh.layout.listener.OnRefreshLoadMoreListener;
 
 import java.lang.reflect.ParameterizedType;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -76,7 +77,9 @@ public abstract class LoadPageFragment<VB extends ViewBinding,VM extends LoadPag
         refresh.autoRefresh();
     }
 
-    protected abstract Map requestParams();
+    protected Map requestParams() {
+        return new HashMap();
+    }
 
     @Override
     public void onRefresh(@NonNull RefreshLayout refreshLayout) {
