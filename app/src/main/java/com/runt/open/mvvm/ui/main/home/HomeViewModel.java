@@ -1,9 +1,8 @@
 package com.runt.open.mvvm.ui.main.home;
 
 import com.runt.open.mvvm.base.model.LoadPageViewModel;
-import com.runt.open.mvvm.data.Results;
 
-public class HomeViewModel extends LoadPageViewModel<Results.MessageResult> {
+public class HomeViewModel extends LoadPageViewModel<Message> {
 
     @Override
     protected String requestUrl() {

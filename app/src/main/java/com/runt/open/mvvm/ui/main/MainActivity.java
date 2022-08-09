@@ -60,12 +60,8 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
         mBinding.viewPager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
 
             @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                setTitleStr(position);
-            }
-
-            @Override
             public void onPageSelected(int position) {
+                setTitleStr(position);
                 mBinding.navView.getMenu().getItem(position).setChecked(true);
                 if(position == 2 && UserBean.getUser() == null){
                     loginLaunch.launch(new Intent(mContext, RegisterLoginActivity.class));
@@ -142,12 +138,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
         PermissionX.init(MainActivity.this)
                 .permissions(Manifest.permission.READ_PHONE_STATE)
                 .request((allGranted, grantedList, deniedList) -> {
-                    if(allGranted){
-                        PhoneDevice.setDevice(mContext);
-                    }else{
-                        showPermissionDialog();
-                    }
-
+                    PhoneDevice.setDevice(mContext);
                 });
     }
 }

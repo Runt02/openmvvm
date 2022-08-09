@@ -7,8 +7,6 @@ import com.runt.open.mvvm.databinding.ItemMsgBinding;
 import com.runt.open.mvvm.listener.CustomClickListener;
 import com.runt.open.mvvm.util.HandleDate;
 
-import java.util.Date;
-
 /**
  * My father is Object, ites purpose of
  *
@@ -20,8 +18,7 @@ public class MsgAdapter extends BaseAdapter<Message, ItemMsgBinding> {
     @Override
     protected void onBindView(ItemMsgBinding binding, int position, Message message) {
         binding.txtDetail.setText(message.content);
-        Date date = new Date(message.cTime);
-        binding.txtTime.setText(HandleDate.getTimeStateNew(date));
+        binding.txtTime.setText(HandleDate.getTimeStateNew(HandleDate.getDateTimeToLong(message.cTime)));
         binding.txtTitle.setText(message.title);
         binding.getRoot().setOnClickListener(new CustomClickListener() {
             @Override

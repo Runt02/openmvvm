@@ -107,7 +107,7 @@ public class RetrofitUtils {
                 //设置OKHttpClient
                 .client(client)
                 //设置baseUrl,注意，baseUrl必须后缀"/"
-                .baseUrl(BuildConfig.HOST_IP_ADDR+"api/v1/")
+                .baseUrl(BuildConfig.HOST_IP_ADDR+"api/v2/")
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build();
     }

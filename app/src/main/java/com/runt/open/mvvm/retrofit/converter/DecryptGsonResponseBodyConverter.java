@@ -2,16 +2,15 @@ package com.runt.open.mvvm.retrofit.converter;
 
 import android.util.Log;
 
-import com.runt.open.mvvm.data.HttpApiResult;
-import com.runt.open.mvvm.util.GsonUtils;
 import com.google.gson.Gson;
 import com.google.gson.JsonIOException;
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
+import com.runt.open.mvvm.data.HttpApiResult;
+import com.runt.open.mvvm.util.GsonUtils;
 
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -84,11 +83,11 @@ public class DecryptGsonResponseBodyConverter<T> implements Converter<ResponseBo
      */
     protected String decryptJsonStr(String body) throws Exception {
         Log.e("Converter","decryptJsonStr body:"+body);
-        if(body.indexOf("{") == 0) {
+        /*if(body.indexOf("{") == 0) {
             JSONObject json = new JSONObject(body);
             body = json.toString();
             //body = RSAUtils.decrypt(json.getString(ENCRYPT), RSAUtils.getPublicKey(RSAUtils.PUBLIC_KEY));//
-        }
+        }*/
         return transHump? GsonUtils.toHumpJson(body):body;
     }
 

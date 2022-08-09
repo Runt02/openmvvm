@@ -2,10 +2,15 @@ package com.runt.open.mvvm.base.model;
 
 import androidx.lifecycle.MutableLiveData;
 
+import com.google.gson.Gson;
 import com.runt.open.mvvm.data.HttpApiResult;
 import com.runt.open.mvvm.data.PageResult;
 import com.runt.open.mvvm.retrofit.observable.HttpObserver;
 
+import org.json.JSONObject;
+
+import java.lang.reflect.ParameterizedType;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -13,20 +18,35 @@ import java.util.Map;
  * 分页
  * Created by Administrator on 2021/11/3 0003.
  */
-public abstract class LoadPageViewModel<RESULT extends PageResult> extends BaseViewModel {
+public abstract class LoadPageViewModel<D> extends BaseViewModel {
 
     public final int SIZE = 10;
-    private MutableLiveData<List> liveData = new MutableLiveData<>();
+    private MutableLiveData<List<D>> liveData = new MutableLiveData<>();
     private MutableLiveData liveFailed = new MutableLiveData();
 
+    /**
+     * 请求地址
+     * @return
+     */
     protected abstract String requestUrl();
 
+    /**
+     * 数据请求
+     * @param page  页数
+     * @param param 请求参数
+     */
     public void requestData(int page,Map param){
-        httpObserverOn( commonApi.getPageData(requestUrl(), page, SIZE, param), new HttpObserver<RESULT>() {
-
+        final ParameterizedType type = (ParameterizedType) this.getClass().getGenericSuperclass();
+        Class<D> entityClass = (Class<D>) type.getActualTypeArguments()[0];
+        httpObserverOn( commonApi.getPageData(requestUrl(), page, SIZE, param), new HttpObserver<PageResult>() {
             @Override
-            protected void onSuccess(RESULT data) {
-                liveData.postValue(data.rows);
+            protected void onSuccess(PageResult data) {
+                //数据转换
+                List<D> list = new ArrayList<>();
+                for(Object map : data.rows){
+                    list.add(new Gson().fromJson(new JSONObject((Map) map).toString(),entityClass));
+                }
+                liveData.postValue(list);
             }
 
             @Override
@@ -37,7 +57,7 @@ public abstract class LoadPageViewModel<RESULT extends PageResult> extends BaseV
         });
     }
 
-    public MutableLiveData<List> getLiveData(){
+    public MutableLiveData<List<D>> getLiveData(){
         return liveData;
     }
 

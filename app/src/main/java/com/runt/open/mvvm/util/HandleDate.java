@@ -67,6 +67,15 @@ public class HandleDate {
         return secondsdf.format(date);
     }
 
+    public static long getDateTimeToLong(String datetime) {
+        try {
+            return secondsdf.parse(datetime).getTime();
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
     /**
      * 将指定long类型的日期转换为string时间 只显示 时分秒
      */

@@ -2,7 +2,9 @@ package com.runt.open.mvvm.retrofit.Interceptor;
 
 import android.util.Log;
 
+import com.google.gson.Gson;
 import com.runt.open.mvvm.MyApplication;
+import com.runt.open.mvvm.data.PhoneDevice;
 import com.runt.open.mvvm.retrofit.net.NetWorkCost;
 import com.runt.open.mvvm.retrofit.net.NetWorkListenear;
 import com.runt.open.mvvm.retrofit.utils.HttpPrintUtils;
@@ -60,6 +62,7 @@ public class HttpLoggingInterceptor extends EncryptInterceptor {
             Log.d(TAG, "hashcode:" + hashCode);
         }
         Request.Builder requestBuild = requestTemp.newBuilder()
+                .addHeader("device", new Gson().toJson(PhoneDevice.getDevice()))
                 .addHeader("appVersion", DeviceUtil.getAppVersionName(MyApplication.getApplication()))
                 .addHeader("os", DeviceUtil.isHarmonyOS()? "harmony" : "android");
         Request request = requestBuild.build().newBuilder().build();

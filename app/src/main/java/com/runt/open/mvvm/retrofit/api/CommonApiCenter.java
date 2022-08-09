@@ -2,6 +2,8 @@ package com.runt.open.mvvm.retrofit.api;
 
 
 import com.runt.open.mvvm.data.ApkUpGradeResult;
+import com.runt.open.mvvm.data.HttpApiResult;
+import com.runt.open.mvvm.data.PageResult;
 
 import java.util.Map;
 
@@ -45,7 +47,7 @@ public interface CommonApiCenter {
      * @return
      */
     @GET
-    Observable<Object> getPageData(@Url String url, @Query("pageNum") int pageNum, @Query("pageSize") int pageSize, @QueryMap Map<String,String> param);
+    Observable<HttpApiResult<PageResult>> getPageData(@Url String url, @Query("page") int pageNum, @Query("size") int pageSize, @QueryMap Map<String,String> param);
 
     /**
      * 分页数据
@@ -57,7 +59,7 @@ public interface CommonApiCenter {
      */
     @FormUrlEncoded
     @POST
-    Observable<Object> postPageData(@Url String url, @Field("pageNum") int pageNum, @Field("pageSize") int pageSize, @FieldMap Map<String,String> param);
+    Observable<Object> postPageData(@Url String url, @Field("page") int pageNum, @Field("size") int pageSize, @FieldMap Map<String,String> param);
 
     /**
      * app更新
@@ -72,4 +74,6 @@ public interface CommonApiCenter {
     @Multipart
     @POST("updatehead")
     Call<ResponseBody> updateHead(@Part MultipartBody.Part file);
+
+
 }
