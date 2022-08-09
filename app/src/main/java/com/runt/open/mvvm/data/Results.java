@@ -1,7 +1,6 @@
 package com.runt.open.mvvm.data;
 
 import com.runt.open.mvvm.ui.login.UserBean;
-import com.runt.open.mvvm.ui.main.home.Message;
 
 /**
  * My father is Object, ites purpose of
@@ -14,5 +13,9 @@ public class Results {
 
     public static class StringApiResult extends HttpApiResult<String> { }
 
-    public class MessageResult extends PageResult<Message>{}
+    //资讯信息
+    public class Message {
+        public String id,title,content,cTime;
+    }
+
 }

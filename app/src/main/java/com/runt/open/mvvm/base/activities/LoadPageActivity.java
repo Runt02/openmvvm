@@ -16,7 +16,9 @@ import com.scwang.smart.refresh.layout.api.RefreshLayout;
 import com.scwang.smart.refresh.layout.listener.OnRefreshLoadMoreListener;
 
 import java.lang.reflect.ParameterizedType;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Administrator on 2021/11/4 0004.
@@ -75,18 +77,20 @@ public abstract class LoadPageActivity<VB extends ViewBinding,VM extends LoadPag
         refresh.autoRefresh();
     }
 
-    protected Object[] requestParams(){return null;};
+    protected Map requestParams() {
+        return new HashMap();
+    }
 
     @Override
     public void onRefresh(@NonNull RefreshLayout refreshLayout) {
         page = 0;
-        mViewModel.requestData(mViewModel.request(page,requestParams()));
+        mViewModel.requestData(page,requestParams());
     }
 
     @Override
     public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
         page++;
-        mViewModel.requestData(mViewModel.request(page,requestParams()));
+        mViewModel.requestData(page,requestParams());
     }
 
     public A getAdapter() {

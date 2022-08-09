@@ -20,9 +20,9 @@ import com.runt.open.mvvm.data.PhoneDevice;
 import com.runt.open.mvvm.databinding.ActivityMainBinding;
 import com.runt.open.mvvm.listener.CustomClickListener;
 import com.runt.open.mvvm.listener.ResPonse;
+import com.runt.open.mvvm.ui.loadpage.PageFragments;
 import com.runt.open.mvvm.ui.login.RegisterLoginActivity;
 import com.runt.open.mvvm.ui.login.UserBean;
-import com.runt.open.mvvm.ui.main.home.HomeFragment;
 import com.runt.open.mvvm.ui.main.mine.MineFragment;
 import com.runt.open.mvvm.ui.main.service.ServiceFragment;
 
@@ -30,7 +30,7 @@ import java.util.Arrays;
 
 public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewModel> {
 
-    private BaseFragment[] fragments = {new HomeFragment(),new ServiceFragment(),new MineFragment()} ;
+    private BaseFragment[] fragments = {new PageFragments.HomeFragment(),new ServiceFragment(),new MineFragment()} ;
     ActivityResultLauncher<Intent>  loginLaunch = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
         if(result.getResultCode() == RESULT_CODE_SUCESS){
             fragments[2].loadData();//登录后重新刷新
