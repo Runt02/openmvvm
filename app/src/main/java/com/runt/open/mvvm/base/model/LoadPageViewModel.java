@@ -6,7 +6,6 @@ import com.runt.open.mvvm.data.HttpApiResult;
 import com.runt.open.mvvm.data.PageResult;
 import com.runt.open.mvvm.retrofit.observable.HttpObserver;
 
-import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
 
 import io.reactivex.Observable;
@@ -33,8 +32,6 @@ public abstract class LoadPageViewModel<D> extends BaseViewModel {
      * 数据请求
      */
     public void requestData(Observable<HttpApiResult<PageResult<D>>> observable){
-        final ParameterizedType type = (ParameterizedType) this.getClass().getGenericSuperclass();
-        Class<D> entityClass = (Class<D>) type.getActualTypeArguments()[0];
         httpObserverOn( observable, new PageHttpObserver());
     }
 
