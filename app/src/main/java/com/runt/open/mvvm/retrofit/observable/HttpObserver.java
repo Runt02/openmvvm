@@ -1,9 +1,12 @@
 package com.runt.open.mvvm.retrofit.observable;
 
 import android.util.Log;
-
 import com.google.gson.Gson;
+import com.runt.open.mvvm.base.activities.BaseActivity;
 import com.runt.open.mvvm.data.HttpApiResult;
+import io.reactivex.Observer;
+import io.reactivex.disposables.Disposable;
+import retrofit2.adapter.rxjava2.HttpException;
 
 import java.net.ConnectException;
 import java.net.SocketTimeoutException;
@@ -11,15 +14,20 @@ import java.net.UnknownHostException;
 import java.util.concurrent.TimeoutException;
 import java.util.regex.Pattern;
 
-import io.reactivex.Observer;
-import io.reactivex.disposables.Disposable;
-import retrofit2.adapter.rxjava2.HttpException;
-
 /**
  * 网络请求观察
  * Created by Administrator on 2021/11/11 0011.
  */
 public abstract class HttpObserver<RESULT> implements Observer<HttpApiResult<RESULT>> {
+
+    BaseActivity activity;
+
+    public HttpObserver() {
+    }
+
+    public HttpObserver(BaseActivity activity) {
+        this.activity = activity;
+    }
 
     final String TAG = "HttpObserver";
 
@@ -40,7 +48,6 @@ public abstract class HttpObserver<RESULT> implements Observer<HttpApiResult<RES
 
     @Override
     public void onError(Throwable e) {
-        e.printStackTrace();
         Log.e(TAG,"onError "+e.getMessage()+" "+hashCode());
         int code = 600;
         String msg = "网络请求失败，请检查网络或稍后重试";
@@ -66,6 +73,11 @@ public abstract class HttpObserver<RESULT> implements Observer<HttpApiResult<RES
 
     protected abstract void onSuccess(RESULT data);
 
-    protected void onFailed(HttpApiResult httpResult){}
+    protected void onFailed(HttpApiResult error){
+        Log.i(TAG,"onFailed "+activity);
+        if(activity != null){
+            activity.showToast(error.msg);
+        }
+    }
 
 }

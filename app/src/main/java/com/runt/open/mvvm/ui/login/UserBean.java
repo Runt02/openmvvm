@@ -50,20 +50,11 @@ public class UserBean implements Serializable {
     /* 连续签到天数 */
     private int sign;
 
-    /** 用户类型(0推广，1店员，2商家，3广告商) **/
-    private Integer type;
-
     /** 上级管理者 **/
     private String upuser;
 
     /** 余额 **/
     private BigDecimal balance;
-
-    /** 会员等级（0普通用户，1会员） **/
-    private Integer vlevel;
-
-    /** 会员到期时间 **/
-    private Date vtime;
 
     /** 状态0通过，1审核中，-1封收益 ， -2 限制支付 ， -3限制广告 ，-4限制发送短信，-5永久限制发送短信，-6 限制登录 **/
     private String status;
@@ -133,16 +124,6 @@ public class UserBean implements Serializable {
         this.head = head;
     }
 
-
-    public Integer getType() {
-        return type;
-    }
-
-    public void setType(Integer type) {
-        this.type = type;
-    }
-
-
     public String getUpuser() {
         return upuser;
     }
@@ -159,25 +140,6 @@ public class UserBean implements Serializable {
     public void setBalance(BigDecimal balance) {
         this.balance = balance;
     }
-
-
-    public Integer getVlevel() {
-        return vlevel;
-    }
-
-    public void setVlevel(Integer vlevel) {
-        this.vlevel = vlevel;
-    }
-
-
-    public Date getVtime() {
-        return vtime;
-    }
-
-    public void setVtime(Date vtime) {
-        this.vtime = vtime;
-    }
-
 
     public String getStatus() {
         return status;
@@ -264,11 +226,8 @@ public class UserBean implements Serializable {
                 ", head='" + head + '\'' +
                 ", coin=" + coin +
                 ", sign=" + sign +
-                ", type=" + type +
                 ", upuser='" + upuser + '\'' +
                 ", balance=" + balance +
-                ", vlevel=" + vlevel +
-                ", vtime=" + vtime +
                 ", status=" + status +
                 ", wechat='" + wechat + '\'' +
                 ", qq='" + qq + '\'' +

@@ -20,7 +20,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="50dp"
-        android:src="@mipmap/app_icon"
+        android:src="@mipmap/ic_launcher"
         android:adjustViewBounds="true"
         app:layout_constraintTop_toBottomOf="@id/title_bar"
         app:layout_constraintLeft_toLeftOf="parent"
