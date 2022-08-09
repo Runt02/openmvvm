@@ -3,6 +3,7 @@ package com.runt.open.mvvm.ui.login;
 import androidx.lifecycle.MutableLiveData;
 
 import com.runt.open.mvvm.base.model.BaseViewModel;
+import com.runt.open.mvvm.data.HttpApiResult;
 import com.runt.open.mvvm.data.Results;
 import com.runt.open.mvvm.retrofit.api.LoginApiCenter;
 import com.runt.open.mvvm.retrofit.observable.HttpObserver;
@@ -26,7 +27,7 @@ public class LoginViewModel extends BaseViewModel {
     }
 
     MutableLiveData<Results.LoggedInUser> loginResult = new MutableLiveData<>();
-    MutableLiveData<Results.StringApiResult> verifyResult = new MutableLiveData<>();
+    MutableLiveData<Integer> verifyResult = new MutableLiveData<>();
     MutableLiveData<Results.StringApiResult> resetResult = new MutableLiveData<>();
     MutableLiveData<Results.StringApiResult> registerResult = new MutableLiveData<>();
     HttpObserver<Results.LoggedInUser> logginObserver = new HttpObserver<Results.LoggedInUser>(){
@@ -39,7 +40,7 @@ public class LoginViewModel extends BaseViewModel {
         return loginResult;
     }
 
-    public MutableLiveData<Results.StringApiResult> getVerifyResult() {
+    public MutableLiveData<Integer> getVerifyResult() {
         return verifyResult;
     }
 
@@ -119,10 +120,16 @@ public class LoginViewModel extends BaseViewModel {
      */
     public void getVerifyCode(String url,String phone){
         String time = new Date().getTime()+"";
-        httpObserverOnLoading(loginApi.getVerifyCode(url, phone, randomString(phone, time), time), new HttpObserver<Results.StringApiResult>(){
+        httpObserverOnLoading(loginApi.getVerifyCode(url, phone, randomString(phone, time), time), new HttpObserver<Results.SmsResult>(){
             @Override
-            protected void onSuccess(Results.StringApiResult data) {
-                verifyResult.setValue(data);
+            protected void onSuccess(Results.SmsResult data) {
+                verifyResult.setValue(0);
+            }
+
+            @Override
+            protected void onFailed(HttpApiResult httpResult) {
+                super.onFailed(httpResult);
+                verifyResult.setValue(-1);
             }
         });
     }

@@ -5,7 +5,7 @@ import com.runt.open.mvvm.BuildConfig;
 import com.runt.open.mvvm.retrofit.Interceptor.EncryptInterceptor;
 import com.runt.open.mvvm.retrofit.Interceptor.HttpLoggingInterceptor;
 import com.runt.open.mvvm.retrofit.api.CommonApiCenter;
-import com.runt.open.mvvm.retrofit.converter.DecryptGsonConverterFactory;
+import com.runt.open.mvvm.retrofit.converter.GsonConverterFactory;
 import com.runt.open.mvvm.retrofit.net.NetWorkListenear;
 
 import java.util.Collections;
@@ -47,7 +47,7 @@ public class RetrofitUtils {
     public <T> T getRetrofit(Class<T> clas) {
         if(retrofit == null){
             retrofit = getRetrofit(getOkHttpClient(logBuilder),
-                    new Retrofit.Builder().addConverterFactory(DecryptGsonConverterFactory.create(true))) ;
+                    new Retrofit.Builder().addConverterFactory(GsonConverterFactory.create(true))) ;
         }
         if(!BuildConfig.DEBUG){//正式版 不打印log
             return getUnLogRetrofit(clas);
@@ -62,7 +62,7 @@ public class RetrofitUtils {
     public <T> T getUnHumpRetrofit(Class<T> clas) {
         if(unHumpRetrofit == null){
             unHumpRetrofit = getRetrofit(getOkHttpClient(logBuilder),
-                    new Retrofit.Builder().addConverterFactory(DecryptGsonConverterFactory.create())) ;
+                    new Retrofit.Builder().addConverterFactory(GsonConverterFactory.create())) ;
         }
         if(!BuildConfig.DEBUG){//正式版 不打印log
             return getUnLogHumpRetorfit(clas);
@@ -77,7 +77,7 @@ public class RetrofitUtils {
     public <T> T  getUnLogRetrofit(Class<T> clas) {
         if(unLogRetrofit == null){
             unLogRetrofit = getRetrofit(getOkHttpClient(builder),
-                    new Retrofit.Builder().addConverterFactory(DecryptGsonConverterFactory.create(true))) ;
+                    new Retrofit.Builder().addConverterFactory(GsonConverterFactory.create(true))) ;
         }
         return unLogRetrofit.create(clas);
     }
@@ -89,7 +89,7 @@ public class RetrofitUtils {
     public <T> T getUnLogHumpRetorfit(Class<T> clas) {
         if(unLogHumpRetorfit == null){
             unLogHumpRetorfit = getRetrofit(getOkHttpClient(builder),
-                    new Retrofit.Builder().addConverterFactory(DecryptGsonConverterFactory.create())) ;
+                    new Retrofit.Builder().addConverterFactory(GsonConverterFactory.create())) ;
         }
         return unLogHumpRetorfit.create(clas);
     }

@@ -17,26 +17,26 @@ import retrofit2.Retrofit;
  *
  * @purpose Created by Runt (qingingrunt2010@qq.com) on 2021-7-22.
  */
-public class DecryptGsonConverterFactory extends Converter.Factory {
+public class GsonConverterFactory extends Converter.Factory {
 
-    public static DecryptGsonConverterFactory create() {
+    public static GsonConverterFactory create() {
         return create(new Gson(),false);
     }
 
-    public static DecryptGsonConverterFactory create(boolean transHump) {
+    public static GsonConverterFactory create(boolean transHump) {
         return create(new Gson(),transHump);
     }
 
 
-    public static DecryptGsonConverterFactory create(Gson gson,boolean transHump) {
-        return new DecryptGsonConverterFactory(gson,transHump);
+    public static GsonConverterFactory create(Gson gson, boolean transHump) {
+        return new GsonConverterFactory(gson,transHump);
     }
 
     private final Gson gson;
 
     private final boolean transHump;
 
-    public DecryptGsonConverterFactory(Gson gson, boolean transHump) {
+    public GsonConverterFactory(Gson gson, boolean transHump) {
         if (gson == null) throw new NullPointerException("gson == null");
         this.gson = gson;
         this.transHump = transHump;

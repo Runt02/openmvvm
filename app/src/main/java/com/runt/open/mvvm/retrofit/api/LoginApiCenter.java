@@ -1,6 +1,7 @@
 package com.runt.open.mvvm.retrofit.api;
 
 import com.runt.open.mvvm.config.Configuration;
+import com.runt.open.mvvm.data.HttpApiResult;
 import com.runt.open.mvvm.data.Results;
 
 import io.reactivex.Observable;
@@ -36,7 +37,7 @@ public interface LoginApiCenter {
 
     @FormUrlEncoded
     @POST
-    Observable<Results.StringApiResult> getVerifyCode(@Url String url, @Field(Configuration.KEY_PHONE) String phone, @Field(Configuration.KEY_CODE) String code, @Field("time") String time);
+    Observable<HttpApiResult<Results.SmsResult>> getVerifyCode(@Url String url, @Field(Configuration.KEY_PHONE) String phone, @Field(Configuration.KEY_CODE) String code, @Field("time") String time);
 
     /**
      * 重置密码

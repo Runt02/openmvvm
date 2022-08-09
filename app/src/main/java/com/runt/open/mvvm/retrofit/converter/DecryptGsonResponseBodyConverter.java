@@ -17,8 +17,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
 
 import okhttp3.ResponseBody;
 import retrofit2.Converter;
@@ -34,7 +32,6 @@ public class DecryptGsonResponseBodyConverter<T> implements Converter<ResponseBo
     private final TypeAdapter<T> adapter;
     private final Charset UTF_8 = Charset.forName("UTF-8");
     private final boolean transHump;//驼峰转换
-    private final String ENCRYPT = "encrypt";
 
     public DecryptGsonResponseBodyConverter(Gson gson, TypeAdapter<T> adapter, boolean transHump) {
         this.gson = gson;
@@ -47,13 +44,8 @@ public class DecryptGsonResponseBodyConverter<T> implements Converter<ResponseBo
         String response = null;
         try {
             String val = new String(value.bytes(),UTF_8);
-            response = decryptJsonStr(val);//解密
-        } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
-            e.printStackTrace();
-            HttpApiResult apiResult = new HttpApiResult<>();
-            apiResult.code = 412;
-            apiResult.msg = "解密数据出错"+e.getMessage();
-            response = new Gson().toJson(apiResult);
+            Log.e("Converter","val body:"+val);
+            response = transHump? GsonUtils.toHumpJson(val):val;
         } catch (JSONException e) {
             e.printStackTrace();
             HttpApiResult apiResult = new HttpApiResult<>();
@@ -75,20 +67,5 @@ public class DecryptGsonResponseBodyConverter<T> implements Converter<ResponseBo
         }
     }
 
-    /**
-     * 解密json
-     * @param body
-     * @return
-     * @throws Exception
-     */
-    protected String decryptJsonStr(String body) throws Exception {
-        Log.e("Converter","decryptJsonStr body:"+body);
-        /*if(body.indexOf("{") == 0) {
-            JSONObject json = new JSONObject(body);
-            body = json.toString();
-            //body = RSAUtils.decrypt(json.getString(ENCRYPT), RSAUtils.getPublicKey(RSAUtils.PUBLIC_KEY));//
-        }*/
-        return transHump? GsonUtils.toHumpJson(body):body;
-    }
 
 }
