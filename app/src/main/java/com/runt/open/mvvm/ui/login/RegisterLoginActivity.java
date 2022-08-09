@@ -35,11 +35,13 @@ public class RegisterLoginActivity extends BaseActivity<ActivityLoginBinding,Log
         mBinding.txtRegister.setOnClickListener(onclick);
         mBinding.txtPrivacy.setOnClickListener(onclick);
         mBinding.editPhone.setText(getStringProjectPrefrence(Configuration.KEY_USERNAME));
-        mViewModel.getVerifyResult().observe(this, stringApiResult -> {
-           if(stringApiResult.code == 200){
-
+        mViewModel.getVerifyResult().observe(this, result -> {
+           if(result == 0){
+               putLongProjectPrefrence(VERIFY_CODE,new Date().getTime());
+               CodeTimer codeTimer = new CodeTimer(60000, 1000, mBinding.txtGetVerify);
+               codeTimer.startUp();
            }else{
-               showToast(stringApiResult.msg);
+
            }
         });
         mViewModel.getLoginResult().observe(this, loggedInUser -> {
@@ -65,7 +67,7 @@ public class RegisterLoginActivity extends BaseActivity<ActivityLoginBinding,Log
         long getTime = getLongProjectPrefrence(VERIFY_CODE);
         long cha = new Date().getTime() - getTime;
         if(cha <1000*60){
-            CodeTimer codeTimer = new CodeTimer(cha, 1000, mBinding.txtGetVerify);
+            CodeTimer codeTimer = new CodeTimer((60) * 1000-cha, 1000, mBinding.txtGetVerify);
             codeTimer.startUp();
         }
         changeView();

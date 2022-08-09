@@ -1,7 +1,9 @@
 package com.runt.open.mvvm.ui.splash;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Handler;
+import android.view.View;
 import android.view.WindowManager;
 
 import com.runt.open.mvvm.base.activities.BaseActivity;
@@ -20,9 +22,16 @@ public class SplashActivity extends BaseActivity<ActivitySplashBinding, ImpViewM
     final String TAG = "WelcomeActivity";
     @Override
     public void initViews() {
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);//全屏
-        hideBottomUIMenu();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            // 延伸显示区域到刘海
+            WindowManager.LayoutParams attributes = getWindow().getAttributes();
+            attributes.layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES;
+            getWindow().setAttributes(attributes);
+        }
+        // 设置页面全屏显示 隐藏底部导航
+        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
     }
 
     @Override

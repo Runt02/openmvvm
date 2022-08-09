@@ -13,6 +13,9 @@ public class Results {
 
     public static class StringApiResult extends HttpApiResult<String> { }
 
+    //短信验证码
+    public static class SmsResult { public String sms; }
+
     //资讯信息
     public class Message {
         public String id,title,content,cTime;
