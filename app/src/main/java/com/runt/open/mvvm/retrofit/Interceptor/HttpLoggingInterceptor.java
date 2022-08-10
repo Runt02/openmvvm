@@ -1,15 +1,18 @@
 package com.runt.open.mvvm.retrofit.Interceptor;
 
 import android.util.Log;
-
 import com.google.gson.Gson;
 import com.runt.open.mvvm.MyApplication;
 import com.runt.open.mvvm.data.PhoneDevice;
 import com.runt.open.mvvm.retrofit.net.NetWorkCost;
 import com.runt.open.mvvm.retrofit.net.NetWorkListenear;
 import com.runt.open.mvvm.retrofit.utils.HttpPrintUtils;
+import com.runt.open.mvvm.ui.login.UserBean;
 import com.runt.open.mvvm.util.DeviceUtil;
-
+import okhttp3.*;
+import okhttp3.internal.http.HttpHeaders;
+import okio.Buffer;
+import okio.BufferedSource;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -21,18 +24,6 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-
-import okhttp3.FormBody;
-import okhttp3.Headers;
-import okhttp3.MediaType;
-import okhttp3.MultipartBody;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
-import okhttp3.ResponseBody;
-import okhttp3.internal.http.HttpHeaders;
-import okio.Buffer;
-import okio.BufferedSource;
 
 /**
  * My father is Object, ites purpose of     log打印
@@ -65,6 +56,9 @@ public class HttpLoggingInterceptor extends EncryptInterceptor {
                 .addHeader("device", new Gson().toJson(PhoneDevice.getDevice()))
                 .addHeader("appVersion", DeviceUtil.getAppVersionName(MyApplication.getApplication()))
                 .addHeader("os", DeviceUtil.isHarmonyOS()? "harmony" : "android");
+        if(UserBean.getUser() != null){
+            requestBuild.addHeader("token",UserBean.getUser().getToken());
+        }
         Request request = requestBuild.build().newBuilder().build();
         ArrayList<String> logArrays = new ArrayList<>();
         Response response = null;
@@ -208,7 +202,14 @@ public class HttpLoggingInterceptor extends EncryptInterceptor {
             if (isPlaintext(buffer)) {
                 logArrays.add("---------->RESPONSE BODY<----------");
                 if (contentLength != 0) {
-                    logArrays.add(new JSONObject(buffer.clone().readString((charset))).toString(4));
+                    String str = buffer.clone().readString(charset);
+                    if(str.trim().indexOf("{") == 0) {
+                        logArrays.add(new JSONObject(str).toString(4));
+                    }else if(str.trim().indexOf("[") == 0) {
+                        logArrays.add(new JSONArray(str).toString(4));
+                    }else{
+                        logArrays.add(str);
+                    }
                 }
 
                 logArrays.add("<-- END HTTP (" + buffer.size() + "-byte body)");

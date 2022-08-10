@@ -5,10 +5,12 @@ import android.os.Build;
 import android.os.Handler;
 import android.view.View;
 import android.view.WindowManager;
-
+import com.google.gson.Gson;
 import com.runt.open.mvvm.base.activities.BaseActivity;
 import com.runt.open.mvvm.base.model.ImpViewModel;
+import com.runt.open.mvvm.config.Configuration;
 import com.runt.open.mvvm.databinding.ActivitySplashBinding;
+import com.runt.open.mvvm.ui.login.UserBean;
 import com.runt.open.mvvm.ui.main.MainActivity;
 
 
@@ -36,6 +38,11 @@ public class SplashActivity extends BaseActivity<ActivitySplashBinding, ImpViewM
 
     @Override
     public void loadData() {
+        String json = getStringProjectPrefrence(Configuration.KEY_USERINFO);
+        if(!isNull(json)){
+            UserBean user = new Gson().fromJson(json ,UserBean.class);
+            UserBean.setUser(user);
+        }
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {

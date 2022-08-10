@@ -1,17 +1,16 @@
 package com.runt.open.mvvm.ui.main.mine;
 
 import com.runt.open.mvvm.base.model.BaseViewModel;
+import com.runt.open.mvvm.data.Results;
 import com.runt.open.mvvm.listener.ResPonse;
 import com.runt.open.mvvm.retrofit.observable.HttpObserver;
 import com.runt.open.mvvm.ui.login.UserBean;
-
-import java.io.File;
-
+import io.reactivex.Observable;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
-import okhttp3.ResponseBody;
-import retrofit2.Call;
+
+import java.io.File;
 
 /**
  * @purpose Created by Runt (qingingrunt2010@qq.com) on 2022/7/27.
@@ -29,8 +28,9 @@ public class MineViewModel extends BaseViewModel {
         }
     }
 
-    public Call<ResponseBody> updateHead(File file){
-        return commonApi.updateHead(MultipartBody.Part.createFormData("head",file.getName(), RequestBody.create(MediaType.parse("text/plain"), file)));
+    public void updateHead(File file, HttpObserver<String> observer){
+        Observable<Results.StringApiResult> observable = commonApi.updateHead(MultipartBody.Part.createFormData("head", file.getName(), RequestBody.create(MediaType.parse("text/plain"), file)));
+        httpObserverOnLoading(observable,observer);
     }
 
 }

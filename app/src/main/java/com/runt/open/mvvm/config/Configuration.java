@@ -9,6 +9,7 @@ public class Configuration {
 
     public final static String KEY_CODE= "code";
     public static final String KEY_TOKEN = "token";
+    public static final String KEY_USERINFO = "userinfo";
     public static final String KEY_USERNAME = "username";
     public static final String KEY_PHONE = "phone";
     public static final String KEY_USERPASS = "userpass";

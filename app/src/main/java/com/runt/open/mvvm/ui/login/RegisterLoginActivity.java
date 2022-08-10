@@ -46,13 +46,10 @@ public class RegisterLoginActivity extends BaseActivity<ActivityLoginBinding,Log
            }
         });
         mViewModel.getLoginResult().observe(this, loggedInUser -> {
-            putBooleanProjectPrefrence(Configuration.IS_LOGIN,true);
             putStringProjectPrefrence(Configuration.KEY_USERNAME, mBinding.editPhone.getText().toString());
-
-            UserBean user = new Gson().fromJson(new Gson().toJson(loggedInUser) ,UserBean.class);
-            UserBean.setUser(user);
-            putStringProjectPrefrence(Configuration.KEY_TOKEN, user.getToken());
-            MyLog.i("registerlogin",user.toString());
+            UserBean.setUser(loggedInUser);
+            putStringProjectPrefrence(Configuration.KEY_USERINFO, new Gson().toJson(loggedInUser));
+            MyLog.i("registerlogin",loggedInUser.toString());
             showToast(R.string.login_success);
             setResult(RESULT_CODE_SUCESS);
             finish();

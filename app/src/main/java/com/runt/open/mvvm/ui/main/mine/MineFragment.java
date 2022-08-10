@@ -2,27 +2,32 @@ package com.runt.open.mvvm.ui.main.mine;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.util.Log;
 import android.view.View;
-
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.permissionx.guolindev.PermissionX;
+import com.luck.picture.lib.PictureSelector;
+import com.luck.picture.lib.config.PictureConfig;
+import com.luck.picture.lib.config.PictureMimeType;
+import com.luck.picture.lib.entity.LocalMedia;
 import com.runt.open.mvvm.BuildConfig;
 import com.runt.open.mvvm.R;
 import com.runt.open.mvvm.base.fragments.BaseFragment;
+import com.runt.open.mvvm.data.HttpApiResult;
+import com.runt.open.mvvm.data.Results;
 import com.runt.open.mvvm.databinding.FragmentMineBinding;
-import com.runt.open.mvvm.listener.ResPonse;
 import com.runt.open.mvvm.retrofit.observable.HttpObserver;
 import com.runt.open.mvvm.ui.login.UserBean;
+import com.runt.open.mvvm.util.GlideEngine;
 import com.runt.open.mvvm.util.MyLog;
-import com.wildma.pictureselector.PictureSelector;
-
-import java.io.File;
-
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import java.io.File;
+import java.util.List;
 
 /**
  * My father is Object, ites purpose of
@@ -118,27 +123,25 @@ public class MineFragment extends BaseFragment<FragmentMineBinding,MineViewModel
      * 打开相册
      */
     public void openAlthum(){
-        PermissionX.init(this)
-                .permissions(mActivity.CAMERA_PERMISSIONS)
-                .request((allGranted, grantedList, deniedList) -> {
-                    if(allGranted){
-                        PictureSelector
-                                .create(this, PictureSelector.SELECT_REQUEST_CODE)
-                                .selectPicture(true, 300, 300, 20, 20);
-                    }else{
-                        mActivity.showDialog("警告", "软件需要权限才能运行", "申请权限", "取消", new ResPonse() {
-                            @Override
-                            public void doSuccess(Object obj) {
-                                openAlthum();
-                            }
-
-                            @Override
-                            public void doError(Object obj) {
-                            }
-                        });
-                    }
-
-                });
+        PictureSelector.create(this)
+                .openGallery(PictureMimeType.ofImage()) // 全部.PictureMimeType.ofAll()、图片.ofImage()、视频.ofVideo()、音频.ofAudio()
+                .imageEngine(GlideEngine.Companion.getInstance()) // 外部传入图片加载引擎，必传项
+                .maxSelectNum(1) // 最大图片选择数量
+                .minSelectNum(1) // 最小选择数量
+                .imageSpanCount(3) // 每行显示个数
+                .isReturnEmpty(true) // 未选择数据时点击按钮是否可以返回
+                .isAndroidQTransform(false) // 是否需要处理Android Q 拷贝至应用沙盒的操作，只针对compress(false); && .isEnableCrop(false);有效,默认处理
+                .setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT) // 设置相册Activity方向，不设置默认使用系统
+                .isSingleDirectReturn(true) // 单选模式下是否直接返回，PictureConfig.SINGLE模式下有效
+                .isPreviewImage(true) // 是否可预览图片
+                .isCamera(true) // 是否显示拍照按钮
+                .isZoomAnim(false) // 图片列表点击 缩放效果 默认true
+                .isEnableCrop(true) // 是否裁剪
+                .withAspectRatio(1, 1) // 裁剪比例 如16:9 3:2 3:4 1:1 可自定义
+                .isCompress(false) // 是否压缩
+                .cutOutQuality(100) // 裁剪输出质量 默认100
+                .selectionMode(PictureConfig.SINGLE)
+                .forResult(PictureConfig.CHOOSE_REQUEST);//结果回调onActivityResult code
     }
 
 
@@ -147,24 +150,18 @@ public class MineFragment extends BaseFragment<FragmentMineBinding,MineViewModel
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         /*结果回调*/
-        if (requestCode == PictureSelector.SELECT_REQUEST_CODE) {
+        if (requestCode == PictureConfig.CHOOSE_REQUEST) {
             if (data != null) {
-                String picturePath = data.getStringExtra(PictureSelector.PICTURE_PATH);
-                MyLog.i("mineActivity","picturePath:"+picturePath);
-                final  File file = new File(picturePath);
-                mViewModel.updateHead(file).enqueue(new Callback<ResponseBody>() {
+                List<LocalMedia> selectList = PictureSelector.obtainMultipleResult(data);
+                final  File file = new File(selectList.get(0).getCutPath());
+                MyLog.i("mineActivity","picturePath:"+selectList.get(0).getCutPath()+" exists:"+file.exists());
+                mViewModel.updateHead(file, new HttpObserver<String>() {
                     @Override
-                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                        /*UserBean.getUser().setHead(obj.toString());
-                        file.delete();
-                        Glide.with(getContext()).load(BuildConfig.HOST_IP_ADDR+UserBean.getUser().getHead()) .into(mBinding.img); //获取选取的图片*/
-
+                    protected void onSuccess(String data) {
+                        UserBean.getUser().setHead(data);
+                        Glide.with(getContext()).load(BuildConfig.HOST_IP_ADDR+UserBean.getUser().getHead()) .into(mBinding.img); //获取选取的图片
                     }
 
-                    @Override
-                    public void onFailure(Call<ResponseBody> call, Throwable t) {
-                        file.delete();
-                    }
                 });
             }
         }else if(requestCode == REQUEST_CODE_SIGN && resultCode == Activity.RESULT_OK){
