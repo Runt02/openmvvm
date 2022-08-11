@@ -7,7 +7,7 @@ import com.runt.open.mvvm.databinding.ActivityMsgDetailBinding;
 import com.runt.open.mvvm.util.HandleDate;
 
 /**
- * @purpose Created by Runt (qingingrunt2010@qq.com) on 2022/8/11.
+ * @purpose Created by Runt (qingingrunt2010@qq.com) on 2020-10-29.
  */
 public class MsgDetailActivity extends BaseActivity<ActivityMsgDetailBinding,MsgDetailViewModel> {
     @Override

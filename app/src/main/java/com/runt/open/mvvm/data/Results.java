@@ -1,5 +1,9 @@
 package com.runt.open.mvvm.data;
 
+import com.runt.open.mvvm.ui.login.UserBean;
+
+import java.util.Date;
+
 /**
  * My father is Object, ites purpose of
  *
@@ -23,4 +27,15 @@ public class Results {
         public String version,detail,access;
     }
 
+    //金币记录
+    public class CustomCoin{
+        public String id;
+        public UserBean toUser,fromUser;
+        public int count,after,before,type;
+        public Date cTime;
+        /**
+         * 备注
+         **/
+        public Object remark;
+    }
 }

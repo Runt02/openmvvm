@@ -17,4 +17,11 @@ public class PageViewModels {
             return commonApi.getMsgList(page,SIZE);
         }
     }
+
+    public static class CoinRecordViewModel extends LoadPageViewModel<Results.CustomCoin>{
+        @Override
+        public Observable<HttpApiResult<PageResult<Results.CustomCoin>>> request(int page, Object... objects) {
+            return commonApi.getCoinRecord(page,SIZE,(int)objects[0]);
+        }
+    }
 }

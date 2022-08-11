@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.view.View;
+import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.luck.picture.lib.PictureSelector;
@@ -14,10 +15,14 @@ import com.runt.open.mvvm.BuildConfig;
 import com.runt.open.mvvm.R;
 import com.runt.open.mvvm.base.fragments.BaseFragment;
 import com.runt.open.mvvm.databinding.FragmentMineBinding;
+import com.runt.open.mvvm.listener.ResPonse;
 import com.runt.open.mvvm.retrofit.observable.HttpObserver;
+import com.runt.open.mvvm.ui.loadpage.PageActivitys;
 import com.runt.open.mvvm.ui.login.UserBean;
 import com.runt.open.mvvm.util.GlideEngine;
 import com.runt.open.mvvm.util.MyLog;
+import sakura.bottommenulibrary.bottompopfragmentmenu.BottomMenuFragment;
+import sakura.bottommenulibrary.bottompopfragmentmenu.MenuItem;
 
 import java.io.File;
 import java.util.List;
@@ -73,7 +78,7 @@ public class MineFragment extends BaseFragment<FragmentMineBinding,MineViewModel
                     }
                 });
                 break;
-           /* case R.id.lin_coin://金币
+            case R.id.lin_coin://金币
                 new BottomMenuFragment(getActivity())
                         .addMenuItems(new MenuItem("查看记录"))
                         .addMenuItems(new MenuItem("申请提现"))
@@ -81,7 +86,7 @@ public class MineFragment extends BaseFragment<FragmentMineBinding,MineViewModel
                             @Override
                             public void onItemClick(TextView menu_item, int position) {
                                 if(position == 0){
-                                    startActivity(new Intent(mActivity, CoinRecordActivity.class) );
+                                    startActivity(new Intent(mActivity, PageActivitys.CoinRecordActivity.class) );
                                 }else {
                                     if(mActivity.isNull(UserBean.getUser().getAlipay())){
                                         mActivity.showDialog("设置支付宝", "您还没有设置支付宝账号", "设置", "取消", new ResPonse() {
@@ -107,7 +112,7 @@ public class MineFragment extends BaseFragment<FragmentMineBinding,MineViewModel
                 break;
             case R.id.lin_sign://签到
                 startActivityForResult(new Intent(getContext(), SignInActivity.class),REQUEST_CODE_SIGN);
-                break;*/
+                break;
         }
     }
 

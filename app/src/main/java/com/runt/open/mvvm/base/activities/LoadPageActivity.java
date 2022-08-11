@@ -28,6 +28,8 @@ public abstract class LoadPageActivity<VB extends ViewBinding,VM extends LoadPag
     //适配器
     protected A adapter;
 
+    protected abstract String initTitle();
+
     @Override
     public void initViews() {
         try {

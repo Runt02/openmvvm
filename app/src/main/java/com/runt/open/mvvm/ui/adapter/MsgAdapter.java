@@ -1,4 +1,4 @@
-package com.runt.open.mvvm.ui.main.home;
+package com.runt.open.mvvm.ui.adapter;
 
 import android.content.Intent;
 import android.view.View;

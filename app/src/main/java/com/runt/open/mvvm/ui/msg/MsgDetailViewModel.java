@@ -7,7 +7,7 @@ import com.runt.open.mvvm.data.Results;
 import com.runt.open.mvvm.retrofit.observable.HttpObserver;
 
 /**
- * @purpose Created by Runt (qingingrunt2010@qq.com) on 2022/8/11.
+ * @purpose Created by Runt (qingingrunt2010@qq.com) on 2020-10-29.
  */
 public class MsgDetailViewModel extends BaseViewModel {
 

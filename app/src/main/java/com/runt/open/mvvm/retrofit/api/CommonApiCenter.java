@@ -79,4 +79,13 @@ public interface CommonApiCenter {
      */
     @GET("getMsgDetail")
     Observable<HttpApiResult<Results.Message>> getMsgDetail(@Query("id") String id);
+
+    /**
+     * 获取金币记录
+     * @param pageNum   页数
+     * @param pageSize  每页数量
+     * @return
+     */
+    @GET("coinRecord")
+    Observable<HttpApiResult<PageResult<Results.CustomCoin>>> getCoinRecord(@Query("page") int pageNum, @Query("size") int pageSize, @Query("inOrOut") int inOrOut);
 }
