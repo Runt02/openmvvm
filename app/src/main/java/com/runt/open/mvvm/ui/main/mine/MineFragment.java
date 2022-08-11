@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.view.View;
 import android.widget.TextView;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.luck.picture.lib.PictureSelector;
@@ -17,8 +19,10 @@ import com.runt.open.mvvm.base.fragments.BaseFragment;
 import com.runt.open.mvvm.databinding.FragmentMineBinding;
 import com.runt.open.mvvm.listener.ResPonse;
 import com.runt.open.mvvm.retrofit.observable.HttpObserver;
+import com.runt.open.mvvm.ui.coin.CoinSettingActivity;
 import com.runt.open.mvvm.ui.loadpage.PageActivitys;
 import com.runt.open.mvvm.ui.login.UserBean;
+import com.runt.open.mvvm.ui.sign.SignInActivity;
 import com.runt.open.mvvm.util.GlideEngine;
 import com.runt.open.mvvm.util.MyLog;
 import sakura.bottommenulibrary.bottompopfragmentmenu.BottomMenuFragment;
@@ -36,7 +40,9 @@ import java.util.List;
 public class MineFragment extends BaseFragment<FragmentMineBinding,MineViewModel> implements View.OnClickListener {
 
     private final  String TAG = "MineFragment";
+    ActivityResultLauncher<Intent> signLaunch = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
 
+    });
     @Override
     public void initViews() {
     }
@@ -103,7 +109,7 @@ public class MineFragment extends BaseFragment<FragmentMineBinding,MineViewModel
                                             }
                                         });
                                     }else{
-                                        startActivityForResult(new Intent(mActivity, WithDrawActivity.class),REQUEST_CODE_WITHDRAW );
+                                        //startActivityForResult(new Intent(mActivity, WithDrawActivity.class),REQUEST_CODE_WITHDRAW );
                                     }
                                 }
                             }
@@ -111,7 +117,7 @@ public class MineFragment extends BaseFragment<FragmentMineBinding,MineViewModel
                         .show();
                 break;
             case R.id.lin_sign://签到
-                startActivityForResult(new Intent(getContext(), SignInActivity.class),REQUEST_CODE_SIGN);
+                signLaunch.launch(new Intent(getContext(), SignInActivity.class));
                 break;
         }
     }

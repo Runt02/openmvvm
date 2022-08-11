@@ -8,6 +8,7 @@ import io.reactivex.Observable;
 import okhttp3.MultipartBody;
 import retrofit2.http.*;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -63,16 +64,6 @@ public interface CommonApiCenter {
     @POST("updatehead")
     Observable<Results.StringApiResult> updateHead(@Part MultipartBody.Part file);
 
-
-    /**
-     * 获取咨询列表
-     * @param pageNum   页数
-     * @param pageSize  每页数量
-     * @return
-     */
-    @GET("getMsgList")
-    Observable<HttpApiResult<PageResult<Results.Message>>> getMsgList(@Query("page") int pageNum, @Query("size") int pageSize);
-
     /**
      * app更新
      * @return
@@ -80,12 +71,21 @@ public interface CommonApiCenter {
     @GET("getMsgDetail")
     Observable<HttpApiResult<Results.Message>> getMsgDetail(@Query("id") String id);
 
+    @POST("updateAlipay")
+    Observable<Results.StringApiResult> updateAlipay(@Field("account") String account,@Field("paypass") String paypass);
+
+    @POST("updateRealname")
+    Observable<Results.StringApiResult> updateRealname(@Field("account") String account,@Field("paypass") String paypass);
+
     /**
-     * 获取金币记录
-     * @param pageNum   页数
-     * @param pageSize  每页数量
+     * 获取签到列表
+     * @param month
      * @return
      */
-    @GET("coinRecord")
-    Observable<HttpApiResult<PageResult<Results.CustomCoin>>> getCoinRecord(@Query("page") int pageNum, @Query("size") int pageSize, @Query("inOrOut") int inOrOut);
+    @GET("getSignsByMonth")
+    Observable<HttpApiResult<List<String>>> getSignsByMonth(@Query("month") String month);
+
+    @POST("signIn")
+    Observable<Results.StringApiResult> signIn();
+
 }

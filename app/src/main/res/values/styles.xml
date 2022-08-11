@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <declare-styleable name="TitleBarView">
         <attr name="leftDrawable" format="reference"/>
@@ -67,6 +67,7 @@
     </style>
 
     <style name="titlebar">
+        <item name="android:id" tools:ignore="AaptCrash">@+id/title_bar</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">?attr/actionBarSize</item>
         <item name="android:background">@color/white</item>

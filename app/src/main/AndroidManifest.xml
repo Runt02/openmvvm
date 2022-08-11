@@ -48,6 +48,9 @@
         <activity android:name=".ui.SettingActivity" />
         <activity android:name=".ui.AboutActivity" />
         <activity android:name=".ui.msg.MsgDetailActivity" />
+        <activity android:name=".ui.sign.SignInActivity" />
+        <activity android:name=".ui.coin.CoinSettingActivity" />
+        <activity android:name=".ui.loadpage.PageActivitys$CoinRecordActivity" tools:ignore="Instantiatable"/>
 
     </application>
 
