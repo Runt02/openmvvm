@@ -5,6 +5,8 @@ import com.runt.open.mvvm.data.Results;
 import com.runt.open.mvvm.databinding.RefreshRecyclerBinding;
 import com.runt.open.mvvm.ui.adapter.CoinTransAdapter;
 
+import java.util.Map;
+
 /**
  * @purpose Created by Runt (qingingrunt2010@qq.com) on 2020-9-17.
  */
@@ -15,6 +17,13 @@ public class PageActivitys {
         @Override
         protected String initTitle() {
             return "金币记录";
+        }
+
+        @Override
+        protected Map requestParams() {
+            Map map = super.requestParams();
+            map.put("inOrOut",0);
+            return map;
         }
     }
 

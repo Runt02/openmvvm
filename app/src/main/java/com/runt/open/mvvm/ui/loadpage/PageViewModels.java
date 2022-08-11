@@ -1,11 +1,7 @@
 package com.runt.open.mvvm.ui.loadpage;
 
 import com.runt.open.mvvm.base.model.LoadPageViewModel;
-import com.runt.open.mvvm.data.HttpApiResult;
-import com.runt.open.mvvm.data.PageResult;
 import com.runt.open.mvvm.data.Results;
-
-import io.reactivex.Observable;
 
 /**
  * @purpose Created by Runt (qingingrunt2010@qq.com) on 2020-9-17.
@@ -13,15 +9,15 @@ import io.reactivex.Observable;
 public class PageViewModels {
     public static class HomeViewModel extends LoadPageViewModel<Results.Message> {
         @Override
-        public Observable<HttpApiResult<PageResult<Results.Message>>> request(int page, Object... objects) {
-            return commonApi.getMsgList(page,SIZE);
+        protected String requestUrl() {
+            return "getMsgList";
         }
     }
 
     public static class CoinRecordViewModel extends LoadPageViewModel<Results.CustomCoin>{
         @Override
-        public Observable<HttpApiResult<PageResult<Results.CustomCoin>>> request(int page, Object... objects) {
-            return commonApi.getCoinRecord(page,SIZE,(int)objects[0]);
+        protected String requestUrl() {
+            return "coinRecord";
         }
     }
 }
