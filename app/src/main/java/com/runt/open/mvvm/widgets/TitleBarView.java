@@ -102,36 +102,49 @@ public class TitleBarView extends View {
         super.onDraw(canvas);
         Log.e("TitleBarView","onDraw mRect:"+mRect);
         if(leftDra != null){
-            final Bitmap bitmap = drawableToBitmap(leftDra);
-            float top = mRect.top+(viewHeight-bitmap.getHeight()*2f)/2;
-            float left = mRect.left-bitmap.getWidth()*0.5f;
-            leftClickRect = new RectF(left,top,left + (bitmap.getWidth()*2f),top + bitmap.getHeight()*2f);
-            canvas.drawBitmap(bitmap,mRect.left,mRect.top+(viewHeight-bitmap.getHeight())/2,null);
+            //点击的区域
+            leftClickRect = drawBitmap(leftDra,canvas,getPaddingLeft());
 
         }
         if(rightDra != null){
-            final Bitmap bitmap = drawableToBitmap(rightDra);
-            float chaTop = (viewHeight-bitmap.getHeight())/2;
-            float top = mRect.top+chaTop;
-            float left = mRect.right-bitmap.getWidth();
-            rightClickRect = new RectF(left-bitmap.getWidth()/2,top-bitmap.getHeight()/2,left+bitmap.getWidth()*2f,top+bitmap.getHeight()*1.5f);
-            canvas.drawBitmap(bitmap,left,top,null);
+            //点击的区域
+            rightClickRect = drawBitmap(rightDra,canvas,getPaddingRight()+viewWidth);
         }
         if(titleText != null){
             final int textWidth = getTextWidth(textPaint, titleText);
-            final int textHeight = getTextHeight(textPaint);
-            final Paint.FontMetrics fontMetrics = textPaint.getFontMetrics();
-            canvas.drawText(titleText,mRect.left+((viewWidth-textWidth)/2),mRect.top+((viewHeight-textHeight)/2)+(0-fontMetrics.ascent),textPaint);
+            final float[] textHeight = getTextHeight(textPaint);
+            float top = (getHeight()-textHeight[0])/2-textPaint.getFontMetrics().ascent;
+            canvas.drawText(titleText,mRect.left+((viewWidth-textWidth)/2),top,textPaint);
         }
         if(rightText != null){
             final int textWidth = getTextWidth(rightTextPaint, rightText);
-            final int textHeight = getTextHeight(rightTextPaint);
-            final Paint.FontMetrics fontMetrics = rightTextPaint.getFontMetrics();
+            final float[] textHeight = getTextHeight(rightTextPaint);
+            float chaleft = textWidth*0.5f;
+            float chaTop = textHeight[0]*0.5f;
             float left = mRect.right-textWidth;
-            float top = mRect.top+((viewHeight-textHeight)/2)+(0-fontMetrics.ascent);
-            rightClickRect = new RectF(left-textWidth/2,top-textHeight,left+textWidth*2f,top+textHeight/2);
+            float top = (getHeight()-textHeight[0])/2-textPaint.getFontMetrics().ascent;
+            rightClickRect = new RectF(left-chaleft,top-chaTop,left +chaleft*3,top + chaTop*3);
             canvas.drawText(rightText,left,top,rightTextPaint);
         }
+    }
+
+    /**
+     * 绘制图片
+     * @param drawable
+     * @param canvas
+     * @return  点击的区域
+     */
+    private RectF drawBitmap(Drawable drawable,Canvas canvas,float left){
+        final Bitmap bitmap = drawableToBitmap(drawable);
+        if(left>viewWidth){//右侧
+            left -= bitmap.getWidth();
+        }
+        float chaTop = bitmap.getHeight()*0.5f;
+        float chaleft = bitmap.getWidth()*0.5f;
+        //绘制的位置
+        float top = (getHeight()-bitmap.getHeight())/2;
+        canvas.drawBitmap(bitmap,left,top,null);
+        return new RectF(left-chaleft,top-chaTop,left +chaleft*3,top + chaTop*3);
     }
     @Override
     public boolean onTouchEvent(MotionEvent event) {
@@ -244,11 +257,11 @@ public class TitleBarView extends View {
     }
 
     //第二个参数是一个数组.传进去个长度跟字符串长度相同的float数组,方法调用后,里边塞的是每个字符的长度.
-    public  int  getTextHeight(Paint paint) {
+    public float[] getTextHeight(Paint paint) {
         Paint.FontMetrics fm = paint.getFontMetrics();
         float height1 = fm.descent - fm.ascent;//文字的高度
         float height2 = fm.bottom - fm.top + fm.leading;//行高
-        return (int) height2;
+        return new float[]{height1,height2};
     }
 
     private void setTint(Drawable drawable, @ColorInt int color){

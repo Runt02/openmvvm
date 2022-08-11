@@ -3,7 +3,6 @@ package com.runt.open.mvvm.ui.main.mine;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.util.Log;
 import android.view.View;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -14,17 +13,11 @@ import com.luck.picture.lib.entity.LocalMedia;
 import com.runt.open.mvvm.BuildConfig;
 import com.runt.open.mvvm.R;
 import com.runt.open.mvvm.base.fragments.BaseFragment;
-import com.runt.open.mvvm.data.HttpApiResult;
-import com.runt.open.mvvm.data.Results;
 import com.runt.open.mvvm.databinding.FragmentMineBinding;
 import com.runt.open.mvvm.retrofit.observable.HttpObserver;
 import com.runt.open.mvvm.ui.login.UserBean;
 import com.runt.open.mvvm.util.GlideEngine;
 import com.runt.open.mvvm.util.MyLog;
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 import java.io.File;
 import java.util.List;
@@ -71,11 +64,11 @@ public class MineFragment extends BaseFragment<FragmentMineBinding,MineViewModel
                 openAlthum();
                 break;
             case R.id.txt_name://名称
-                mViewModel.updateName(new HttpObserver() {
+                mViewModel.updateName(new HttpObserver<String>() {
                     @Override
-                    protected void onSuccess(Object data) {
-                        UserBean.getUser().setUsername(data.toString());
-                        mBinding.txtName.setText(data.toString());
+                    protected void onSuccess(String data) {
+                        UserBean.getUser().setUsername(data);
+                        mBinding.txtName.setText(data);
 
                     }
                 });

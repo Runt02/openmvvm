@@ -45,6 +45,9 @@
         <activity android:name=".ui.main.MainActivity" />
         <activity android:name=".ui.login.RegisterLoginActivity" />
         <activity android:name=".ui.web.WebViewActivity" />
+        <activity android:name=".ui.SettingActivity" />
+        <activity android:name=".ui.AboutActivity" />
+
     </application>
 
 </manifest>

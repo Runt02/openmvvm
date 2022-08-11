@@ -69,4 +69,8 @@
     <string name="str_restart">重启APP</string>
     <string name="str_success">成功</string>
     <string name="str_no_up">暂无更新</string>
+
+    <string name="title_guanui_text_1">版权所有©</string>
+    <string name="title_guanui_text_2">xxx科技有限责任公司 </string>
+    <string name="title_guanui_text_3">ICP备案：冀ICP备20008xxx号-1</string>
 </resources>

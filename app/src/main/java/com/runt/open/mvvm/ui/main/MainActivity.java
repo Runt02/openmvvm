@@ -5,11 +5,9 @@ import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.view.KeyEvent;
 import android.view.View;
-
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.viewpager2.widget.ViewPager2;
-
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.permissionx.guolindev.PermissionX;
 import com.runt.open.mvvm.R;
@@ -20,6 +18,7 @@ import com.runt.open.mvvm.data.PhoneDevice;
 import com.runt.open.mvvm.databinding.ActivityMainBinding;
 import com.runt.open.mvvm.listener.CustomClickListener;
 import com.runt.open.mvvm.listener.ResPonse;
+import com.runt.open.mvvm.ui.SettingActivity;
 import com.runt.open.mvvm.ui.loadpage.PageFragments;
 import com.runt.open.mvvm.ui.login.RegisterLoginActivity;
 import com.runt.open.mvvm.ui.login.UserBean;
@@ -41,12 +40,18 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
 
     @Override
     public void initViews() {
-
-        mBinding.titleBar.setRightDra(getResources().getDrawable(R.mipmap.icon_white_setting));
-        mBinding.titleBar.setRightClick(new CustomClickListener() {
+        ActivityResultLauncher<Intent>  settingLaunch = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+            if(result.getResultCode() == RESULT_CODE_SUCESS){//已退出
+                if(mBinding.viewPager2.getCurrentItem() == 2) {
+                    mBinding.viewPager2.setCurrentItem(0);//设置默认第二页
+                }
+                fragments[2].loadData();//登录后重新刷新
+            }
+        });
+        titleBarView.setRightClick(new CustomClickListener() {
             @Override
             protected void onSingleClick(View view) {
-                //startActivityForResult(new Intent(mContext,SettingActivity.class),REQUEST_CODE_LOGOUT);//打开设置
+                settingLaunch.launch(new Intent(mContext, SettingActivity.class));//打开设置
             }
         });
         final FragmentAdapter fragmentAdapter = new FragmentAdapter(this);
@@ -109,7 +114,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
     private void setTitleStr(int position){
         switch (position){
             case 0:
-                setTitle("资讯");
+                setTitle("资讯Aljkpqla");
                 break;
             case 1:
                 setTitle("服务");

@@ -2,57 +2,57 @@
 <resources>
 
     <declare-styleable name="TitleBarView">
-        <attr name="leftDrawable" format="reference" />
-        <attr name="rightDrawable" format="reference" />
-        <attr name="rightDrawablePadding" format="dimension" />
-        <attr name="titleText" format="string" />
-        <attr name="titleTextSize" format="dimension" />
-        <attr name="titleTextColor" format="color" />
-        <attr name="rightText" format="string" />
-        <attr name="rightTextSize" format="dimension" />
-        <attr name="rightTextColor" format="color" />
-        <attr name="leftTint" format="color" />
-        <attr name="rightTint" format="color" />
+        <attr name="leftDrawable" format="reference"/>
+        <attr name="rightDrawable" format="reference"/>
+        <attr name="rightDrawablePadding" format="dimension"/>
+        <attr name="titleText" format="string"/>
+        <attr name="titleTextSize" format="dimension"/>
+        <attr name="titleTextColor" format="color"/>
+        <attr name="rightText" format="string"/>
+        <attr name="rightTextSize" format="dimension"/>
+        <attr name="rightTextColor" format="color"/>
+        <attr name="leftTint" format="color"/>
+        <attr name="rightTint" format="color"/>
     </declare-styleable>
 
 
     <declare-styleable name="LinearLayoutWithText">
-        <attr name="linbackgroundColor" format="color" />
-        <attr name="text_title" format="string" />
-        <attr name="text_titleColor"  format="color"/>
-        <attr name="text_right"  format="string"/>
-        <attr name="hint_right" format="string" />
-        <attr name="hint_title" format="string" />
-        <attr name="text_rightColor"  format="color"/>
+        <attr name="linbackgroundColor" format="color"/>
+        <attr name="text_title" format="string"/>
+        <attr name="text_titleColor" format="color"/>
+        <attr name="text_right" format="string"/>
+        <attr name="hint_right" format="string"/>
+        <attr name="hint_title" format="string"/>
+        <attr name="text_rightColor" format="color"/>
         <attr name="divider_visible">
-            <enum name="visible" value="0" />
-            <enum name="invisible" value="4" />
-            <enum name="gone" value="8" />
+            <enum name="visible" value="0"/>
+            <enum name="invisible" value="4"/>
+            <enum name="gone" value="8"/>
         </attr>
         <attr name="img_visible">
-            <enum name="visible" value="0" />
-            <enum name="invisible" value="4" />
-            <enum name="gone" value="8" />
+            <enum name="visible" value="0"/>
+            <enum name="invisible" value="4"/>
+            <enum name="gone" value="8"/>
         </attr>
-        <attr name="text_rightSize"  format="integer"/>
-        <attr name="text_titleSize"  format="integer"/>
-        <attr name="red_poit_count"  format="integer"/>
-        <attr name="paddingLeft" format="dimension" />
-        <attr name="paddingRight" format="dimension" />
-        <attr name="paddingTop" format="dimension" />
-        <attr name="paddingBottom" format="dimension" />
-        <attr name="padding" format="dimension" />
-        <attr name="hint_titleColor"  format="color"/>
-        <attr name="hint_rightColor"  format="color"/>
-        <attr name="leftCompoundDrawable" format="reference" />
-        <attr name="leftCompoundDrawableSize"  format="integer"/>
-        <attr name="rightCompoundDrawable" format="reference" />
-        <attr name="enable" format="boolean" />
+        <attr name="text_rightSize" format="integer"/>
+        <attr name="text_titleSize" format="integer"/>
+        <attr name="red_poit_count" format="integer"/>
+        <attr name="paddingLeft" format="dimension"/>
+        <attr name="paddingRight" format="dimension"/>
+        <attr name="paddingTop" format="dimension"/>
+        <attr name="paddingBottom" format="dimension"/>
+        <attr name="padding" format="dimension"/>
+        <attr name="hint_titleColor" format="color"/>
+        <attr name="hint_rightColor" format="color"/>
+        <attr name="leftCompoundDrawable" format="reference"/>
+        <attr name="leftCompoundDrawableSize" format="integer"/>
+        <attr name="rightCompoundDrawable" format="reference"/>
+        <attr name="enable" format="boolean"/>
     </declare-styleable>
 
     <declare-styleable name="CircleImageView">
-        <attr name="border_width" format="dimension" />
-        <attr name="border_color" format="color" />
+        <attr name="border_width" format="dimension"/>
+        <attr name="border_color" format="color"/>
     </declare-styleable>
 
     <style name="txt_normal">
@@ -133,5 +133,20 @@
         <item name="android:paddingRight">30dp</item>
         <item name="android:paddingLeft">30dp</item>
         <item name="android:textColor">@color/link</item>
+    </style>
+
+    <style name="lin_txt">
+        <item name="layout_constraintRight_toRightOf">parent</item>
+        <item name="layout_constraintLeft_toLeftOf">parent</item>
+        <item name="android:background">@drawable/bg_white</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">left</item>
+        <item name="android:textColor">@color/txt_color</item>
+        <item name="android:textSize">@dimen/title_size</item>
+        <item name="android:paddingTop">@dimen/default_margin_td</item>
+        <item name="android:paddingBottom">@dimen/default_margin_td</item>
+        <item name="android:paddingLeft">@dimen/default_margin_lr</item>
+        <item name="android:paddingRight">@dimen/default_margin_lr</item>
     </style>
 </resources>

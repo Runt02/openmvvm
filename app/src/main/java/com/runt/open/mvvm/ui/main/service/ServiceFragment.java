@@ -10,7 +10,7 @@ import com.runt.open.mvvm.databinding.FragmentServiceBinding;
 import com.runt.open.mvvm.listener.ResPonse;
 
 /**
- * @purpose Created by Runt (qingingrunt2010@qq.com) on 2022/7/27.
+ * @purpose Created by Runt (qingingrunt2010@qq.com) on 2020-9-17.
  */
 public class ServiceFragment extends BaseFragment<FragmentServiceBinding, ImpViewModel> implements View.OnClickListener {
 

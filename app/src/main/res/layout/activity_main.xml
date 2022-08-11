@@ -10,6 +10,8 @@
     <com.runt.open.mvvm.widgets.TitleBarView
         android:id="@+id/title_bar"
         style="@style/titlebar"
+        app:rightDrawable="@mipmap/icon_white_setting"
+        app:rightTint="@color/black"
         tools:ignore="MissingConstraints"
         app:titleText="标题" />
 

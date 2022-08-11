@@ -9,7 +9,8 @@
     <com.runt.open.mvvm.widgets.TitleBarView
         android:id="@+id/title_bar"
         style="@style/titlebar"
-        app:leftDrawable="@mipmap/ic_arrow_back_black_24dp"
+        app:leftDrawable="@mipmap/icon_white_back"
+        app:leftTint="@color/txt_normal"
         app:titleText="登录"
         tools:ignore="MissingConstraints" />
 

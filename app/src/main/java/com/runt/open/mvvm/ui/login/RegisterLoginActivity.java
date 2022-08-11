@@ -20,7 +20,7 @@ import java.util.Date;
 /**
  * My father is Object, ites purpose of
  *
- * @purpose Created by Runt (qingingrunt2010@qq.com) on 2022/1/29.
+ * @purpose Created by Runt (qingingrunt2010@qq.com) on 2020-9-17.
  */
 public class RegisterLoginActivity extends BaseActivity<ActivityLoginBinding,LoginViewModel> {
     final String VERIFY_CODE = "verify_code";

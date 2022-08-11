@@ -82,7 +82,7 @@ public abstract class BaseActivity<VB extends ViewBinding,VM extends BaseViewMod
             RESULT_CODE_SUCESS = 4046/*成功*/,
             RESULT_CODE_CANCEL = 4043/*取消*/;
     protected Context mContext;
-    TitleBarView titleBarView;
+    protected TitleBarView titleBarView;
 
 
     @Override

@@ -1,7 +1,6 @@
 package com.runt.open.mvvm.retrofit.api;
 
 
-import com.runt.open.mvvm.data.ApkUpGradeResult;
 import com.runt.open.mvvm.data.HttpApiResult;
 import com.runt.open.mvvm.data.PageResult;
 import com.runt.open.mvvm.data.Results;
@@ -54,11 +53,11 @@ public interface CommonApiCenter {
      * app更新
      * @return
      */
-    @GET("system/appupgrade/tourist/get/2")
-    Observable<ApkUpGradeResult> getAppUpdate();
+    @GET("getControlVersion")
+    Observable<HttpApiResult<Results.ApkVersion>> getAppUpdate();
 
     @POST("updateName")
-    Observable<ApkUpGradeResult> updateName(@Field("username") String name);
+    Observable<Results.StringApiResult> updateName(@Field("username") String name);
 
     @Multipart
     @POST("updatehead")

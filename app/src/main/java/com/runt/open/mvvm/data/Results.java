@@ -3,7 +3,7 @@ package com.runt.open.mvvm.data;
 /**
  * My father is Object, ites purpose of
  *
- * @purpose Created by Runt (qingingrunt2010@qq.com) on 2022/1/29.
+ * @purpose Created by Runt (qingingrunt2010@qq.com) on 2020-9-17.
  */
 public class Results {
 
@@ -15,6 +15,12 @@ public class Results {
     //资讯信息
     public class Message {
         public String id,title,content,cTime;
+    }
+
+    //版本更新
+    public class ApkVersion{
+        public long id,code;
+        public String version,detail,access;
     }
 
 }

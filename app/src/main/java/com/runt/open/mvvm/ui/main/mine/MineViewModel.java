@@ -13,11 +13,11 @@ import okhttp3.RequestBody;
 import java.io.File;
 
 /**
- * @purpose Created by Runt (qingingrunt2010@qq.com) on 2022/7/27.
+ * @purpose Created by Runt (qingingrunt2010@qq.com) on 2020-9-17.
  */
 public class MineViewModel extends BaseViewModel {
 
-    public void updateName(HttpObserver observer){
+    public void updateName(HttpObserver<String> observer){
         if(UserBean.getUser().getPhone().equals(UserBean.getUser().getUsername())) {
             mActivity.showInputDialog("输入名称", UserBean.getUser().getUsername(), "名称只能修改一次", new ResPonse() {
                 @Override

@@ -8,7 +8,7 @@ import com.runt.open.mvvm.data.Results;
 import io.reactivex.Observable;
 
 /**
- * @purpose Created by Runt (qingingrunt2010@qq.com) on 2022/8/9.
+ * @purpose Created by Runt (qingingrunt2010@qq.com) on 2020-9-17.
  */
 public class PageViewModels {
     public static class HomeViewModel extends LoadPageViewModel<Results.Message> {
