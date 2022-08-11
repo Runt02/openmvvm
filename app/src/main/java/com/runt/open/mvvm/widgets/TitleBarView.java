@@ -2,22 +2,14 @@ package com.runt.open.mvvm.widgets;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Rect;
-import android.graphics.RectF;
-import android.graphics.drawable.BitmapDrawable;
+import android.graphics.*;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-
 import androidx.annotation.ColorInt;
 import androidx.annotation.Nullable;
-
 import com.runt.open.mvvm.R;
 import com.runt.open.mvvm.util.DimensionUtils;
 
@@ -32,7 +24,7 @@ public class TitleBarView extends View {
     String titleText,rightText;
     @ColorInt int titleColor,rightTextColor;
     float titleSize,rightTextSize,rightPadding;
-    Paint textPaint,rightTextPaint,drawPaint;
+    Paint textPaint,rightTextPaint;
     int viewWidth,viewHeight;
     OnClickListener leftClick,rightClick;
     int touchStartX,touchStartY;
@@ -75,27 +67,24 @@ public class TitleBarView extends View {
         if(rightTint != -1) {
             setTint(rightDra,rightTint);
         }
-        textPaint = new Paint();
-        textPaint.setAntiAlias(true); // 是否抗锯齿
+
+        textPaint = initPaint(titleColor,titleSize,4);
+
+        rightTextPaint = initPaint(rightTextColor,rightTextSize,4);
+
+    }
+
+    private Paint initPaint(int color,float size,int stroke){
+        Paint paint = new Paint();
+        paint.setAntiAlias(true); // 是否抗锯齿
         //mTextPaint.setAlpha(50); // 设置alpha不透明度，范围为0~255
-        textPaint.setColor(titleColor);
-        textPaint.setTextSize(titleSize);
+        paint.setColor(color);
+        paint.setTextSize(size);
         //        设置画笔属性
-        textPaint.setStyle(Paint.Style.FILL);//画笔属性是实心圆
+        paint.setStyle(Paint.Style.FILL);//画笔属性是实心圆
         //  paint.setStyle(Paint.Style.STROKE);//画笔属性是空心圆
-        textPaint.setStrokeWidth(4);//设置画笔粗细
-
-
-        rightTextPaint = new Paint();
-        rightTextPaint.setAntiAlias(true); // 是否抗锯齿
-        //mTextPaint.setAlpha(50); // 设置alpha不透明度，范围为0~255
-        rightTextPaint.setColor(rightTextColor);
-        rightTextPaint.setTextSize(rightTextSize);
-        //        设置画笔属性
-        rightTextPaint.setStyle(Paint.Style.FILL);//画笔属性是实心圆
-        //  paint.setStyle(Paint.Style.STROKE);//画笔属性是空心圆
-        rightTextPaint.setStrokeWidth(4);//设置画笔粗细
-
+        paint.setStrokeWidth(stroke);//设置画笔粗细
+        return paint;
     }
 
     @Override
@@ -113,7 +102,7 @@ public class TitleBarView extends View {
         super.onDraw(canvas);
         Log.e("TitleBarView","onDraw mRect:"+mRect);
         if(leftDra != null){
-            final Bitmap bitmap = ((BitmapDrawable) leftDra).getBitmap();
+            final Bitmap bitmap = drawableToBitmap(leftDra);
             float top = mRect.top+(viewHeight-bitmap.getHeight()*2f)/2;
             float left = mRect.left-bitmap.getWidth()*0.5f;
             leftClickRect = new RectF(left,top,left + (bitmap.getWidth()*2f),top + bitmap.getHeight()*2f);
@@ -121,7 +110,7 @@ public class TitleBarView extends View {
 
         }
         if(rightDra != null){
-            final Bitmap bitmap = ((BitmapDrawable) rightDra).getBitmap();
+            final Bitmap bitmap = drawableToBitmap(rightDra);
             float chaTop = (viewHeight-bitmap.getHeight())/2;
             float top = mRect.top+chaTop;
             float left = mRect.right-bitmap.getWidth();
@@ -266,5 +255,20 @@ public class TitleBarView extends View {
         if(drawable!= null){
             drawable.setTint(color);
         }
+    }
+
+
+    private Bitmap drawableToBitmap(Drawable drawable){
+        int w = drawable.getIntrinsicWidth();
+        int h = drawable.getIntrinsicHeight();
+        Bitmap.Config config =
+                drawable.getOpacity() != PixelFormat.OPAQUE ? Bitmap.Config.ARGB_8888
+                        : Bitmap.Config.RGB_565;
+        Bitmap bitmap = Bitmap.createBitmap(w,h,config);
+        //注意，下面三行代码要用到，否在在View或者surfaceview里的canvas.drawBitmap会看不到图
+        Canvas canvas = new Canvas(bitmap);
+        drawable.setBounds(0, 0, w, h);
+        drawable.draw(canvas);
+        return bitmap;
     }
 }
