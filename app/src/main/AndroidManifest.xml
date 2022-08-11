@@ -47,6 +47,7 @@
         <activity android:name=".ui.web.WebViewActivity" />
         <activity android:name=".ui.SettingActivity" />
         <activity android:name=".ui.AboutActivity" />
+        <activity android:name=".ui.msg.MsgDetailActivity" />
 
     </application>
 

@@ -1,11 +1,12 @@
 package com.runt.open.mvvm.ui.main.home;
 
+import android.content.Intent;
 import android.view.View;
-
 import com.runt.open.mvvm.base.adapter.BaseAdapter;
 import com.runt.open.mvvm.data.Results;
 import com.runt.open.mvvm.databinding.ItemMsgBinding;
 import com.runt.open.mvvm.listener.CustomClickListener;
+import com.runt.open.mvvm.ui.msg.MsgDetailActivity;
 import com.runt.open.mvvm.util.HandleDate;
 
 /**
@@ -24,7 +25,7 @@ public class MsgAdapter extends BaseAdapter<Results.Message, ItemMsgBinding> {
         binding.getRoot().setOnClickListener(new CustomClickListener() {
             @Override
             protected void onSingleClick(View view) {
-                //context.startActivity(new Intent(context, MsgDetailActivity.class).putExtra("id", data.get("id").toString()));
+                view.getContext().startActivity(new Intent(view.getContext(), MsgDetailActivity.class).putExtra("id",message.id));
             }
         });
     }

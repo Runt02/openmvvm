@@ -114,7 +114,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
     private void setTitleStr(int position){
         switch (position){
             case 0:
-                setTitle("资讯Aljkpqla");
+                setTitle("资讯");
                 break;
             case 1:
                 setTitle("服务");

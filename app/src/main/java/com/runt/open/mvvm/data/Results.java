@@ -14,7 +14,7 @@ public class Results {
 
     //资讯信息
     public class Message {
-        public String id,title,content,cTime;
+        public String id,title,content,cTime,cUName,cId;
     }
 
     //版本更新

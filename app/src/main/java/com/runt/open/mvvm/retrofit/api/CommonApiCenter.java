@@ -72,4 +72,11 @@ public interface CommonApiCenter {
      */
     @GET("getMsgList")
     Observable<HttpApiResult<PageResult<Results.Message>>> getMsgList(@Query("page") int pageNum, @Query("size") int pageSize);
+
+    /**
+     * app更新
+     * @return
+     */
+    @GET("getMsgDetail")
+    Observable<HttpApiResult<Results.Message>> getMsgDetail(@Query("id") String id);
 }
