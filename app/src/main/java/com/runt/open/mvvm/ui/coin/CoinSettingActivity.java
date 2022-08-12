@@ -9,13 +9,14 @@ import com.runt.open.mvvm.databinding.ActivitySettingCoinBinding;
 import com.runt.open.mvvm.listener.ResPonse;
 import com.runt.open.mvvm.retrofit.observable.HttpObserver;
 import com.runt.open.mvvm.ui.login.UserBean;
+import com.runt.open.mvvm.ui.paypass.PaypassActivity;
 
 /**
  * My father is Object, ites purpose of 金币交易设置
  *
  * @purpose Created by Runt (qingingrunt2010@qq.com) on 2020-10-30.
  */
-public class CoinSettingActivity extends BaseActivity<ActivitySettingCoinBinding,CoinSettingViewModel> {
+public class CoinSettingActivity extends BaseActivity<ActivitySettingCoinBinding, CoinViewModel> {
 
     private int requestCode = 0;
 
@@ -64,7 +65,7 @@ public class CoinSettingActivity extends BaseActivity<ActivitySettingCoinBinding
                 public void doSuccess(Object obj) {
                     mBinding.txtAlipay.setText(obj.toString());
                     requestCode = REQUEST_CODE_PAYPASS_FOR_ALIPAY;
-                    //launcher.launch(new Intent(mContext, PaypassActivity.class));
+                    launcher.launch(new Intent(mContext, PaypassActivity.class));
                 }
             });
         });
@@ -74,12 +75,12 @@ public class CoinSettingActivity extends BaseActivity<ActivitySettingCoinBinding
                 public void doSuccess(Object obj) {
                     requestCode = REQUEST_CODE_PAYPASS_FOR_REALNAME;
                     mBinding.txtRealname.setText(obj.toString());
-                    //launcher.launch(new Intent(mContext, PaypassActivity.class));
+                    launcher.launch(new Intent(mContext, PaypassActivity.class));
                 }
             });
         });
         mBinding.linPass.setOnClickListener(v->{
-            //startActivity(new Intent(mContext,PaypassActivity.class).putExtra("type",1));
+            startActivity(new Intent(mContext,PaypassActivity.class).putExtra("type",1));
         });
     }
 

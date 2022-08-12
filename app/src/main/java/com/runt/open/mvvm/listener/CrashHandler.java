@@ -5,20 +5,10 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Environment;
-import android.os.Looper;
 import android.util.Log;
 import android.widget.Toast;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.io.Writer;
+import java.io.*;
 import java.lang.reflect.Field;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -38,11 +28,9 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
 
     //系统默认的UncaughtException处理类
     private Thread.UncaughtExceptionHandler mDefaultHandler;
-
-    CrashListener crashListener;
-
     //CrashHandler实例
     private static CrashHandler instance;
+    CrashListener crashListener;
     //程序的Context对象
     private Context mContext;
     //用来存储设备信息和异常信息
@@ -74,9 +62,6 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
         Thread.setDefaultUncaughtExceptionHandler(this);
     }
 
-    /**
-     * 初始化
-     */
     public void init(Context context,CrashListener crashListener) {
         Log.i(TAG, "init context:"+context);
         mContext = context;
@@ -85,6 +70,9 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
         Thread.setDefaultUncaughtExceptionHandler(this);
     }
 
+    public interface CrashListener {
+        void onCrash();
+    }
     /**
      * 当UncaughtException发生时会转入该函数来处理
      */
@@ -94,17 +82,9 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
         if (!handleException(ex) && mDefaultHandler != null) {
             //如果用户没有处理则让系统默认的异常处理器来处理
             mDefaultHandler.uncaughtException(thread, ex);
-        } else if(crashListener != null){
+        }
+        if (crashListener != null) {
             crashListener.onCrash();
-        } else {
-            try {
-                Thread.sleep(3000);
-            } catch (InterruptedException e) {
-                Log.e(TAG, "error : ", e);
-            }
-            //退出程序
-            android.os.Process.killProcess(android.os.Process.myPid());
-            System.exit(1);
         }
     }
 
@@ -122,17 +102,8 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
         //收集设备参数信息
         collectDeviceInfo(mContext);
 
-        //使用Toast来显示异常信息
-        new Thread() {
-            @Override
-            public void run() {
-                Looper.prepare();
-                Toast.makeText(mContext, "很抱歉,程序出现异常,即将退出.", Toast.LENGTH_SHORT).show();
-                Looper.loop();
-            }
-        }.start();
         //保存日志文件
-        saveCatchInfo2File(ex);
+        saveCatchInfoFile(ex);
         return true;
     }
 
@@ -172,7 +143,7 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
      * @param ex
      * @return  返回文件名称,便于将文件传送到服务器
      */
-    private String saveCatchInfo2File(Throwable ex) {
+    private String saveCatchInfoFile(Throwable ex) {
         ex.printStackTrace();
         Log.i(TAG, "saveCatchInfo2File Throwable:"+ex);
 
@@ -199,12 +170,20 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
             String time = formatter.format(new Date());
             String fileName = "crash-" + time + "-" + timestamp + ".log";
             if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
-                String path = "/mnt/sdcard/crash/";
+                String path = mContext.getExternalFilesDir(null).getAbsolutePath()+"/crash/";
                 File dir = new File(path);
                 if (!dir.exists()) {
                     dir.mkdirs();
                 }
-                FileOutputStream fos = new FileOutputStream(path + fileName);
+                String newFileName = path + fileName;
+                Log.i(TAG,"exc newFileName:"+newFileName);
+                File file = new File(newFileName);
+                file.mkdirs();
+                if(file.exists()){
+                    file.delete();
+                }
+                file.createNewFile();
+                FileOutputStream fos = new FileOutputStream(file);
                 fos.write(sb.toString().getBytes());
                 //发送给开发人员
                 sendCrashLog2PM(path+fileName);
@@ -238,7 +217,7 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
                 s = reader.readLine();
                 if(s == null) break;
                 //由于目前尚未确定以何种方式发送，所以先打出log日志。
-                //Log.i("info", s.toString());
+                Log.i("info", s.toString());
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -252,9 +231,5 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
                 e.printStackTrace();
             }
         }
-    }
-
-    public static  interface CrashListener{
-        void onCrash();
     }
 }

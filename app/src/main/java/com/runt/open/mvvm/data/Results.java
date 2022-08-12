@@ -33,7 +33,7 @@ public class Results {
         public String id;
         public UserBean toUser,fromUser;
         public int count,after,before,type;
-        public Date cTime;
+        public String cTime;
         /**
          * 备注
          **/

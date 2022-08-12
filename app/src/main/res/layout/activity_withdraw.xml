@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/white"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.runt.open.mvvm.widgets.TitleBarView
+        android:id="@+id/title_bar"
+        style="@style/titlebar"
+        android:background="@color/transparent"
+        app:leftDrawable="@mipmap/icon_white_back"
+        app:leftTint="@color/black"
+        app:titleText="提现"
+        />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/color_gray8" />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/default_margin_lr"
+        android:layout_marginLeft="@dimen/default_margin_lr"
+        android:layout_marginRight="@dimen/default_margin_lr"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/txt_balance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="当前金币数量1000个" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/default_margin_td"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/edit"
+                android:layout_width="match_parent"
+                android:layout_weight="1"
+                android:layout_height="40dp"
+                android:background="@null"
+                android:inputType="number"
+                android:textSize="23sp"
+                android:gravity="right|center_vertical"
+                android:textColor="@color/txt_normal"
+                android:hint="输入提现数量" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:textSize="23sp"
+                android:layout_marginLeft="5dp"
+                android:gravity="center_vertical"
+                android:text=",000 个" />
+        </LinearLayout>
+        <TextView
+            android:id="@+id/txt_rmb"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/default_margin_td"
+            android:layout_gravity="right"
+            android:textSize="16sp"
+            android:text="提现￥0元" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:textColor="@color/txt_enable"
+            android:layout_marginTop="@dimen/default_margin_td"
+            android:text="输入金币数量必须为1000的倍数，1000兑换为1元人民币。提现申请提交后，系统会在一个工作日内将金额汇入您所设置的支付宝账户中，请留意查收"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/lin_ad"
+        android:layout_margin="15dp"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" ></LinearLayout>
+    <Button
+        android:id="@+id/btn_submit"
+        style="@style/btn_normal"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="50dp"
+        android:layout_marginLeft="@dimen/default_margin_lr"
+        android:layout_marginRight="@dimen/default_margin_lr"
+        android:text="提交申请"/>
+
+</LinearLayout>

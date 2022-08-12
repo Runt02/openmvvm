@@ -150,4 +150,25 @@
         <item name="android:paddingLeft">@dimen/default_margin_lr</item>
         <item name="android:paddingRight">@dimen/default_margin_lr</item>
     </style>
+
+    <declare-styleable name="PasswordInputView">
+        <attr name="borderColor" format="color" />
+        <attr name="borderWidth" format="dimension" />
+        <attr name="borderRadius" format="dimension" />
+        <attr name="passwordLength" format="integer" />
+        <attr name="passwordColor" format="color" />
+        <attr name="passwordWidth" format="dimension" />
+        <attr name="passwordRadius" format="dimension" />
+    </declare-styleable>
+
+
+    <style name="item_num">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:gravity">center</item>
+        <item name="android:background">@drawable/bg_num</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">44sp</item>
+    </style>
+
 </resources>

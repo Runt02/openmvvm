@@ -34,19 +34,20 @@ public abstract class LoadPageActivity<VB extends ViewBinding,VM extends LoadPag
 
     @Override
     public void initViews() {
+        setTitle(initTitle());
         try {
             Class<A> entityClass = (Class<A>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[2];
             this.adapter = entityClass.newInstance();//实例化泛型
         } catch (Exception e) {
             e.printStackTrace();
         }
+        refresh = mBinding.getRoot().findViewById(R.id.refresh);
         refresh.setRefreshHeader(new ClassicsHeader(mContext));
         refresh.setRefreshFooter(new ClassicsFooter(mContext));
         refresh.setOnRefreshLoadMoreListener(this);
         RecyclerView recycler = mBinding.getRoot().findViewById(R.id.recycler);
         recycler.setLayoutManager(new LinearLayoutManager(mContext));
         recycler.setAdapter(adapter);
-        refresh = mBinding.getRoot().findViewById(R.id.refresh);
         refresh.setOnRefreshLoadMoreListener(this);
         mViewModel.getLiveData().observe(this, (Observer<List<RESULT>>) list -> {
             adapter.showNull = true;

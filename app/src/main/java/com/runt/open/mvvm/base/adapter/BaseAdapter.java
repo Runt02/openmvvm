@@ -3,13 +3,11 @@ package com.runt.open.mvvm.base.adapter;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewbinding.ViewBinding;
-
 import com.runt.open.mvvm.databinding.LayoutNullBinding;
-import com.runt.open.mvvm.util.DeviceUtil;
+import com.runt.open.mvvm.util.DimensionUtils;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -148,9 +146,9 @@ public abstract class BaseAdapter<DATA, VB extends ViewBinding> extends Recycler
     protected void setBottomMargin(RecyclerView.ViewHolder holder, int position, float dp, float defaultDp){
         ViewGroup.MarginLayoutParams params1 = (ViewGroup.MarginLayoutParams) holder.itemView.getLayoutParams();
         if(position == dataList.size() -1){
-            params1.setMargins(params1.leftMargin, params1.topMargin, params1.rightMargin, DeviceUtil.convertDpToPixel(dp,holder.itemView.getContext()));
+            params1.setMargins(params1.leftMargin, params1.topMargin, params1.rightMargin, (int) DimensionUtils.convertDpToPixel(dp,holder.itemView.getContext()));
         }else{
-            params1.setMargins(params1.leftMargin, params1.topMargin, params1.rightMargin, DeviceUtil.convertDpToPixel(defaultDp,holder.itemView.getContext()));
+            params1.setMargins(params1.leftMargin, params1.topMargin, params1.rightMargin, (int) DimensionUtils.convertDpToPixel(defaultDp,holder.itemView.getContext()));
         }
     }
 

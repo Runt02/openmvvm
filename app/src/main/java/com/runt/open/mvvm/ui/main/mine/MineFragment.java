@@ -9,6 +9,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.gson.Gson;
 import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.config.PictureConfig;
 import com.luck.picture.lib.config.PictureMimeType;
@@ -16,9 +17,11 @@ import com.luck.picture.lib.entity.LocalMedia;
 import com.runt.open.mvvm.BuildConfig;
 import com.runt.open.mvvm.R;
 import com.runt.open.mvvm.base.fragments.BaseFragment;
+import com.runt.open.mvvm.config.Configuration;
 import com.runt.open.mvvm.databinding.FragmentMineBinding;
 import com.runt.open.mvvm.listener.ResPonse;
 import com.runt.open.mvvm.retrofit.observable.HttpObserver;
+import com.runt.open.mvvm.ui.coin.WithDrawActivity;
 import com.runt.open.mvvm.ui.coin.CoinSettingActivity;
 import com.runt.open.mvvm.ui.loadpage.PageActivitys;
 import com.runt.open.mvvm.ui.login.UserBean;
@@ -40,15 +43,25 @@ import java.util.List;
 public class MineFragment extends BaseFragment<FragmentMineBinding,MineViewModel> implements View.OnClickListener {
 
     private final  String TAG = "MineFragment";
-    ActivityResultLauncher<Intent> signLaunch = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
-
+    ActivityResultLauncher<Intent> launcher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+        refreshUi();
     });
     @Override
     public void initViews() {
+        mViewModel.getUserBean();
+        UserBean.onUpdate.observe(this, userBean -> {
+            mActivity.putStringProjectPrefrence(Configuration.KEY_USERINFO, new Gson().toJson(userBean));
+            refreshUi();
+        });
     }
 
     @Override
     public void loadData() {
+        setOnClickListener(this,R.id.lin_sign,R.id.lin_coin,R.id.img,R.id.txt_name);
+        refreshUi();
+    }
+
+    public void refreshUi(){
         if(UserBean.getUser() != null){
             RequestOptions options = new RequestOptions()
                     .placeholder(R.mipmap.default_head)//图片加载出来前，显示的图片
@@ -59,14 +72,13 @@ public class MineFragment extends BaseFragment<FragmentMineBinding,MineViewModel
             mBinding.txtCoin.setText(UserBean.getUser().getCoin()+"");
             mBinding.txtSigns.setText(UserBean.getUser().getSign()+"");
             mBinding.linGroup.setVisibility(View.VISIBLE);
+
         }else{
             Glide.with(getContext()).load(R.mipmap.default_head).into(mBinding.img);
             mBinding.txtName.setText("未登录");
             mBinding.linGroup.setVisibility(View.GONE);
         }
-        setOnClickListener(this,R.id.lin_sign,R.id.lin_coin,R.id.img,R.id.txt_name);
     }
-
 
     @Override
     public void onClick(View view) {
@@ -109,7 +121,7 @@ public class MineFragment extends BaseFragment<FragmentMineBinding,MineViewModel
                                             }
                                         });
                                     }else{
-                                        //startActivityForResult(new Intent(mActivity, WithDrawActivity.class),REQUEST_CODE_WITHDRAW );
+                                        launcher.launch(new Intent(mActivity, WithDrawActivity.class) );
                                     }
                                 }
                             }
@@ -117,7 +129,7 @@ public class MineFragment extends BaseFragment<FragmentMineBinding,MineViewModel
                         .show();
                 break;
             case R.id.lin_sign://签到
-                signLaunch.launch(new Intent(getContext(), SignInActivity.class));
+                launcher.launch(new Intent(getContext(), SignInActivity.class));
                 break;
         }
     }

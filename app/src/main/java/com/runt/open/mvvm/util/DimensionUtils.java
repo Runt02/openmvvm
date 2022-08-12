@@ -12,9 +12,9 @@ public class DimensionUtils {
      * @param dp
      * @return
      */
-    public int convertDpToPixel(float dp,Context context) {
+    public static float convertDpToPixel(float dp, Context context) {
         DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
-        return (int) (dp * displayMetrics.density);
+        return (dp * displayMetrics.density);
     }
 
     /***
@@ -22,9 +22,9 @@ public class DimensionUtils {
      * @param pixel
      * @return
      */
-    public int convertPixelToDp(int pixel,Context context) {
+    public static float convertPixelToDp(int pixel,Context context) {
         DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
-        return (int) (pixel / displayMetrics.density);
+        return (pixel / displayMetrics.density);
     }
     /**
      * 把pix值转换为sp
@@ -44,8 +44,8 @@ public class DimensionUtils {
      *            （DisplayMetrics类中属性scaledDensity）
      * @return
      */
-    public static int convertSpToPixel(Context context, float spValue) {
+    public static float convertSpToPixel(Context context, float spValue) {
         final float fontScale = context.getResources().getDisplayMetrics().scaledDensity;
-        return (int) (spValue * fontScale + 0.5f);
+        return (spValue * fontScale + 0.5f);
     }
 }

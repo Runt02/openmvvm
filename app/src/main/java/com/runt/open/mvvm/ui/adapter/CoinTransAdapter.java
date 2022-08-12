@@ -63,6 +63,6 @@ public class CoinTransAdapter extends BaseAdapter<Results.CustomCoin, ItemCoinRe
             binding.txtCount.setText("+" + data.count);
             Glide.with(binding.getRoot().getContext()).load(BuildConfig.HOST_IP_ADDR + (data.fromUser == null ? "" : data.fromUser.getHead())).apply(options).into(binding.imgHead);
         }
-        binding.txtTime.setText(HandleDate.getTimeStateNew(data.cTime));
+        binding.txtTime.setText(HandleDate.getTimeStateNew(HandleDate.getDateTimeToLong(data.cTime)));
     }
 }

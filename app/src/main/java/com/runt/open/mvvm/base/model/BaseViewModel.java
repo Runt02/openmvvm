@@ -7,6 +7,7 @@ import android.provider.Settings;
 import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.core.content.FileProvider;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import com.runt.open.mvvm.BuildConfig;
 import com.runt.open.mvvm.base.activities.BaseActivity;
@@ -17,8 +18,8 @@ import com.runt.open.mvvm.retrofit.AndroidScheduler;
 import com.runt.open.mvvm.retrofit.api.CommonApiCenter;
 import com.runt.open.mvvm.retrofit.observable.HttpObserver;
 import com.runt.open.mvvm.retrofit.utils.RetrofitUtils;
+import com.runt.open.mvvm.ui.login.UserBean;
 import io.reactivex.Observable;
-import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.*;
 
@@ -26,6 +27,9 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Administrator on 2021/11/11 0011.
@@ -34,9 +38,78 @@ public class BaseViewModel extends ViewModel {
 
     protected BaseActivity mActivity;
     protected CommonApiCenter commonApi = RetrofitUtils.getInstance().getCommonApi();
+    MutableLiveData<Integer> verifyResult = new MutableLiveData<>();
+    public MutableLiveData<Integer> getVerifyResult() {
+        return verifyResult;
+    }
 
     public void onCreate(BaseActivity activity) {
         this.mActivity = activity;
+    }
+
+    public void getUserBean(){
+        httpObserverOn(commonApi.getUserBean(), new HttpObserver<UserBean>() {
+            @Override
+            protected void onSuccess(UserBean data) {
+                UserBean.setUser(data);
+            }
+        });
+    }
+
+    /**
+     * 获取验证码
+     * @param url    验证码地址
+     * @param phone 手机号
+     */
+    public void getVerifyCode(String url,String phone){
+        String time = new Date().getTime()+"";
+        httpObserverOnLoading(commonApi.getVerifyCode(url, phone, randomString(phone, time), time), new HttpObserver<Results.SmsResult>(){
+            @Override
+            protected void onSuccess(Results.SmsResult data) {
+                verifyResult.setValue(0);
+            }
+
+            @Override
+            protected void onFailed(HttpApiResult httpResult) {
+                super.onFailed(httpResult);
+                verifyResult.setValue(-1);
+            }
+        });
+    }
+
+    /**
+     * 随机字符串
+     * @param phone
+     * @param time
+     * @return
+     */
+    private String randomString(String phone,String time){
+        int p =  (int) Math.round(phone.length()/6.0);
+        int t = time.length()/6;
+        List<String> list = new ArrayList<String>();
+        for(int i = 0 ; i < 6 ; i ++){
+            String str = "";
+            if(i*p>phone.length()){
+                str = phone.substring((i-1)*p);
+            }else if((i+1)*p>phone.length()){
+                str = phone.substring(i*p);
+            }else{
+                str = phone.substring(i*p,(i+1)*p);
+            }
+            String num = ((Integer.parseInt(str)*Long.parseLong(time))+"") ;
+            list.add(num);
+        }
+        //return sb.toString();
+        return plusSingle2(list);
+    }
+
+    private String plusSingle2(List<String> list){
+        StringBuilder sb = new StringBuilder();
+        for(int i = 0 ; i < list.size() ; i ++){
+            sb.append(list.get(i).substring(list.get(i).length()-2<0?0:list.get(i).length()-2));
+        }
+        return sb.toString();
+
     }
 
     public void checkUpdate(boolean showTip){
@@ -197,11 +270,9 @@ public class BaseViewModel extends ViewModel {
                     mActivity.showLoadingDialog("");
                 })
                 .observeOn(AndroidScheduler.mainThread())
-                .doOnError(new Consumer<Throwable>() {
-                    @Override
-                    public void accept(Throwable throwable) throws Exception {
-
-                    }
+                .doOnError(throwable -> {
+                    mActivity.dissmissLoadingDialog();
+                    Log.e("ViewModel",hashCode()+" httpObserverOnLoading "+throwable);
                 })
                 .doOnComplete(() -> {
                     mActivity.dissmissLoadingDialog();

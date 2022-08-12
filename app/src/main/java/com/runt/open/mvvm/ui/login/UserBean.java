@@ -4,6 +4,8 @@ package com.runt.open.mvvm.ui.login;
  * Created by Administrator on 2021/11/15 0015.
  */
 
+import androidx.lifecycle.MutableLiveData;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -19,6 +21,7 @@ public class UserBean implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private static UserBean user;
+    public static MutableLiveData<UserBean> onUpdate = new MutableLiveData<>();
 
     public static UserBean getUser() {
         return user;
@@ -26,6 +29,7 @@ public class UserBean implements Serializable {
 
     public static void setUser(UserBean user) {
         UserBean.user = user;
+        onUpdate.postValue(user);
     }
 
     /** 主键 **/

@@ -3,8 +3,6 @@ package com.runt.open.mvvm.ui.login;
 import android.content.Intent;
 import android.view.View;
 import android.widget.EditText;
-
-import com.google.gson.Gson;
 import com.runt.open.mvvm.R;
 import com.runt.open.mvvm.base.activities.BaseActivity;
 import com.runt.open.mvvm.config.Configuration;
@@ -12,7 +10,6 @@ import com.runt.open.mvvm.databinding.ActivityLoginBinding;
 import com.runt.open.mvvm.listener.CustomClickListener;
 import com.runt.open.mvvm.ui.web.WebViewActivity;
 import com.runt.open.mvvm.util.AlgorithmUtils;
-import com.runt.open.mvvm.util.MyLog;
 import com.runt.open.mvvm.util.PhoneUtil;
 
 import java.util.Date;
@@ -44,15 +41,6 @@ public class RegisterLoginActivity extends BaseActivity<ActivityLoginBinding,Log
            }else{
 
            }
-        });
-        mViewModel.getLoginResult().observe(this, loggedInUser -> {
-            putStringProjectPrefrence(Configuration.KEY_USERNAME, mBinding.editPhone.getText().toString());
-            UserBean.setUser(loggedInUser);
-            putStringProjectPrefrence(Configuration.KEY_USERINFO, new Gson().toJson(loggedInUser));
-            MyLog.i("registerlogin",loggedInUser.toString());
-            showToast(R.string.login_success);
-            setResult(RESULT_CODE_SUCESS);
-            finish();
         });
     }
 

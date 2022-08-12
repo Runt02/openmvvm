@@ -1,9 +1,11 @@
 package com.runt.open.mvvm.retrofit.api;
 
 
+import com.runt.open.mvvm.config.Configuration;
 import com.runt.open.mvvm.data.HttpApiResult;
 import com.runt.open.mvvm.data.PageResult;
 import com.runt.open.mvvm.data.Results;
+import com.runt.open.mvvm.ui.login.UserBean;
 import io.reactivex.Observable;
 import okhttp3.MultipartBody;
 import retrofit2.http.*;
@@ -51,12 +53,23 @@ public interface CommonApiCenter {
     Observable<Object> postPageData(@Url String url, @Field("page") int pageNum, @Field("size") int pageSize, @FieldMap Map<String,String> param);
 
     /**
+     * 登录
+     * @return
+     */
+    @POST("loginToken")
+    Observable<HttpApiResult<UserBean>> getUserBean();
+
+    @FormUrlEncoded
+    @POST
+    Observable<HttpApiResult<Results.SmsResult>> getVerifyCode(@Url String url, @Field(Configuration.KEY_PHONE) String phone, @Field(Configuration.KEY_CODE) String code, @Field("time") String time);
+    /**
      * app更新
      * @return
      */
     @GET("getControlVersion")
     Observable<HttpApiResult<Results.ApkVersion>> getAppUpdate();
 
+    @FormUrlEncoded
     @POST("updateName")
     Observable<Results.StringApiResult> updateName(@Field("username") String name);
 
@@ -71,11 +84,17 @@ public interface CommonApiCenter {
     @GET("getMsgDetail")
     Observable<HttpApiResult<Results.Message>> getMsgDetail(@Query("id") String id);
 
+    @FormUrlEncoded
     @POST("updateAlipay")
     Observable<Results.StringApiResult> updateAlipay(@Field("account") String account,@Field("paypass") String paypass);
 
+    @FormUrlEncoded
     @POST("updateRealname")
     Observable<Results.StringApiResult> updateRealname(@Field("account") String account,@Field("paypass") String paypass);
+
+    @FormUrlEncoded
+    @POST("withDraw")
+    Observable<Results.StringApiResult> withDraw(@Field("paypass") String paypass,@Field("count") int count);
 
     /**
      * 获取签到列表
@@ -88,4 +107,7 @@ public interface CommonApiCenter {
     @POST("signIn")
     Observable<Results.StringApiResult> signIn();
 
+    @FormUrlEncoded
+    @POST("updatePaypass")
+    Observable<Results.StringApiResult> updatePaypass(@Field("smsCode") String smsCode,@Field("paypass") String paypass);
 }

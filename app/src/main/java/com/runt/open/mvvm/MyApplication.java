@@ -5,6 +5,7 @@ import android.app.Application;
 import android.content.Context;
 import android.os.Bundle;
 
+import android.os.Process;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -113,14 +114,12 @@ public class MyApplication extends Application {
         });
 
         CrashHandler crashHandler = CrashHandler.getInstance();
-        crashHandler.init(getApplicationContext(), new CrashHandler.CrashListener() {
-            @Override
-            public void onCrash() {
-                for(Activity activity : activities){
-                    activity.finish();
-                }
-                System.exit(0);
+        crashHandler.init(getApplicationContext(), () -> {
+            for(Activity activity : activities){
+                activity.finish();
             }
+            Process.killProcess(Process.myPid());
+            System.exit(0);
         });
     }
 

@@ -45,4 +45,6 @@
     <dimen name="default_margin_lr">27dp</dimen>
     <dimen name="default_margin_td">12dp</dimen>
 
+    <dimen name="dimen_1px">1px</dimen>
+    <dimen name="dimen_6">6dp</dimen>
 </resources>

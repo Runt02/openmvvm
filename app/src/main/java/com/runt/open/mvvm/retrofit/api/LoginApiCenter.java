@@ -3,13 +3,11 @@ package com.runt.open.mvvm.retrofit.api;
 import com.runt.open.mvvm.config.Configuration;
 import com.runt.open.mvvm.data.HttpApiResult;
 import com.runt.open.mvvm.data.Results;
-
 import com.runt.open.mvvm.ui.login.UserBean;
 import io.reactivex.Observable;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.POST;
-import retrofit2.http.Url;
 
 /**
  * Created by Administrator on 2021/11/15 0015.
@@ -34,11 +32,6 @@ public interface LoginApiCenter {
     @FormUrlEncoded
     @POST("loginCode")
     Observable<HttpApiResult<UserBean>> loginByCode(@Field(Configuration.KEY_PHONE) String phone, @Field(Configuration.KEY_CODE) String code);
-
-
-    @FormUrlEncoded
-    @POST
-    Observable<HttpApiResult<Results.SmsResult>> getVerifyCode(@Url String url, @Field(Configuration.KEY_PHONE) String phone, @Field(Configuration.KEY_CODE) String code, @Field("time") String time);
 
     /**
      * 重置密码

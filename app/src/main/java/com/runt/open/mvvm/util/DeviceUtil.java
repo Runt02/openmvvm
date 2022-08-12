@@ -293,25 +293,7 @@ public class DeviceUtil {
         return 0;
     }
 
-    /**
-     * dp获取dip
-     * @param dp
-     * @return
-     */
-    public static int convertDpToPixel(float dp, Context context) {
-        DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
-        return (int) (dp * displayMetrics.density);
-    }
 
-    /***
-     * px获取dip
-     * @param pixel
-     * @return
-     */
-    public static int convertPixelToDp(int pixel, Context context) {
-        DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
-        return (int) (pixel / displayMetrics.density);
-    }
 
     public static String getSerialNumber(Context context) {
         String serial = "";
