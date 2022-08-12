@@ -11,8 +11,6 @@ import com.runt.open.mvvm.listener.CustomClickListener;
 import com.runt.open.mvvm.ui.adapter.CoinTransAdapter;
 import com.runt.open.mvvm.ui.coin.CoinSettingActivity;
 
-import java.util.Map;
-
 /**
  * @purpose Created by Runt (qingingrunt2010@qq.com) on 2020-9-17.
  */
@@ -39,12 +37,6 @@ public class PageActivitys {
             });
         }
 
-        @Override
-        protected Map requestParams() {
-            Map map = super.requestParams();
-            map.put("inOrOut",0);
-            return map;
-        }
     }
 
 }

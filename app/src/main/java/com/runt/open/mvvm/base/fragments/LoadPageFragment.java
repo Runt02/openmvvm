@@ -81,20 +81,18 @@ public abstract class LoadPageFragment<VB extends ViewBinding,VM extends LoadPag
      * 参数
      * @return
      */
-    protected Map requestParams() {
-        return new HashMap();
-    }
+    protected Object[] requestParams(){return null;};
 
     @Override
     public void onRefresh(@NonNull RefreshLayout refreshLayout) {
         page = 0;
-        mViewModel.requestData(page,requestParams());
+        mViewModel.requestData(mViewModel.request(page,requestParams()));
     }
 
     @Override
     public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
         page++;
-        mViewModel.requestData(page,requestParams());
+        mViewModel.requestData(mViewModel.request(page,requestParams()));
     }
 
 

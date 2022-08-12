@@ -5,7 +5,6 @@ import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewbinding.ViewBinding;
-
 import com.runt.open.mvvm.R;
 import com.runt.open.mvvm.base.adapter.BaseAdapter;
 import com.runt.open.mvvm.base.model.LoadPageViewModel;
@@ -16,9 +15,7 @@ import com.scwang.smart.refresh.layout.api.RefreshLayout;
 import com.scwang.smart.refresh.layout.listener.OnRefreshLoadMoreListener;
 
 import java.lang.reflect.ParameterizedType;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by Administrator on 2021/11/4 0004.
@@ -84,20 +81,18 @@ public abstract class LoadPageActivity<VB extends ViewBinding,VM extends LoadPag
      * 参数
      * @return
      */
-    protected Map requestParams() {
-        return new HashMap();
-    }
+    protected Object[] requestParams(){return null;};
 
     @Override
     public void onRefresh(@NonNull RefreshLayout refreshLayout) {
         page = 0;
-        mViewModel.requestData(page,requestParams());
+        mViewModel.requestData(mViewModel.request(page,requestParams()));
     }
 
     @Override
     public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
         page++;
-        mViewModel.requestData(page,requestParams());
+        mViewModel.requestData(mViewModel.request(page,requestParams()));
     }
 
 

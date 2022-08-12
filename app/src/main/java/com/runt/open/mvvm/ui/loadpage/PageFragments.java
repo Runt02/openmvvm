@@ -10,7 +10,5 @@ import com.runt.open.mvvm.ui.adapter.MsgAdapter;
  */
 public class PageFragments {
 
-    public static class HomeFragment extends LoadPageFragment<RefreshRecyclerBinding, PageViewModels.HomeViewModel, MsgAdapter, Results.Message> {
-
-    }
+    public static class HomeFragment extends LoadPageFragment<RefreshRecyclerBinding, PageViewModels.HomeViewModel, MsgAdapter, Results.Message> {}
 }

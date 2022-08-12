@@ -78,11 +78,30 @@ public interface CommonApiCenter {
     Observable<Results.StringApiResult> updateHead(@Part MultipartBody.Part file);
 
     /**
+     * 获取咨询列表
+     * @param pageNum   页数
+     * @param pageSize  每页数量
+     * @return
+     */
+    @GET("getMsgList")
+    Observable<HttpApiResult<PageResult<Results.Message>>> getMsgList(@Query("page") int pageNum, @Query("size") int pageSize);
+
+
+    /**
      * app更新
      * @return
      */
     @GET("getMsgDetail")
     Observable<HttpApiResult<Results.Message>> getMsgDetail(@Query("id") String id);
+
+    /**
+     * 获取金币记录
+     * @param pageNum   页数
+     * @param pageSize  每页数量
+     * @return
+     */
+    @GET("coinRecord")
+    Observable<HttpApiResult<PageResult<Results.CustomCoin>>> getCoinRecord(@Query("page") int pageNum, @Query("size") int pageSize, @Query("inOrOut") int inOrOut);
 
     @FormUrlEncoded
     @POST("updateAlipay")
