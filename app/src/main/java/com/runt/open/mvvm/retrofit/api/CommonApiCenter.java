@@ -6,19 +6,28 @@ import com.runt.open.mvvm.data.HttpApiResult;
 import com.runt.open.mvvm.data.PageResult;
 import com.runt.open.mvvm.data.Results;
 import com.runt.open.mvvm.ui.login.UserBean;
-import io.reactivex.Observable;
-import okhttp3.MultipartBody;
-import retrofit2.http.*;
 
 import java.util.List;
 import java.util.Map;
+
+import io.reactivex.Observable;
+import okhttp3.MultipartBody;
+import retrofit2.http.Field;
+import retrofit2.http.FieldMap;
+import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.GET;
+import retrofit2.http.Multipart;
+import retrofit2.http.POST;
+import retrofit2.http.Part;
+import retrofit2.http.Query;
+import retrofit2.http.QueryMap;
+import retrofit2.http.Url;
 
 /**
  * My father is Object, ites purpose of     常用接口
  *
  * @purpose Created by Runt (qingingrunt2010@qq.com) on 2021-7-21.
  */
-
 public interface CommonApiCenter {
 
     @GET

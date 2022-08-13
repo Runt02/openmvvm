@@ -10,11 +10,9 @@ import com.runt.open.mvvm.ui.msg.MsgDetailActivity;
 import com.runt.open.mvvm.util.HandleDate;
 
 /**
- * My father is Object, ites purpose of
- *
+ * 资讯记录
  * @purpose Created by Runt (qingingrunt2010@qq.com) on 2020-8-21.
  */
-
 public class MsgAdapter extends BaseAdapter<Results.Message, ItemMsgBinding> {
 
     @Override

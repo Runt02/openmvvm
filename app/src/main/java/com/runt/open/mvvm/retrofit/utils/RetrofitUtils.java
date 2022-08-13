@@ -2,7 +2,7 @@ package com.runt.open.mvvm.retrofit.utils;
 
 
 import com.runt.open.mvvm.BuildConfig;
-import com.runt.open.mvvm.retrofit.Interceptor.EncryptInterceptor;
+import com.runt.open.mvvm.retrofit.Interceptor.AddHeadersInterceptor;
 import com.runt.open.mvvm.retrofit.Interceptor.HttpLoggingInterceptor;
 import com.runt.open.mvvm.retrofit.api.CommonApiCenter;
 import com.runt.open.mvvm.retrofit.converter.GsonConverterFactory;
@@ -29,7 +29,7 @@ public class RetrofitUtils {
     CommonApiCenter commonApi;//常用接口
 
     OkHttpClient.Builder builder = new OkHttpClient.Builder()
-            .addInterceptor(new EncryptInterceptor());
+            .addInterceptor(new AddHeadersInterceptor());
     OkHttpClient.Builder logBuilder = new OkHttpClient.Builder()
             .addInterceptor(new HttpLoggingInterceptor());//log打印拦截器
 

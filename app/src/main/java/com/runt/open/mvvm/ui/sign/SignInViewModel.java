@@ -13,8 +13,6 @@ import java.util.List;
  */
 public class SignInViewModel extends BaseViewModel {
 
-
-
     public void signIn(HttpObserver<String> observer){
         httpObserverOn(commonApi.signIn(),observer);
     }

@@ -1,12 +1,15 @@
 package com.runt.open.mvvm.base.model;
 
 import androidx.lifecycle.MutableLiveData;
+import com.google.gson.Gson;
 import com.runt.open.mvvm.data.HttpApiResult;
 import com.runt.open.mvvm.data.PageResult;
 import com.runt.open.mvvm.retrofit.observable.HttpObserver;
-import io.reactivex.Observable;
+import org.json.JSONObject;
 
+import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
+import java.util.Map;
 
 /**
  * 分页

@@ -45,7 +45,7 @@ public class CoinSettingActivity extends BaseActivity<ActivitySettingCoinBinding
                             showDialog("设置支付密码", "当前账号还没有设置支付密码", "设置", "取消", new ResPonse() {
                                 @Override
                                 public void doSuccess(Object obj) {
-                                    //startActivity(new Intent(mContext, PaypassActivity.class).putExtra("type", 1));//去设置密码
+                                    startActivity(new Intent(mContext, PaypassActivity.class).putExtra("type", 1));//去设置密码
                                 }
                             });
                         }

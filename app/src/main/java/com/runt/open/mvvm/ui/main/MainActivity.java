@@ -14,6 +14,7 @@ import com.runt.open.mvvm.R;
 import com.runt.open.mvvm.base.activities.BaseActivity;
 import com.runt.open.mvvm.base.adapter.FragmentAdapter;
 import com.runt.open.mvvm.base.fragments.BaseFragment;
+import com.runt.open.mvvm.base.model.ImpViewModel;
 import com.runt.open.mvvm.data.PhoneDevice;
 import com.runt.open.mvvm.databinding.ActivityMainBinding;
 import com.runt.open.mvvm.listener.CustomClickListener;
@@ -27,7 +28,7 @@ import com.runt.open.mvvm.ui.main.service.ServiceFragment;
 
 import java.util.Arrays;
 
-public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewModel> {
+public class MainActivity extends BaseActivity<ActivityMainBinding, ImpViewModel> {
 
     private BaseFragment[] fragments = {new PageFragments.HomeFragment(),new ServiceFragment(),new MineFragment()} ;
     ActivityResultLauncher<Intent>  loginLaunch = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {

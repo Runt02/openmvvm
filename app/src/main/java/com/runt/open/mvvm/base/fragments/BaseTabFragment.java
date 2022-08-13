@@ -13,9 +13,12 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * 带有tablayout fragment封装
+ * 带有tablayout fragment封装(带有viewpager的视图父类)
+ * 继承此类，有效优化代码13行
+ * 项目中有过多含有viewpager的fragment可调用，其他情况下不建议使用，优化代码量不佳
  * Created by Administrator on 2021/11/3 0003.
  */
+@Deprecated
 public abstract class BaseTabFragment<B extends ViewBinding,VM extends BaseViewModel> extends BaseFragment<B,VM> {
 
     TabLayout tabLayout;
