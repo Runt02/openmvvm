@@ -24,7 +24,6 @@ public class LoginViewModel extends BaseViewModel {
         loginApi = RetrofitUtils.getInstance().getRetrofit(LoginApiCenter.class);
     }
 
-    MutableLiveData<Results.StringApiResult> resetResult = new MutableLiveData<>();
     MutableLiveData<Results.StringApiResult> registerResult = new MutableLiveData<>();
     HttpObserver<UserBean> logginObserver;
 
@@ -85,7 +84,7 @@ public class LoginViewModel extends BaseViewModel {
         httpObserverOnLoading(loginApi.register(phone, sms, pass), new HttpObserver<Results.StringApiResult>(){
             @Override
             protected void onSuccess(Results.StringApiResult data) {
-                resetResult.setValue(data);
+                registerResult.setValue(data);
             }
         });
     }

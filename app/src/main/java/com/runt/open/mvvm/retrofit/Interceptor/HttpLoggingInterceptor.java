@@ -31,7 +31,7 @@ import java.util.HashMap;
  * @purpose Created by Runt (qingingrunt2010@qq.com) on 2020-10-21.
  */
 
-public class HttpLoggingInterceptor extends EncryptInterceptor {
+public class HttpLoggingInterceptor extends AddHeadersInterceptor {
 
     final String TAG = "HttpLogging";
 
@@ -65,7 +65,6 @@ public class HttpLoggingInterceptor extends EncryptInterceptor {
         try {
             logArrays.addAll(getRequestLog(request));
             int position = logArrays.size() +2;
-            //request = encryptRequest(request);//加密
             response = chain.proceed(request);
             logArrays.addAll(getResponseLog(response));
             NetWorkCost netWorkCost = NetWorkListenear.workCostMap.get(hashCode);
@@ -109,6 +108,11 @@ public class HttpLoggingInterceptor extends EncryptInterceptor {
         return response;
     }
 
+    /**
+     * 请求数据信息
+     * @param request
+     * @return
+     */
     private ArrayList<String> getRequestLog(Request request) throws IOException, JSONException {
         RequestBody requestBody = request.body();
         ArrayList<String> logArrays = new ArrayList<>();
@@ -175,7 +179,13 @@ public class HttpLoggingInterceptor extends EncryptInterceptor {
 
     }
 
-
+    /**
+     * 返回的数据信息
+     * @param response
+     * @return
+     * @throws IOException
+     * @throws JSONException
+     */
     private ArrayList<String> getResponseLog(Response response) throws IOException, JSONException {
         ArrayList<String> logArrays = new ArrayList<>();
         ResponseBody responseBody = response.body();

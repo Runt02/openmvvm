@@ -9,6 +9,7 @@ import com.runt.open.mvvm.databinding.ItemCalendarDayBinding;
 import java.util.List;
 
 /**
+ * 日历
  * @purpose Created by Runt (qingingrunt2010@qq.com) on 2019-3-26.
  */
 public class CalendarAdapter extends BaseAdapter<Results.Mycalendar, ItemCalendarDayBinding> {

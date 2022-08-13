@@ -12,6 +12,7 @@ import com.runt.open.mvvm.ui.login.UserBean;
 import com.runt.open.mvvm.util.HandleDate;
 
 /**
+ * 金币记录
  * @purpose Created by Runt (qingingrunt2010@qq.com) on 2020-10-29.
  */
 public class CoinTransAdapter extends BaseAdapter<Results.CustomCoin, ItemCoinReportBinding> {

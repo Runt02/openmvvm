@@ -17,8 +17,12 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
+ * 带有tablayout activity封装(带有viewpager的视图父类)
+ * 继承此类，有效优化代码13行
+ * 项目中有过多含有viewpager的activity可调用，其他情况下不建议使用，优化代码量不佳
  * Created by Administrator on 2021/11/4 0004.
  */
+@Deprecated
 public abstract class BaseTabActivity<B extends ViewBinding,VM extends BaseViewModel>  extends BaseActivity<B,VM> {
 
     TabLayout tabLayout;
@@ -50,9 +54,16 @@ public abstract class BaseTabActivity<B extends ViewBinding,VM extends BaseViewM
         new TabLayoutMediator(tabLayout, viewPager2, (tab, position) -> tab.setText(tabTitles.get(position))).attach();
     }
 
-
+    /**
+     * tablayout 标题列表
+     * @return
+     */
     protected abstract List<String> initTabTitles();
 
+    /**
+     * 初始化fragment列表
+     * @return
+     */
     protected abstract List<BaseFragment> initFragments();
 
     protected List<String> getTabTitles(){

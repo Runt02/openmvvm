@@ -43,11 +43,16 @@ import java.util.Set;
  */
 public abstract class BaseActivity<VB extends ViewBinding,VM extends BaseViewModel> extends AppCompatActivity {
 
-    protected  VB mBinding;
-    protected  VM mViewModel;
+    //viewbind
+    protected VB mBinding;
+    //viewmodel
+    protected VM mViewModel;
     protected String TAG ;
+    //文件读取权限
     public final String[] FILE_PERMISSIONS = new String []{Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE};
+    //夹带摄像头权限
     public final String[] CAMERA_PERMISSIONS = new String[]{ FILE_PERMISSIONS[0],FILE_PERMISSIONS[1], Manifest.permission.CAMERA};
+    //夹带录音权限
     public final String[] CAMERA_RECORD_PERMISSIONS = new String[]{ FILE_PERMISSIONS[0],FILE_PERMISSIONS[1], Manifest.permission.CAMERA,Manifest.permission.RECORD_AUDIO};
 
     public static final String PARAMS_TITLE = "title";
@@ -82,6 +87,7 @@ public abstract class BaseActivity<VB extends ViewBinding,VM extends BaseViewMod
             RESULT_CODE_SUCESS = 4046/*成功*/,
             RESULT_CODE_CANCEL = 4043/*取消*/;
     protected Context mContext;
+    //标题栏
     protected TitleBarView titleBarView;
 
 
@@ -89,10 +95,11 @@ public abstract class BaseActivity<VB extends ViewBinding,VM extends BaseViewMod
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // get genericity "B"
-        setStatusBarBgColor(R.color.white);
-        setStatusBarTextColor(true);
+        setStatusBarBgColor(R.color.white);//白色状态栏
+        setStatusBarTextColor(true);//状态栏文本黑色
         final ParameterizedType type = (ParameterizedType) this.getClass().getGenericSuperclass();
         try {
+            //实例化泛型类
             Class<VB> entityClass = (Class<VB>) type.getActualTypeArguments()[0];
             Method method = entityClass.getMethod("inflate", LayoutInflater.class);//get method from name "inflate";
             mBinding = (VB) method.invoke(entityClass,getLayoutInflater());//execute method to create a objct of viewbind;
@@ -111,32 +118,45 @@ public abstract class BaseActivity<VB extends ViewBinding,VM extends BaseViewMod
         } catch (Exception e) {
         }
         TAG = this.getClass().getSimpleName();
-        initViews();
+        initViews();//初始化UI
         mViewModel.onCreate(this);
-        loadData();
+        loadData();//加载数据
     }
 
     public abstract void initViews();
 
     public abstract void loadData();
 
+    /**
+     * 是否为空
+     * @param object
+     * @return
+     */
     public boolean isNull(Object object){
         return object == null || object.toString().trim().equals("") || object.equals("null");
     }
 
+    /**
+     * 设置标题
+     * @param text
+     */
     protected void setTitle(String text){
         titleBarView.setTitleText(text);
     }
 
-    protected void onTitleLeftClick(){
-        onBackKeyDown();
-    }
-
+    /**
+     * 标题栏右侧文本
+     * @param text
+     */
     protected void setTitleRight(String text){
         titleBarView.setRightText(text);
         titleBarView.setRightDra(null);
     }
 
+    /**
+     * 标题栏右侧图片
+     * @param drawable
+     */
     protected void setTitleRight(Drawable drawable){
         titleBarView.setRightText(null);
         titleBarView.setRightDra(drawable);
@@ -145,35 +165,61 @@ public abstract class BaseActivity<VB extends ViewBinding,VM extends BaseViewMod
 
     AlertDialog dialog;
     /**
-     * 显示弹框
-     * @param title
-     * @param msg
-     * @param resPonse
+     * 显示输入框弹框
+     * @param title     标题
+     * @param msg       消息
+     * @param resPonse  回调
      */
     public void showDialog(String title,String msg,ResPonse resPonse){
         showDialog(title,msg,"确认","取消",resPonse);
     }
 
+    /**
+     * 显示输入框弹框
+     * @param title     标题
+     * @param msg       消息
+     * @param hint      默认消息文本
+     * @param resPonse  回调
+     */
     public void showInputDialog(String title,String msg,String hint,ResPonse resPonse){
         showInputDialog(title,msg,hint,"确认","取消",resPonse);
     }
 
+    /**
+     * 显示输入框弹框
+     * @param title     标题
+     * @param msg       消息
+     * @param hint      默认消息文本
+     * @param btnOk     确认按钮文本
+     * @param btnCancel 取消按钮文本
+     * @param resPonse  回调
+     */
     public void showInputDialog(String title, String msg, String hint,String btnOk,String btnCancel,final  ResPonse resPonse){
         showDialog(title,msg,hint,btnOk,btnCancel,resPonse,true);
     }
 
     /**
      * 显示弹框
-     * @param title
-     * @param msg
-     * @param btnOk
-     * @param btnCancel
-     * @param resPonse
+     * @param title     标题
+     * @param msg       消息
+     * @param btnOk     确认按钮文本
+     * @param btnCancel 取消按钮文本
+     * @param resPonse  回调
      */
     public void showDialog(String title, String msg, String btnOk,String btnCancel,final  ResPonse resPonse){
         showDialog(title,msg,null,btnOk,btnCancel,resPonse,false);
     }
 
+    /**
+     * 显示弹框
+     * @param title     标题
+     * @param msg       消息
+     * @param hint      默认消息文本
+     * @param btnOk     确认按钮文本
+     * @param btnCancel 取消按钮文本
+     * @param resPonse  回调
+     * @param isEdit    是否为输入框
+     */
     private void showDialog(String title, String msg, String hint,String btnOk,String btnCancel,final  ResPonse resPonse,boolean isEdit){
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this,R.style.TransparentDialog);
@@ -245,16 +291,23 @@ public abstract class BaseActivity<VB extends ViewBinding,VM extends BaseViewMod
         }
     }
 
+    /**
+     * viewmodel 工厂创建实例
+     * @return
+     */
     public ViewModelProvider.Factory getViewModelFactory(){
         return ViewModelFactory.getInstance();
     }
 
+    /**
+     * 透明状态栏
+     * @param isBlack   是否为黑色文本
+     */
     public void setStatusBarTransparent(boolean isBlack){
         //透明状态栏
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         //透明导航栏
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
-
         setStatusBarTextColor(isBlack);
         final ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) titleBarView.getLayoutParams();
         layoutParams.topMargin = layoutParams.topMargin+getStatusBarHeight();
@@ -410,12 +463,6 @@ public abstract class BaseActivity<VB extends ViewBinding,VM extends BaseViewMod
         return storePath + File.separator +fileName;
     }
 
-
-    protected boolean onBackKeyDown() {
-        onBackPressed();
-        return false;
-    }
-
     /**
      * 拨打电话（直接拨打电话）
      * @param phoneNum 电话号码
@@ -435,11 +482,11 @@ public abstract class BaseActivity<VB extends ViewBinding,VM extends BaseViewMod
                 });
     }
 
-
+    //===========================================
+    //以下为preferences操作
     public boolean getBooleanUserPrefrence(String key){
         return PreferencesUtils.getBoolean(this,key,false,PreferencesUtils.USER);
     }
-
     public boolean getBooleanProjectPrefrence(String key){
         return PreferencesUtils.getBoolean(this,key,false,PreferencesUtils.PROJECT);
     }

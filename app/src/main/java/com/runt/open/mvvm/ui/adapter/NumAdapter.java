@@ -6,6 +6,7 @@ import com.runt.open.mvvm.databinding.ItemNumBinding;
 import java.util.List;
 
 /**
+ * 数字键盘
  * @purpose Created by Runt (qingingrunt2010@qq.com) on 2020-10-30.
  */
 public class NumAdapter extends BaseAdapter<String, ItemNumBinding> {

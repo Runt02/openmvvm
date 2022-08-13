@@ -47,6 +47,9 @@ public class BaseViewModel extends ViewModel {
         this.mActivity = activity;
     }
 
+    /**
+     * 获取用户信息
+     */
     public void getUserBean(){
         httpObserverOn(commonApi.getUserBean(), new HttpObserver<UserBean>() {
             @Override
@@ -112,6 +115,10 @@ public class BaseViewModel extends ViewModel {
 
     }
 
+    /**
+     * 检查更新
+     * @param showTip
+     */
     public void checkUpdate(boolean showTip){
         Observable<HttpApiResult<Results.ApkVersion>> appUpdate = commonApi.getAppUpdate();
         HttpObserver<Results.ApkVersion> observer = new HttpObserver<Results.ApkVersion>(mActivity) {
@@ -259,7 +266,7 @@ public class BaseViewModel extends ViewModel {
 
 
     /**
-     * 网络请求观察
+     * 网络请求观察（加载框）
      * @param observable
      * @param <T>
      * @return

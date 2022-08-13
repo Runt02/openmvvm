@@ -13,6 +13,7 @@ import com.runt.open.mvvm.ui.login.UserBean;
 import com.runt.open.mvvm.ui.paypass.PaypassActivity;
 
 /**
+ * 提现
  * @purpose Created by Runt (qingingrunt2010@qq.com) on 2020-10-30.
  */
 public class WithDrawActivity extends BaseActivity<ActivityWithdrawBinding, CoinViewModel> {

@@ -17,8 +17,8 @@ import java.util.List;
 
 /**
  * Created by Administrator on 2021/10/27 0027.
- *  T  数据类型
- *  V 适配器视图
+ *  DATA  数据类型
+ *  VB 适配器视图
  */
 public abstract class BaseAdapter<DATA, VB extends ViewBinding> extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -75,16 +75,9 @@ public abstract class BaseAdapter<DATA, VB extends ViewBinding> extends Recycler
     @Override
     public ViewBindHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         if(viewType == 1 ){
-            // get genericity "B"
             try {
+                //实例化viewbind
                 Class<VB> entityClass = (Class<VB>) ((ParameterizedType) this.getClass().getGenericSuperclass()).getActualTypeArguments()[1];
-                /*for(Method method: entityClass.getMethods()){
-                    StringBuilder sb = new StringBuilder();
-                    for(Class type : method.getParameterTypes()){
-                        sb.append(type.getSimpleName()+",");
-                    }
-                    Log.e("BaseAdapter",String.format("method:%s,return:%s,param:%s",method.getName(),method.getReturnType().getSimpleName(),sb.toString()));
-                }*/
                 Method method = entityClass.getMethod("inflate", LayoutInflater.class,ViewGroup.class,boolean.class);//get method from name "inflate";
                 VB vBind = (VB) method.invoke(entityClass,LayoutInflater.from(parent.getContext()),parent,false);//execute method to create a objct of viewbind;
                 return new ViewBindHolder(vBind);
@@ -103,6 +96,7 @@ public abstract class BaseAdapter<DATA, VB extends ViewBinding> extends Recycler
                 e.printStackTrace();
             }
         }
+        //加载空数据
         return new ViewBindHolder( LayoutNullBinding.inflate( LayoutInflater.from(parent.getContext()), parent, false ) );
     }
 

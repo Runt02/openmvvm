@@ -29,9 +29,6 @@ public abstract class LoadPageViewModel<D> extends BaseViewModel {
 
     /**
      * 数据请求
-     */
-    /**
-     * 数据请求
      * @param page  页数
      * @param param 请求参数
      */
@@ -62,19 +59,6 @@ public abstract class LoadPageViewModel<D> extends BaseViewModel {
 
     public MutableLiveData getLiveFailed() {
         return liveFailed;
-    }
-
-    public class PageHttpObserver extends HttpObserver<PageResult<D>> {
-        @Override
-        protected void onSuccess(PageResult<D> data) {
-            liveData.postValue(data.rows);
-        }
-
-        @Override
-        protected void onFailed(HttpApiResult httpResult) {
-            mActivity.showToast(httpResult.msg);
-            liveFailed.postValue(1);
-        }
     }
 
 }

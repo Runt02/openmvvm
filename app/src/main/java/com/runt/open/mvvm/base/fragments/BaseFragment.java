@@ -43,6 +43,7 @@ public abstract class BaseFragment<VB extends ViewBinding,VM extends BaseViewMod
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         // get genericity "B"
         try {
+            //实例化viewbind,viewmodel
             final ParameterizedType type = (ParameterizedType) this.getClass().getGenericSuperclass();
             Class<VB> entityClass = (Class<VB>) type.getActualTypeArguments()[0];
             Method method = entityClass.getMethod("inflate", LayoutInflater.class,ViewGroup.class,boolean.class);//get method from name "inflate";
@@ -52,6 +53,7 @@ public abstract class BaseFragment<VB extends ViewBinding,VM extends BaseViewMod
         } catch (Exception e) {
             e.printStackTrace();
         }
+        //加载UI
         initViews();
         return mBinding.getRoot();
     }
@@ -73,6 +75,9 @@ public abstract class BaseFragment<VB extends ViewBinding,VM extends BaseViewMod
         loadData();
     }
 
+    /**
+     * 该方法内调用getActivity()为空，需要在loadData()中使用
+     */
     public abstract void initViews();
 
     public abstract void loadData();

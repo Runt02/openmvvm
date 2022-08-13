@@ -21,7 +21,9 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 分页fragment 封装
+ * 含有上拉刷新的分页fragment
+ * 继承此类，有效优化代码60行
+ * 试用于 有下拉刷新，上拉加载等分页需求的界面
  * Created by Administrator on 2021/11/3 0003.
  */
 public abstract class LoadPageFragment<VB extends ViewBinding,VM extends LoadPageViewModel,A extends BaseAdapter,RESULT> extends BaseFragment<VB,VM>  implements OnRefreshLoadMoreListener {
