@@ -1,8 +1,5 @@
 package com.runt.open.mvvm.base.activities;
 
-import android.view.MotionEvent;
-import android.view.View;
-
 import androidx.annotation.NonNull;
 import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -21,7 +18,7 @@ import java.lang.reflect.ParameterizedType;
 import java.util.List;
 
 /**
- * 含有上拉刷新的Activity
+ * 含有上拉刷新的分页Activity
  * 继承此类，有效优化代码60行
  * 试用于 有下拉刷新，上拉加载等分页需求的界面
  * Created by Administrator on 2021/11/4 0004.
