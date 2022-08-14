@@ -121,21 +121,14 @@ com.runt.open.mvvm
                 }
             });
         }
-
-        @Override
-        protected Map requestParams() {
-            Map map = super.requestParams();
-            map.put("inOrOut",0);
-            return map;
-        }
     }
 
 ##### loadPageViewModel实现更简洁 例如：
     仅需实现接口地址和数据类即可
     CoinRecordViewModel extends LoadPageViewModel<CustomCoin>{
         @Override
-        protected String requestUrl() {
-            return "coinRecord";
+        public Observable<HttpApiResult<PageResult<Results.CustomCoin>>> request(int page, Object... objects) {
+            return commonApi.getCoinRecord(page,SIZE,0);
         }
     }
 ### 4.可读性更强的接口请求数据日志打印
