@@ -19,13 +19,13 @@ android {
     buildTypes {
         debug{
             minifyEnabled false
-            buildConfigField 'String','HOST_IP_ADDR','"http://192.168.110.134:8080/"'
+            buildConfigField 'String','HOST_IP_ADDR','"https://ek57678522.oicp.vip/"'
             resValue "string", "app_name", "MVVM OPEN TEST"
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
         release {
             minifyEnabled false
-            buildConfigField 'String','HOST_IP_ADDR','"http://192.168.100.82:8080/'
+            buildConfigField 'String','HOST_IP_ADDR','"https://ek57678522.oicp.vip/"'
             resValue "string", "app_name", "MVVM OPEN"
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
