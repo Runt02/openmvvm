@@ -5,7 +5,7 @@ import java.util.ArrayList;
 /**
  * Created by Administrator on 2021/10/28 0028.
  */
-public class PageResult<T> extends HttpApiResult<String> {
+public class PageResult<T> {
     public int pages;
     public int total;
     public int pageNum;
