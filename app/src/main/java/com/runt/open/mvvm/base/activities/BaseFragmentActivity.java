@@ -4,7 +4,6 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.viewbinding.ViewBinding;
 
-import com.runt.open.mvvm.R;
 import com.runt.open.mvvm.base.fragments.BaseFragment;
 import com.runt.open.mvvm.base.model.BaseViewModel;
 
@@ -17,7 +16,7 @@ import java.util.List;
  * 试用于加载各种fragment需求的activity
  * Created by Runt (qingingrunt2010@qq.com) on 2022/8/13.
  */
-public class BaseFragmentActivity <VB extends ViewBinding,VM extends BaseViewModel>
+public abstract class BaseFragmentActivity <VB extends ViewBinding,VM extends BaseViewModel>
         extends BaseActivity<VB,VM>{
 
 
@@ -55,7 +54,7 @@ public class BaseFragmentActivity <VB extends ViewBinding,VM extends BaseViewMod
      * 添加fragment
      * @param fragment
      */
-    protected void addAndShowFragment(BaseFragment fragment){
+    protected void addAndShowFragment(int viewId,BaseFragment fragment){
         if(fragments.contains(fragment)){
             showFragment(fragment);
             return;
@@ -65,7 +64,7 @@ public class BaseFragmentActivity <VB extends ViewBinding,VM extends BaseViewMod
         for(int i = 0 ; i < fragments.size() ; i ++){
             transaction.hide(fragments.get(i));
         }
-        transaction.add(R.id.framelayout,fragment).commit();
+        transaction.add(viewId,fragment).commit();
         fragments.add(fragment);
     }
 

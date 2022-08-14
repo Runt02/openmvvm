@@ -8,6 +8,7 @@ import com.runt.open.mvvm.ui.login.UserBean;
 import com.runt.open.mvvm.util.DeviceUtil;
 
 import java.io.IOException;
+import java.nio.charset.Charset;
 
 import okhttp3.Interceptor;
 import okhttp3.Request;
@@ -19,6 +20,8 @@ import okhttp3.Response;
  * @purpose Created by Runt (qingingrunt2010@qq.com) on 2021-10-8.
  */
 public class AddHeadersInterceptor implements Interceptor {
+
+    protected final Charset UTF8 = Charset.forName("UTF-8");
 
     @Override
     public Response intercept(Chain chain) throws IOException {
