@@ -25,7 +25,7 @@ public class GsonConverterFactory extends Converter.Factory {
     }
 
     public static GsonConverterFactory create(boolean transHump) {
-        return create(new GsonBuilder().setDateFormat("MMMM dd, yyyy, HH:mm:ss").create(),transHump);
+        return create(new GsonBuilder().setDateFormat("MMMM dd, yyyy HH:mm:ss a").create(),transHump);
     }
 
 
