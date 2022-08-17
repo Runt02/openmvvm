@@ -1,9 +1,9 @@
-## OpenMvvm 开源的mvvm项目
+# OpenMvvm 开源的mvvm项目
 
-# 简介
+## 简介
     项目是基于mvvm模式开发，引用了Google新出的ViewBinding框架。为了提高开发效率，开发了这套开源项目。此项目是基于多年的工作经验总结出来的。代码高效、简洁，可大大提高Android开发人员的工作效率。
 
-# 为什么用ViewBinding？
+## 为什么用ViewBinding？
     为什么用ViewBinding而不是现在大部分人用的DataBinding？
         1.首先，我在用Android studio创建demo的时候，Google官方给的demo用的就是ViewBinding，基于此才使用的ViewBinding。既然Google推荐，我也就继续使用。
         2.其次，网上搜了相关帖子，我也简单总结了两者的优劣，参考文章（https://blog.csdn.net/Runt02/article/details/126330609）。
